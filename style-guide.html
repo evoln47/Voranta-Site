@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voranta — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&family=Geist:wght@300..700&family=Geist+Mono:wght@300..600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-ink:#0A0908; --color-ink-soft:#3F3F3D; --color-ink-mute:#6B6E6B; --color-ink-faint:#A8ACA8;
+    --color-paper:#ECF1ED; --color-paper-light:#F4F7F4; --color-paper-deep:#DDE6E0;
+    --color-accent:#0891B2; --color-accent-dark:#155E75; --color-accent-tint:#E0EFF1;
+    --color-grey-50:#E3E8E4; --color-grey-100:#CDD3CE; --color-grey-200:#A5ACA7;
+    --color-grey-400:#6B716D; --color-grey-600:#444644; --color-grey-800:#262826;
+    --color-border-faint:rgba(10,9,8,0.06); --color-border-subtle:rgba(10,9,8,0.12); --color-border-strong:rgba(10,9,8,0.22);
+    --font-display:"Fraunces",Georgia,serif; --font-sans:"Geist",-apple-system,BlinkMacSystemFont,system-ui,sans-serif; --font-mono:"Geist Mono",ui-monospace,monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-family: var(--font-sans); font-size: 15px; line-height: 1.55; color: var(--color-ink); background: var(--color-paper); -webkit-font-smoothing: antialiased; }
+  body { padding: 48px 24px 192px; }
+  .container { max-width: 1120px; margin: 0 auto; }
+  .container-wide { max-width: 1280px; margin: 0 auto; }
+  .container-narrow { max-width: 720px; margin: 0 auto; }
+
+  /* Wordmark — Fraunces (the one heading-shaped serif moment) */
+  .wordmark { font-family: var(--font-display); font-variation-settings: "opsz" 144, "wght" 500, "SOFT" 15, "WONK" 0; letter-spacing: -0.025em; color: var(--color-ink); line-height: 1; display: inline-block; }
+  .wordmark::after { content: "*"; color: var(--color-accent); font-size: 0.42em; vertical-align: 0.85em; margin-left: 0.05em; font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 15, "WONK" 0; }
+
+  /* Headings — SANS by default */
+  h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: 600; color: var(--color-ink); letter-spacing: -0.02em; line-height: 1.2; }
+  h1 { font-size: 3rem; line-height: 1.05; letter-spacing: -0.03em; }
+  h2 { font-size: 2.25rem; }
+  h3 { font-size: 1.75rem; font-weight: 500; }
+  h4 { font-size: 1.375rem; font-weight: 500; }
+  p { margin-bottom: 1rem; }
+
+  /* Type utility for Fraunces moments only */
+  .display-serif { font-family: var(--font-display); font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 15, "WONK" 0; font-style: italic; color: var(--color-ink); }
+
+  /* Display — sans, big, confident */
+  .display { font-family: var(--font-sans); font-weight: 600; font-size: 3.75rem; line-height: 1.05; letter-spacing: -0.03em; color: var(--color-ink); }
+  .subhead { font-size: 1.125rem; line-height: 1.55; color: var(--color-ink-soft); font-weight: 400; max-width: 600px; }
+
+  /* Eyebrow */
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-mute); }
+
+  /* Section */
+  section { padding: 96px 0; border-bottom: 1px solid var(--color-border-subtle); }
+  section:first-of-type { padding-top: 0; border-bottom: 1px solid var(--color-border-subtle); }
+  .section-head { margin-bottom: 48px; }
+  .section-head .eyebrow { display: block; margin-bottom: 12px; }
+  .section-head .rule { height: 2px; background: var(--color-accent); width: 48px; margin-top: 16px; }
+
+  /* Color swatches */
+  .swatch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .swatch { padding: 20px; border-radius: 12px; border: 0.5px solid var(--color-border-subtle); }
+  .swatch-large { padding: 72px 20px 20px; }
+  .swatch .name { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; }
+  .swatch .hex { font-family: var(--font-mono); font-size: 11px; color: var(--color-ink-mute); margin-top: 4px; }
+
+  /* Type specimen */
+  .specimen { margin-bottom: 40px; padding-bottom: 28px; border-bottom: 0.5px solid var(--color-border-faint); }
+  .specimen:last-child { border-bottom: 0; }
+  .specimen-meta { font-family: var(--font-mono); font-size: 11px; color: var(--color-ink-mute); letter-spacing: 0.04em; margin-bottom: 12px; }
+
+  /* Cards */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .card { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 12px; padding: 24px; }
+  .card-lg { padding: 32px; border-radius: 16px; }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; font-family: var(--font-sans); font-size: 14px; font-weight: 500; border-radius: 6px; border: 1px solid var(--color-accent); background: var(--color-accent); color: #FFFFFF; text-decoration: none; cursor: pointer; transition: background 120ms ease, border-color 120ms ease; }
+  .btn:hover { background: var(--color-accent-dark); border-color: var(--color-accent-dark); }
+  .btn-ghost { background: transparent; color: var(--color-ink); border-color: var(--color-border-strong); }
+  .btn-ghost:hover { background: var(--color-ink); color: var(--color-paper-light); border-color: var(--color-ink); }
+  .btn-lg { padding: 14px 24px; font-size: 16px; }
+
+  /* Badges */
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; padding: 4px 10px; border-radius: 999px; background: var(--color-accent-tint); color: var(--color-accent-dark); }
+  .badge-ink { background: var(--color-ink); color: var(--color-paper-light); }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
+
+  /* Stat */
+  .stat { display: flex; flex-direction: column; gap: 8px; }
+  .stat-value { font-family: var(--font-sans); font-size: 3.75rem; font-weight: 500; line-height: 1; letter-spacing: -0.03em; color: var(--color-ink); font-variant-numeric: tabular-nums; }
+  .stat-value-accent { color: var(--color-accent); }
+  .stat-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-ink-mute); }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+
+  /* Feature card */
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .feature-card { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .feature-card .icon { width: 36px; height: 36px; border-radius: 8px; background: var(--color-accent-tint); color: var(--color-accent-dark); display: inline-flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 8px; }
+  .feature-card h4 { font-size: 16px; font-weight: 500; margin: 0; }
+  .feature-card p { font-size: 14px; color: var(--color-ink-soft); margin: 0; line-height: 1.55; }
+
+  /* Step */
+  .step-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .step { display: flex; flex-direction: column; gap: 12px; }
+  .step-number { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-accent); padding-bottom: 12px; border-bottom: 2px solid var(--color-accent); width: fit-content; text-transform: uppercase; }
+  .step h4 { font-size: 18px; font-weight: 500; margin: 0; }
+  .step p { font-size: 14px; color: var(--color-ink-soft); line-height: 1.55; margin: 0; }
+
+  /* Pricing */
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 720px; }
+  .pricing-card { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+  .pricing-card.is-featured { background: var(--color-ink); color: var(--color-paper-light); border-color: var(--color-ink); }
+  .pricing-card.is-featured h4, .pricing-card.is-featured .price-value { color: var(--color-paper-light); }
+  .pricing-card.is-featured li { color: rgba(244,247,244,0.75); }
+  .pricing-card .price-value { font-family: var(--font-sans); font-size: 3rem; font-weight: 500; line-height: 1; letter-spacing: -0.03em; color: var(--color-ink); }
+  .pricing-card .price-period { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-ink-mute); }
+  .pricing-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .pricing-card li { font-size: 14px; color: var(--color-ink-soft); display: flex; align-items: flex-start; gap: 8px; }
+  .pricing-card li::before { content: "✓"; color: var(--color-accent); font-weight: 600; }
+  .pricing-card.is-featured li::before { color: var(--color-accent); }
+
+  /* Sponsor strip */
+  .sponsor-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px; align-items: center; padding: 24px 0; border-top: 0.5px solid var(--color-border-subtle); border-bottom: 0.5px solid var(--color-border-subtle); }
+  .sponsor-logo { font-family: var(--font-mono); font-size: 14px; color: var(--color-ink-mute); text-align: center; letter-spacing: 0.04em; }
+
+  /* CTA section */
+  .cta-section { background: var(--color-ink); color: var(--color-paper-light); border-radius: 16px; padding: 80px 48px; text-align: center; display: flex; flex-direction: column; gap: 24px; align-items: center; }
+  .cta-section h2 { color: var(--color-paper-light); max-width: 600px; }
+  .cta-section p { color: rgba(244,247,244,0.7); max-width: 500px; }
+
+  /* Research callout — Fraunces moment for AIPQ */
+  .callout-research { background: var(--color-accent-tint); border-left: 2px solid var(--color-accent); padding: 20px 24px; border-radius: 0; font-size: 14px; line-height: 1.55; color: var(--color-accent-dark); }
+
+  /* Data table — kept for aggregate research output */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .data-table th { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-mute); text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--color-ink); }
+  .data-table th.num { text-align: right; }
+  .data-table td { padding: 12px 16px; border-bottom: 0.5px solid var(--color-border-subtle); }
+  .data-table td.num { text-align: right; font-family: var(--font-mono); }
+  .data-table tr:last-child td { border-bottom: 0; }
+
+  /* Spacing scale visual */
+  .space-row { display: flex; align-items: center; gap: 16px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-faint); }
+  .space-row .label { font-family: var(--font-mono); font-size: 11px; color: var(--color-ink-mute); width: 80px; }
+  .space-row .bar { background: var(--color-accent); height: 4px; }
+
+  /* Top bar */
+  .topbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; margin-bottom: 64px; border-bottom: 1px solid var(--color-border-subtle); }
+  .topbar .wordmark { font-size: 24px; }
+  .topbar nav { display: flex; gap: 24px; align-items: center; }
+  .topbar nav a { font-size: 14px; color: var(--color-ink-soft); text-decoration: none; }
+  .topbar nav a:hover { color: var(--color-accent); }
+
+  /* Hero — for marketing section demo */
+  .hero { padding: 80px 0 64px; }
+  .hero .badge { margin-bottom: 24px; }
+  .hero h1 { margin-bottom: 20px; max-width: 720px; }
+  .hero .subhead { margin-bottom: 32px; }
+  .hero .cta-row { display: flex; gap: 12px; margin-bottom: 64px; }
+</style>
+</head>
+<body>
+<div class="container-wide">
+
+<header class="topbar">
+  <span class="wordmark">voranta</span>
+  <nav>
+    <a href="#">Product</a>
+    <a href="#">Framework</a>
+    <a href="#">Customers</a>
+    <a href="#">Pricing</a>
+    <a href="#" class="btn" style="padding: 8px 14px;">Book a demo</a>
+  </nav>
+</header>
+
+<!-- INTRO -->
+<section style="padding-top: 0; padding-bottom: 96px; border-bottom: 1px solid var(--color-border-subtle);">
+  <span class="badge" style="margin-bottom: 24px;"><span class="badge-dot"></span>Design System · v2.0</span>
+  <h1 class="display" style="max-width: 880px; margin-bottom: 24px;">SaaS that licenses a research platform.</h1>
+  <p class="subhead">Modern, sans-led, distinctive. Reference set: Attio, Pocus, Tegus, Common Room. Fraunces is reserved for trust moments — the wordmark, the framework name, research callouts. Geist runs everywhere else.</p>
+</section>
+
+<!-- WORDMARK -->
+<section>
+  <div class="section-head">
+    <span class="eyebrow">01 · Wordmark</span>
+    <h2>Locked. The one Fraunces moment in the chrome.</h2>
+    <div class="rule"></div>
+  </div>
+  <div style="background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 16px; padding: 96px 48px; text-align: center;">
+    <span class="wordmark" style="font-size: 4.75rem;">voranta</span>
+    <p class="eyebrow" style="margin-top: 48px;">Fraunces · opsz 144 · wght 500 · soft 15 · wonk 0 · tracking -0.025em · asterisk in accent cyan</p>
+  </div>
+</section>
+
+<!-- COLOR -->
+<section>
+  <div class="section-head">
+    <span class="eyebrow">02 · Color</span>
+    <h2>Three colors. Cyan against cool cream.</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="swatch-grid" style="margin-bottom: 16px;">
+    <div class="swatch swatch-large" style="background: var(--color-ink); color: var(--color-paper-light);">
+      <p class="name">Ink</p><p class="hex" style="color: var(--color-ink-faint);">#0A0908</p>
+    </div>
+    <div class="swatch swatch-large" style="background: var(--color-paper);">
+      <p class="name">Paper</p><p class="hex">#ECF1ED</p>
+    </div>
+    <div class="swatch swatch-large" style="background: var(--color-accent); color: var(--color-paper-light);">
+      <p class="name">Accent</p><p class="hex" style="color: var(--color-accent-tint);">#0891B2</p>
+    </div>
+    <div class="swatch swatch-large" style="background: var(--color-accent-tint);">
+      <p class="name">Accent tint</p><p class="hex">#E0EFF1</p>
+    </div>
+  </div>
+
+  <p class="eyebrow" style="margin-top: 40px; margin-bottom: 16px;">Surface ramp</p>
+  <div class="swatch-grid">
+    <div class="swatch" style="background: var(--color-paper-deep); padding: 48px 20px 20px;"><p class="name">Paper deep</p><p class="hex">#DDE6E0</p></div>
+    <div class="swatch" style="background: var(--color-paper); padding: 48px 20px 20px;"><p class="name">Paper</p><p class="hex">#ECF1ED</p></div>
+    <div class="swatch" style="background: var(--color-paper-light); padding: 48px 20px 20px;"><p class="name">Paper light</p><p class="hex">#F4F7F4</p></div>
+    <div class="swatch" style="background: var(--color-accent-dark); color: var(--color-paper-light); padding: 48px 20px 20px;"><p class="name">Accent dark</p><p class="hex" style="color: var(--color-accent-tint);">#155E75</p></div>
+  </div>
+
+  <p class="eyebrow" style="margin-top: 40px; margin-bottom: 16px;">Greyscale ramp · data viz only</p>
+  <div style="display: flex; gap: 0; border-radius: 8px; overflow: hidden;">
+    <div style="flex: 1; height: 64px; background: var(--color-grey-50);"></div>
+    <div style="flex: 1; height: 64px; background: var(--color-grey-100);"></div>
+    <div style="flex: 1; height: 64px; background: var(--color-grey-200);"></div>
+    <div style="flex: 1; height: 64px; background: var(--color-grey-400);"></div>
+    <div style="flex: 1; height: 64px; background: var(--color-grey-600);"></div>
+    <div style="flex: 1; height: 64px; background: var(--color-grey-800);"></div>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY -->
+<section>
+  <div class="section-head">
+    <span class="eyebrow">03 · Typography</span>
+    <h2>Sans-led. Serif for trust only.</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="specimen">
+    <p class="specimen-meta">Display · Geist Sans · 60px / wght 600 · the hero voice</p>
+    <p class="display">Diagnose buyer fit. Convert qualified pipeline.</p>
+  </div>
+  <div class="specimen">
+    <p class="specimen-meta">H1 · Geist Sans · 48px / wght 600</p>
+    <h1>How the framework converts curiosity into pipeline</h1>
+  </div>
+  <div class="specimen">
+    <p class="specimen-meta">H2 · Geist Sans · 36px / wght 600</p>
+    <h2>One assessment, three buyer signals</h2>
+  </div>
+  <div class="specimen">
+    <p class="specimen-meta">H3 · Geist Sans · 28px / wght 500</p>
+    <h3>Built on AIPQ research</h3>
+  </div>
+  <div class="specimen">
+    <p class="specimen-meta">Subhead · Geist · 18px · the new "lede"</p>
+    <p class="subhead">Framework-driven assessments, licensed exclusively per category. Plug it into your marketing site and turn buyer curiosity into diagnostic-rich pipeline.</p>
+  </div>
+  <div class="specimen">
+    <p class="specimen-meta">Body · Geist · 15px / line-height 1.55</p>
+    <p style="max-width: 680px;">Voranta builds opinionated, framework-driven assessment platforms for B2B software companies. Sponsors license a vertical-specific framework as exclusive infrastructure for their segment, deploying a branded assessment that turns prospect curiosity into diagnostic-rich qualified leads.</p>
+  </div>
+  <div class="specimen">
+    <p class="specimen-meta">Trust moment · Fraunces italic · framework names and methodology references</p>
+    <p style="max-width: 680px;">The assessment is powered by <span class="display-serif" style="font-size: 1.125rem;">AIPQ</span> — a peer-validated framework spanning 247 buyers across the enterprise AI category.</p>
+  </div>
+  <div class="specimen">
+    <p class="specimen-meta">Mono · Geist Mono · 14px · data labels, eyebrows, badges</p>
+    <p style="font-family: var(--font-mono); font-size: 14px; color: var(--color-ink-soft);">N=247 · COMPLETION 91% · LAST UPDATED 2026-05-13</p>
+  </div>
+  <div class="specimen">
+    <p class="specimen-meta">Eyebrow · Geist Mono · 12px / uppercase / tracking 0.08em</p>
+    <p class="eyebrow">Product · Built for revenue teams</p>
+  </div>
+</section>
+
+<!-- COMPONENTS -->
+<section>
+  <div class="section-head">
+    <span class="eyebrow">04 · Components</span>
+    <h2>The kit.</h2>
+    <div class="rule"></div>
+  </div>
+
+  <!-- Buttons -->
+  <div style="margin-bottom: 64px;">
+    <p class="eyebrow" style="margin-bottom: 20px;">Buttons</p>
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+      <a href="#" class="btn">Book a demo</a>
+      <a href="#" class="btn btn-ghost">Watch the tour</a>
+      <a href="#" class="btn btn-lg">Start free trial</a>
+      <a href="#" class="btn btn-ghost btn-lg">See pricing</a>
+    </div>
+  </div>
+
+  <!-- Badges -->
+  <div style="margin-bottom: 64px;">
+    <p class="eyebrow" style="margin-bottom: 20px;">Badges</p>
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+      <span class="badge"><span class="badge-dot"></span>Live · N=247</span>
+      <span class="badge">New release</span>
+      <span class="badge badge-ink">Sponsor only</span>
+      <span class="badge">Enterprise AI</span>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div style="margin-bottom: 64px;">
+    <p class="eyebrow" style="margin-bottom: 20px;">Cards</p>
+    <div class="grid-2">
+      <div class="card">
+        <p class="eyebrow" style="margin-bottom: 12px;">Default · radius-lg 12px</p>
+        <h4 style="margin-bottom: 8px;">Workflow stability</h4>
+        <p style="font-size: 14px; color: var(--color-ink-soft); margin: 0;">Do procedures change faster than AI can learn? Stable workflows produce stable training signals.</p>
+      </div>
+      <div class="card card-lg">
+        <p class="eyebrow" style="margin-bottom: 12px;">Large · radius-xl 16px</p>
+        <h4 style="margin-bottom: 8px;">Exception tolerance</h4>
+        <p style="font-size: 14px; color: var(--color-ink-soft); margin: 0;">When AI is wrong, is the cost minor or catastrophic? Determines acceptable error rates.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stat grid -->
+  <div style="margin-bottom: 64px;">
+    <p class="eyebrow" style="margin-bottom: 20px;">Stat grid · outcome proof</p>
+    <div class="stat-grid">
+      <div class="stat"><span class="stat-value stat-value-accent">247</span><span class="stat-label">Buyers diagnosed</span></div>
+      <div class="stat"><span class="stat-value">3.2×</span><span class="stat-label">Demo-to-close lift</span></div>
+      <div class="stat"><span class="stat-value">91%</span><span class="stat-label">Assessment completion</span></div>
+      <div class="stat"><span class="stat-value">17</span><span class="stat-label">Active sponsors</span></div>
+    </div>
+  </div>
+
+  <!-- Feature cards -->
+  <div style="margin-bottom: 64px;">
+    <p class="eyebrow" style="margin-bottom: 20px;">Feature grid · product capabilities</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon">◆</div>
+        <h4>White-labeled assessment</h4>
+        <p>Deploy your framework on your domain. Branded, embedded, owned.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">◇</div>
+        <h4>Diagnostic-rich pipeline</h4>
+        <p>Every completion arrives with a scored report routed to your CRM.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">○</div>
+        <h4>Exclusive category lock</h4>
+        <p>One sponsor per vertical. Your framework is your competitive moat.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div style="margin-bottom: 64px;">
+    <p class="eyebrow" style="margin-bottom: 20px;">Steps · how it works</p>
+    <div class="step-grid">
+      <div class="step">
+        <span class="step-number">Step 01</span>
+        <h4>License the framework</h4>
+        <p>Choose your category. Voranta builds and validates the diagnostic with you.</p>
+      </div>
+      <div class="step">
+        <span class="step-number">Step 02</span>
+        <h4>Deploy on your domain</h4>
+        <p>Branded, embedded assessment goes live in 14 days. Hosted by Voranta.</p>
+      </div>
+      <div class="step">
+        <span class="step-number">Step 03</span>
+        <h4>Route qualified pipeline</h4>
+        <p>Scored buyer reports flow into your CRM with full diagnostic context.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Research callout -->
+  <div style="margin-bottom: 64px;">
+    <p class="eyebrow" style="margin-bottom: 20px;">Research callout · for framework trust moments</p>
+    <div class="callout-research" style="max-width: 720px;">
+      Powered by <span class="display-serif" style="font-size: 16px;">AIPQ</span> — Voranta's workflow-level framework for diagnosing enterprise AI pilot conversion. Peer-validated across N=247 buyers; methodology disclosed at <a href="#" style="color: var(--color-accent-dark); text-decoration: underline;">/framework</a>.
+    </div>
+  </div>
+
+  <!-- Sponsor strip -->
+  <div style="margin-bottom: 64px;">
+    <p class="eyebrow" style="margin-bottom: 20px;">Sponsor strip · logo placeholder</p>
+    <div class="sponsor-strip">
+      <div class="sponsor-logo">SPONSOR ONE</div>
+      <div class="sponsor-logo">SPONSOR TWO</div>
+      <div class="sponsor-logo">SPONSOR THREE</div>
+      <div class="sponsor-logo">SPONSOR FOUR</div>
+      <div class="sponsor-logo">SPONSOR FIVE</div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div style="margin-bottom: 64px;">
+    <p class="eyebrow" style="margin-bottom: 20px;">Pricing cards · is-featured uses inverted ink fill</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div>
+          <span class="badge" style="margin-bottom: 16px;">Category license</span>
+          <h4 style="margin-bottom: 16px;">Sponsor</h4>
+          <p class="price-value">$60K</p>
+          <p class="price-period">Per year · exclusive</p>
+        </div>
+        <ul>
+          <li>White-labeled assessment on your domain</li>
+          <li>Framework licensed exclusively in your category</li>
+          <li>CRM-routed diagnostic reports</li>
+          <li>Quarterly methodology updates</li>
+        </ul>
+        <a href="#" class="btn btn-ghost">Book a demo</a>
+      </div>
+      <div class="pricing-card is-featured">
+        <div>
+          <span class="badge badge-ink" style="background: var(--color-accent); color: var(--color-paper-light); margin-bottom: 16px;">Most popular</span>
+          <h4 style="margin-bottom: 16px;">Sponsor + Research</h4>
+          <p class="price-value">$120K</p>
+          <p class="price-period" style="color: rgba(244,247,244,0.5);">Per year · exclusive</p>
+        </div>
+        <ul>
+          <li>Everything in Sponsor</li>
+          <li>Aggregate research access (N≥300)</li>
+          <li>Custom segmented benchmarks</li>
+          <li>Co-authored annual report</li>
+        </ul>
+        <a href="#" class="btn">Talk to us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data table -->
+  <div>
+    <p class="eyebrow" style="margin-bottom: 20px;">Data table · for aggregate research output pages</p>
+    <table class="data-table" style="max-width: 880px;">
+      <thead>
+        <tr>
+          <th>Workflow archetype</th>
+          <th class="num">Median AIPQ</th>
+          <th class="num">Pilot success</th>
+          <th class="num">Production rate</th>
+          <th class="num">N</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Production-Ready</td><td class="num">78</td><td class="num">94%</td><td class="num">71%</td><td class="num">42</td></tr>
+        <tr><td>Stranded Capability</td><td class="num">62</td><td class="num">88%</td><td class="num">23%</td><td class="num">61</td></tr>
+        <tr><td>Operational Gap</td><td class="num">44</td><td class="num">52%</td><td class="num">8%</td><td class="num">89</td></tr>
+        <tr><td>Foundational</td><td class="num">28</td><td class="num">31%</td><td class="num">2%</td><td class="num">55</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MARKETING SECTION DEMO -->
+<section>
+  <div class="section-head">
+    <span class="eyebrow">05 · Marketing surface</span>
+    <h2>Hero in context.</h2>
+    <div class="rule"></div>
+  </div>
+  <div style="background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 16px; padding: 80px 56px;">
+    <span class="badge" style="margin-bottom: 24px;"><span class="badge-dot"></span>Live · N=247 buyers diagnosed</span>
+    <h1 class="display" style="max-width: 800px; margin-bottom: 20px;">Diagnose buyer fit. Convert qualified pipeline.</h1>
+    <p class="subhead" style="margin-bottom: 32px; max-width: 600px;">Framework-driven assessments, licensed exclusively per category. Plug it into your marketing site and turn buyer curiosity into diagnostic-rich pipeline.</p>
+    <div style="display: flex; gap: 12px; margin-bottom: 64px;">
+      <a href="#" class="btn btn-lg">Book a demo</a>
+      <a href="#" class="btn btn-ghost btn-lg">How it works</a>
+    </div>
+    <div class="stat-grid" style="border-top: 0.5px solid var(--color-border-subtle); padding-top: 32px;">
+      <div class="stat"><span class="stat-value stat-value-accent">247</span><span class="stat-label">Buyers diagnosed</span></div>
+      <div class="stat"><span class="stat-value">3.2×</span><span class="stat-label">Demo-to-close lift</span></div>
+      <div class="stat"><span class="stat-value">91%</span><span class="stat-label">Completion rate</span></div>
+      <div class="stat"><span class="stat-value">17</span><span class="stat-label">Active sponsors</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="section-head">
+    <span class="eyebrow">06 · CTA section</span>
+    <h2>Closing block.</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="cta-section">
+    <h2>Own the framework. Own the category.</h2>
+    <p>One sponsor per vertical. Once your category is licensed, it's yours.</p>
+    <div style="display: flex; gap: 12px; margin-top: 16px;">
+      <a href="#" class="btn btn-lg">See available categories</a>
+      <a href="#" class="btn btn-ghost btn-lg" style="border-color: rgba(244,247,244,0.3); color: var(--color-paper-light);">Talk to founder</a>
+    </div>
+  </div>
+</section>
+
+<!-- SPACING -->
+<section>
+  <div class="section-head">
+    <span class="eyebrow">07 · Spacing</span>
+    <h2>Rhythm.</h2>
+    <div class="rule"></div>
+  </div>
+  <div style="max-width: 680px;">
+    <div class="space-row"><span class="label">space-1</span><div class="bar" style="width: 4px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">4px</span></div>
+    <div class="space-row"><span class="label">space-2</span><div class="bar" style="width: 8px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">8px</span></div>
+    <div class="space-row"><span class="label">space-3</span><div class="bar" style="width: 12px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">12px</span></div>
+    <div class="space-row"><span class="label">space-4</span><div class="bar" style="width: 16px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">16px</span></div>
+    <div class="space-row"><span class="label">space-6</span><div class="bar" style="width: 24px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">24px</span></div>
+    <div class="space-row"><span class="label">space-8</span><div class="bar" style="width: 32px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">32px</span></div>
+    <div class="space-row"><span class="label">space-12</span><div class="bar" style="width: 48px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">48px</span></div>
+    <div class="space-row"><span class="label">space-16</span><div class="bar" style="width: 64px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">64px</span></div>
+    <div class="space-row"><span class="label">space-24</span><div class="bar" style="width: 96px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">96px</span></div>
+    <div class="space-row"><span class="label">space-32</span><div class="bar" style="width: 128px;"></div><span class="hex" style="color: var(--color-ink-mute); font-family: var(--font-mono); font-size: 11px;">128px</span></div>
+  </div>
+</section>
+
+<!-- CONTAINERS -->
+<section>
+  <div class="section-head">
+    <span class="eyebrow">08 · Containers</span>
+    <h2>Three widths.</h2>
+    <div class="rule"></div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <div style="height: 56px; background: var(--color-accent-tint); width: 720px; max-width: 100%; border-left: 2px solid var(--color-accent); padding: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--color-accent-dark); border-radius: 0 12px 12px 0;">narrow · 720px · long-form, pricing FAQ, legal</div>
+    <div style="height: 56px; background: var(--color-accent-tint); width: 1120px; max-width: 100%; border-left: 2px solid var(--color-accent); padding: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--color-accent-dark); border-radius: 0 12px 12px 0;">standard · 1120px · default marketing pages</div>
+    <div style="height: 56px; background: var(--color-accent-tint); width: 1280px; max-width: 100%; border-left: 2px solid var(--color-accent); padding: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--color-accent-dark); border-radius: 0 12px 12px 0;">wide · 1280px · dashboards, data, full features</div>
+  </div>
+</section>
+
+<footer style="padding-top: 64px; border-top: 1px solid var(--color-border-subtle); margin-top: 96px; display: flex; justify-content: space-between; align-items: baseline;">
+  <span class="wordmark" style="font-size: 20px;">voranta</span>
+  <p class="eyebrow">Design system · v2.0 · locked 2026-05-13</p>
+</footer>
+
+</div>
+</body>
+</html>

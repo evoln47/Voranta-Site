@@ -1,0 +1,567 @@
+/* =========================================================================
+   Voranta — Design System
+   B2B SaaS that licenses a research platform. Modern, clean, sans-led.
+   Reference set: Attio · Pocus · Tegus · Common Room.
+   Fraunces (serif) is reserved for trust moments — wordmark, framework
+   name, research callouts. Geist is the dominant voice everywhere else.
+
+   Tailwind v4 (CSS-first config via @theme). For v3, port @theme tokens
+   into tailwind.config.ts under theme.extend.
+   ========================================================================= */
+
+@import "tailwindcss";
+
+/* -------------------------------------------------------------------------
+   FONTS
+   Fraunces Variable + Geist + Geist Mono via Google Fonts CDN.
+   For Next.js, prefer next/font/google (see fonts.ts) — this CDN import is
+   a fallback for plain HTML or non-Next contexts.
+   ------------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&family=Geist:wght@300..700&family=Geist+Mono:wght@300..600&display=swap");
+
+/* -------------------------------------------------------------------------
+   THEME TOKENS
+   ------------------------------------------------------------------------- */
+@theme {
+  /* ----- Colors (locked) ----- */
+  --color-ink:            #0A0908;   /* primary type, true near-black     */
+  --color-ink-soft:       #3F3F3D;   /* secondary type                    */
+  --color-ink-mute:       #6B6E6B;   /* tertiary type, captions           */
+  --color-ink-faint:      #A8ACA8;   /* dividers, faint borders           */
+
+  --color-paper:          #ECF1ED;   /* primary surface, cool cream       */
+  --color-paper-light:    #F4F7F4;   /* raised surface, cards             */
+  --color-paper-deep:     #DDE6E0;   /* recessed surface, well            */
+
+  --color-accent:         #0891B2;   /* primary accent — cyan             */
+  --color-accent-dark:    #155E75;   /* hover / pressed                   */
+  --color-accent-tint:    #E0EFF1;   /* tinted callout bg, badge fill     */
+
+  /* Greyscale ramp for data viz — cool-neutral to harmonize with paper.
+     Use only these for charts; reserve accent for emphasis points.      */
+  --color-grey-50:        #E3E8E4;
+  --color-grey-100:       #CDD3CE;
+  --color-grey-200:       #A5ACA7;
+  --color-grey-400:       #6B716D;
+  --color-grey-600:       #444644;
+  --color-grey-800:       #262826;
+
+  /* Status colors — restrained, used sparingly */
+  --color-success:        #16A34A;
+  --color-success-tint:   #E7F5EC;
+  --color-warning:        #D97706;
+  --color-warning-tint:   #FBEEDC;
+  --color-danger:         #DC2626;
+  --color-danger-tint:    #FBE7E7;
+
+  /* Border tokens */
+  --color-border-faint:   rgba(10, 9, 8, 0.06);
+  --color-border-subtle:  rgba(10, 9, 8, 0.12);
+  --color-border-strong:  rgba(10, 9, 8, 0.22);
+
+  /* ----- Typography ----- */
+  --font-sans:     "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display:  "Fraunces", Georgia, "Times New Roman", serif;
+  --font-mono:     "Geist Mono", ui-monospace, "JetBrains Mono", monospace;
+
+  /* SaaS-modern type scale — body 15px, not editorial 17px */
+  --text-xs:    0.75rem;     /* 12px — micro labels, mono tags          */
+  --text-sm:    0.875rem;    /* 14px — UI text, captions                */
+  --text-base:  0.9375rem;   /* 15px — body                             */
+  --text-md:    1rem;        /* 16px — subhead, important UI            */
+  --text-lg:    1.125rem;    /* 18px — section subhead                  */
+  --text-xl:    1.375rem;    /* 22px — h4                               */
+  --text-2xl:   1.75rem;     /* 28px — h3                               */
+  --text-3xl:   2.25rem;     /* 36px — h2                               */
+  --text-4xl:   3rem;        /* 48px — h1                               */
+  --text-5xl:   3.75rem;     /* 60px — hero display                     */
+  --text-6xl:   4.75rem;     /* 76px — oversized stat                   */
+
+  /* Line heights — SaaS, tighter than editorial */
+  --leading-tight:    1.05;  /* display heads                           */
+  --leading-snug:     1.2;   /* large heads                             */
+  --leading-normal:   1.4;   /* UI, small body                          */
+  --leading-relaxed:  1.55;  /* body prose                              */
+  --leading-loose:    1.7;   /* long-form reading                       */
+
+  /* Letter spacing */
+  --tracking-tighter: -0.03em;   /* hero display                        */
+  --tracking-tight:   -0.02em;   /* heads                               */
+  --tracking-snug:    -0.012em;  /* subheads, body emphasis             */
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;    /* small labels                        */
+  --tracking-wider:   0.08em;    /* mono tags, all-caps eyebrows        */
+
+  /* ----- Spacing ----- */
+  --spacing-1:   4px;
+  --spacing-2:   8px;
+  --spacing-3:   12px;
+  --spacing-4:   16px;
+  --spacing-5:   20px;
+  --spacing-6:   24px;
+  --spacing-8:   32px;
+  --spacing-10:  40px;
+  --spacing-12:  48px;
+  --spacing-16:  64px;
+  --spacing-20:  80px;
+  --spacing-24:  96px;
+  --spacing-32:  128px;
+  --spacing-48:  192px;
+
+  /* ----- Container widths ----- */
+  --container-narrow:    720px;    /* long-form: pricing FAQ, legal     */
+  --container-standard:  1120px;   /* default marketing pages           */
+  --container-wide:      1280px;   /* dashboards, data, full features   */
+
+  /* ----- Radius — relaxed for SaaS warmth ----- */
+  --radius-none:  0;
+  --radius-sm:    6px;     /* inputs, small buttons                     */
+  --radius-md:    8px;     /* small UI, badges                          */
+  --radius-lg:    12px;    /* cards, feature blocks                     */
+  --radius-xl:    16px;    /* large modules, modals, hero containers    */
+  --radius-pill:  999px;   /* pill badges                               */
+
+  /* ----- Border weight ----- */
+  --border-hair:    0.5px;
+  --border-thin:    1px;
+  --border-rule:    2px;
+
+  /* ----- Layout ----- */
+  --gutter-page:    24px;
+  --gutter-page-lg: 48px;
+}
+
+/* -------------------------------------------------------------------------
+   BASE
+   ------------------------------------------------------------------------- */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-feature-settings: "ss01", "ss02";  /* Geist stylistic alternates */
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-paper-light);
+  }
+
+  /* Headings — SANS by default. Geist 500/600, tight tracking. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: var(--color-ink);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
+  }
+  h1 { font-size: var(--text-4xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-tighter); }
+  h2 { font-size: var(--text-3xl); }
+  h3 { font-size: var(--text-2xl); font-weight: 500; }
+  h4 { font-size: var(--text-xl); font-weight: 500; }
+
+  /* Prose body */
+  p { font-size: var(--text-base); line-height: var(--leading-relaxed); color: var(--color-ink); }
+
+  /* Links — accent cyan, subtle underline */
+  a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-border-subtle);
+    transition: text-decoration-color 120ms ease, color 120ms ease;
+  }
+  a:hover { text-decoration-color: var(--color-accent); color: var(--color-accent-dark); }
+
+  /* Mono labels */
+  code, kbd, samp { font-family: var(--font-mono); font-size: 0.92em; }
+
+  /* HR */
+  hr {
+    border: 0;
+    border-top: var(--border-thin) solid var(--color-border-subtle);
+    margin: var(--spacing-12) 0;
+  }
+
+  /* Focus ring — the only allowed shadow */
+  *:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   COMPONENT UTILITIES
+   ------------------------------------------------------------------------- */
+@layer components {
+
+  /* ----- Wordmark (locked spec — Fraunces stays) ----- */
+  .wordmark {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "wght" 500, "SOFT" 15, "WONK" 0;
+    letter-spacing: -0.025em;
+    color: var(--color-ink);
+    line-height: 1;
+    display: inline-block;
+  }
+  .wordmark::after {
+    content: "*";
+    color: var(--color-accent);
+    font-size: 0.42em;
+    vertical-align: 0.85em;
+    margin-left: 0.05em;
+    font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 15, "WONK" 0;
+  }
+
+  /* ----- Hero display — SANS, big, confident ----- */
+  .display {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-5xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tighter);
+    color: var(--color-ink);
+  }
+
+  /* ----- Serif moment — for framework name, research callouts ----- */
+  .display-serif {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 15, "WONK" 0;
+    font-style: italic;
+    color: var(--color-ink);
+  }
+
+  /* ----- Subhead — replaces the old editorial .lede ----- */
+  .subhead {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-soft);
+    font-weight: 400;
+    max-width: 600px;
+  }
+
+  /* ----- Eyebrow — small mono uppercase label ----- */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+  }
+
+  /* ----- Badge — accent pill for tags, "new", category labels ----- */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-tint);
+    color: var(--color-accent-dark);
+  }
+  .badge-ink {
+    background: var(--color-ink);
+    color: var(--color-paper-light);
+  }
+
+  /* ----- Buttons ----- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    padding: 10px 18px;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0;
+    border-radius: var(--radius-sm);
+    border: var(--border-thin) solid var(--color-accent);
+    background: var(--color-accent);
+    color: #FFFFFF;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 120ms ease, border-color 120ms ease;
+  }
+  .btn:hover { background: var(--color-accent-dark); border-color: var(--color-accent-dark); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-ink);
+    border-color: var(--color-border-strong);
+  }
+  .btn-ghost:hover { background: var(--color-ink); color: var(--color-paper-light); border-color: var(--color-ink); }
+
+  .btn-lg {
+    padding: 14px 24px;
+    font-size: var(--text-md);
+  }
+
+  /* ----- Card ----- */
+  .card {
+    background: var(--color-paper-light);
+    border: var(--border-hair) solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+  }
+  .card-lg { padding: var(--spacing-8); border-radius: var(--radius-xl); }
+
+  /* ----- Stat block — oversized number + small label ----- */
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+  .stat-value {
+    font-family: var(--font-sans);
+    font-size: var(--text-5xl);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: var(--tracking-tighter);
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-value-accent { color: var(--color-accent); }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-8);
+  }
+
+  /* ----- Feature card — product features grid ----- */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--spacing-4);
+  }
+  .feature-card {
+    background: var(--color-paper-light);
+    border: var(--border-hair) solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+  .feature-card .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: var(--color-accent-tint);
+    color: var(--color-accent-dark);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-2);
+  }
+  .feature-card h3 {
+    font-size: var(--text-md);
+    font-weight: 500;
+    margin: 0;
+  }
+  .feature-card p {
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+
+  /* ----- Step — "how it works" numbered steps ----- */
+  .step-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-8);
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+  .step-number {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-accent);
+    padding-bottom: var(--spacing-3);
+    border-bottom: var(--border-rule) solid var(--color-accent);
+    width: fit-content;
+  }
+  .step h3 {
+    font-size: var(--text-lg);
+    font-weight: 500;
+    margin: 0;
+  }
+  .step p {
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+
+  /* ----- Pricing card ----- */
+  .pricing-card {
+    background: var(--color-paper-light);
+    border: var(--border-hair) solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+  }
+  .pricing-card.is-featured {
+    background: var(--color-ink);
+    color: var(--color-paper-light);
+    border-color: var(--color-ink);
+  }
+  .pricing-card.is-featured h3,
+  .pricing-card.is-featured .price-value { color: var(--color-paper-light); }
+  .pricing-card .price-value {
+    font-family: var(--font-sans);
+    font-size: var(--text-4xl);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: var(--tracking-tighter);
+    color: var(--color-ink);
+  }
+  .pricing-card .price-period {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+  }
+  .pricing-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+  .pricing-card li {
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+  }
+
+  /* ----- Sponsor strip — logo grid placeholder ----- */
+  .sponsor-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-8);
+    align-items: center;
+    padding: var(--spacing-6) 0;
+    border-top: var(--border-hair) solid var(--color-border-subtle);
+    border-bottom: var(--border-hair) solid var(--color-border-subtle);
+  }
+  .sponsor-logo {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-ink-mute);
+    text-align: center;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* ----- CTA section — closing block ----- */
+  .cta-section {
+    background: var(--color-ink);
+    color: var(--color-paper-light);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-16) var(--spacing-12);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+    align-items: center;
+  }
+  .cta-section h2 { color: var(--color-paper-light); max-width: 600px; }
+  .cta-section p { color: rgba(244, 247, 244, 0.7); max-width: 500px; }
+
+  /* ----- Research callout — for "powered by AIPQ" trust moments ----- */
+  .callout-research {
+    background: var(--color-accent-tint);
+    border-left: var(--border-rule) solid var(--color-accent);
+    padding: var(--spacing-4) var(--spacing-6);
+    border-radius: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--color-accent-dark);
+  }
+
+  /* ----- Data table — kept for aggregate research output pages ----- */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+  .data-table th {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-ink-mute);
+    text-align: left;
+    padding: var(--spacing-3) var(--spacing-4);
+    border-bottom: var(--border-thin) solid var(--color-ink);
+  }
+  .data-table td {
+    padding: var(--spacing-3) var(--spacing-4);
+    border-bottom: var(--border-hair) solid var(--color-border-subtle);
+    color: var(--color-ink);
+  }
+  .data-table tr:last-child td { border-bottom: 0; }
+
+  /* ----- Layout containers ----- */
+  .container-narrow    { max-width: var(--container-narrow);    margin-inline: auto; padding-inline: var(--gutter-page); }
+  .container-standard  { max-width: var(--container-standard);  margin-inline: auto; padding-inline: var(--gutter-page); }
+  .container-wide      { max-width: var(--container-wide);      margin-inline: auto; padding-inline: var(--gutter-page); }
+
+  /* ----- Section spacing ----- */
+  .section { padding: var(--spacing-24) 0; }
+  .section-sm { padding: var(--spacing-16) 0; }
+}
+
+/* -------------------------------------------------------------------------
+   PROHIBITED
+   Things this design system explicitly disallows. Encoded in code review.
+
+   - No gradients
+   - No drop shadows except focus rings
+   - No border-radius > 16px (xl is the ceiling, used on hero modules only)
+   - No accent color other than cyan #0891B2
+   - No purple, no SaaS-default blue (#3B82F6 family), no AI-violet
+   - No serif headings — Fraunces is reserved for wordmark, framework name,
+     and research callouts only. All H1–H4 are Geist sans.
+   - No body font-size below 14px on reading surfaces
+   - No emoji or AI-sparkle iconography on brand surfaces
+   - No editorial chrome (Vol/No. numbering, masthead rules everywhere,
+     marginalia footnotes) — those were the old direction
+   ------------------------------------------------------------------------- */
