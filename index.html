@@ -134,7 +134,7 @@
 
   /* Sponsor card */
   .sponsor-section { background: var(--color-paper-deep); border-bottom: none; }
-  .sponsor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 880px; margin: 0 auto; }
+  .sponsor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1120px; margin: 0 auto; }
   .sponsor-card { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 16px; padding: 36px 32px; display: flex; flex-direction: column; gap: 24px; }
   .sponsor-card.is-featured { background: var(--color-ink); color: var(--color-paper-light); border-color: var(--color-ink); }
   .sponsor-card.is-featured h3, .sponsor-card.is-featured .price-value { color: var(--color-paper-light); }
@@ -173,10 +173,7 @@
   .product-card .card-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-dark); background: var(--color-accent-tint); padding: 4px 10px; border-radius: 999px; width: fit-content; margin-bottom: 4px; }
   .product-card h4 { font-size: 16px; font-weight: 500; margin: 0; }
   .product-card p { font-size: 14px; color: var(--color-ink-soft); line-height: 1.6; margin: 0; }
-  .capabilities-strip { margin-top: 48px; padding-top: 40px; border-top: 0.5px solid var(--color-border-subtle); }
-  .capabilities-strip .also-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-mute); display: block; margin-bottom: 20px; }
-  .capabilities-list { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; margin: 0; }
-  .capabilities-list li { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.03em; color: var(--color-ink-soft); padding: 6px 14px; border: 0.5px solid var(--color-border-strong); border-radius: 6px; }
+
 
   /* ============================================================
      SCORECARD SAMPLE SECTION
@@ -246,14 +243,19 @@
   /* Mobile */
   @media (max-width: 880px) {
     .step-grid, .pillars, .diff-grid, .sponsor-grid, .gap-grid { grid-template-columns: 1fr; }
+    #product .diff-grid { grid-template-columns: 1fr; }
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
-    .hero { padding-top: 64px; padding-bottom: 56px; }
-    .hero-inner { grid-template-columns: 1fr; gap: 48px; }
-    .hero-visual { aspect-ratio: 4 / 3; max-height: 400px; }
-
+    h2 { font-size: 1.75rem; }
+    .display { font-size: 2.25rem; line-height: 1.1; }
+    .hero { padding-top: 48px; padding-bottom: 48px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 0; }
+    .hero-visual { display: none; }
     .hero .subhead { font-size: 1.0625rem; }
+    .hero .cta-row { flex-direction: column; align-items: stretch; }
+    .hero .meta-line { margin-top: 36px; gap: 20px; }
     section { padding: 64px 24px; }
+    .cta-section { padding: 64px 24px; }
     .framework-block { padding: 40px 24px; }
     .framework-name { font-size: 3.25rem; }
     .founder-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -265,6 +267,36 @@
     .sc-summary { grid-template-columns: 1fr; gap: 32px; padding: 32px 28px; }
     .sc-score-value { font-size: 4rem; }
   }
+
+  /* ============================================================
+     ANIMATIONS & TRANSITIONS
+     ============================================================ */
+
+  /* Hover lifts */
+  .btn {
+    transition: background 120ms ease-out, border-color 120ms ease-out, transform 200ms ease-out;
+  }
+  .btn:hover { transform: translateY(-2px); }
+
+  .diff-card, .product-card, .sc-card, .card, .feature-card {
+    transition: transform 220ms ease-out, border-color 220ms ease-out, background 220ms ease-out;
+  }
+  .diff-card:hover, .product-card:hover, .sc-card:not(.is-dark):hover,
+  .card:hover, .feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+    background: var(--color-paper-light);
+  }
+  .sc-card.is-dark:hover { transform: translateY(-4px); border-color: var(--color-accent); }
+
+  .sponsor-card:not(.is-featured) { transition: transform 220ms ease-out, border-color 220ms ease-out; }
+  .sponsor-card:not(.is-featured):hover { transform: translateY(-4px); border-color: var(--color-accent); }
+  .sponsor-card.is-featured { transition: transform 220ms ease-out, border-color 220ms ease-out; }
+  .sponsor-card.is-featured:hover { transform: translateY(-4px); border-color: rgba(244,247,244,0.4); }
+
+  /* Scroll-entry fade-up — IntersectionObserver (all browsers) */
+  .vfade { opacity: 0; transform: translateY(18px); transition: opacity 280ms ease-out, transform 280ms ease-out; }
+  .vfade.vfade-in { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
@@ -368,21 +400,6 @@
         <h4>Your audience is the panel. No panel cost.</h4>
         <p>As completions accumulate, aggregate insights become a co-authored annual research report under your brand. No syndicated panel fees, no third-party data buys; the buyers running your assessment are the methodology's evidence base.</p>
       </div>
-    </div>
-    <div class="capabilities-strip">
-      <div class="callout-research" style="margin-bottom: 32px;">
-        <strong>BEYOND GENERIC QUIZZES</strong>
-        Every question is mapped to a published framework. Scoring logic is transparent and versioned. The output is a publishable scorecard, not a fit number. Methodology is co-hosted with the assessment; what buyers see is what gets defended in front of a CFO.
-      </div>
-      <span class="also-label">Also included</span>
-      <ul class="capabilities-list">
-        <li>White-label deployment: embed, subdomain, or full white-label</li>
-        <li>Save-and-resume across sessions · shareable result URLs</li>
-        <li>Admin dashboard: live performance, lead export, weekly digest</li>
-        <li>Quarterly framework and benchmark updates</li>
-        <li>Methodology page co-hosted with the assessment</li>
-        <li>Direct line to the methodology team</li>
-      </ul>
     </div>
   </div>
 </section>
@@ -633,7 +650,7 @@
       <div class="rule"></div>
       <p class="subhead">Pricing is set by category depth and scope. Founding sponsors get terms that no later sponsor will get, by design.</p>
     </div>
-    <div class="sponsor-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="sponsor-grid">
       <div class="sponsor-card">
         <div>
           <span class="badge" style="margin-bottom: 16px;">Limited · first 2 only</span>
@@ -684,14 +701,12 @@
 </section>
 
 <!-- CLOSING CTA -->
-<section id="contact">
-  <div class="cta-section">
-    <span class="badge badge-ink" style="background: rgba(244,247,244,0.1); color: var(--color-paper-light);"><span class="badge-dot" style="background: var(--color-accent);"></span>Currently sourcing founding sponsors</span>
-    <h2>Own the framework. Own the category.</h2>
-    <p>One sponsor per vertical. Once your category is licensed, it's yours for the term, including the framework, the benchmark, and the published research.</p>
-    <div style="display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
-      <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg">Book an intro call</a>
-    </div>
+<section id="contact" class="cta-section">
+  <span class="badge badge-ink" style="background: rgba(244,247,244,0.1); color: var(--color-paper-light);"><span class="badge-dot" style="background: var(--color-accent);"></span>Currently sourcing founding sponsors</span>
+  <h2>Own the framework. Own the category.</h2>
+  <p>One sponsor per vertical. Once your category is licensed, it's yours for the term, including the framework, the benchmark, and the published research.</p>
+  <div style="display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
+    <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg">Book an intro call</a>
   </div>
 </section>
 
@@ -896,6 +911,26 @@
 
     // Default: highlight weakest pillar
     setActivePillar("exception");
+  })();
+
+  /* Scroll-entry fade-up via IntersectionObserver */
+  (function () {
+    if (!window.IntersectionObserver) return;
+
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('vfade-in');
+        obs.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
+
+    document.querySelectorAll('section, footer').forEach(function (el) {
+      if (el.getBoundingClientRect().top >= window.innerHeight) {
+        el.classList.add('vfade');
+        io.observe(el);
+      }
+    });
   })();
 </script>
 </body>
