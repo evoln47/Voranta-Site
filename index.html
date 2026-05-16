@@ -172,10 +172,33 @@
   footer .meta a:hover { color: var(--color-accent); }
   footer .eyebrow { font-size: 11px; }
 
-  /* Category gap — 2-col card layout */
-  .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-  .gap-intro { font-size: 15px; color: var(--color-ink-soft); line-height: 1.6; margin-bottom: 48px; }
-  .gap-close { font-size: 15px; color: var(--color-ink); line-height: 1.65; margin-top: 40px; padding-top: 40px; border-top: 0.5px solid var(--color-border-subtle); }
+  /* Category gap */
+  .gap-intro { font-size: 15px; color: var(--color-ink-soft); line-height: 1.6; margin-top: 20px; margin-bottom: 0; }
+  .gap-stats-row { display: grid; grid-template-columns: 1fr 1.15fr; gap: 64px; align-items: stretch; }
+  .gap-stat { text-align: left; display: flex; flex-direction: column; }
+  #gap-stat-bar { background: var(--color-ink); border-radius: 16px; border: 0.5px solid var(--color-ink); padding: 28px; }
+  .gap-stat-headline { font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500; color: var(--color-ink); letter-spacing: -0.02em; margin: 0 0 24px; line-height: 1.3; }
+  #gap-stat-bar .gap-stat-headline { color: var(--color-paper-light); }
+  .gap-stat-caption { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); margin-top: 20px; }
+  #gap-stat-bar .gap-stat-caption { color: rgba(244,247,244,0.45); }
+
+  /* Numstat visual */
+  .gap-bar-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .gap-numstat { display: flex; align-items: stretch; }
+  .gap-numstat-number { font-family: var(--font-sans); font-size: 10rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: var(--color-paper-light); display: flex; align-items: baseline; flex-shrink: 0; }
+  .gap-numstat-count { display: inline-block; min-width: 2ch; text-align: right; }
+  .gap-numstat-rule { width: 2px; background: var(--color-accent); flex-shrink: 0; margin: 0 28px; }
+  .gap-numstat-lines { display: flex; flex-direction: column; justify-content: center; text-align: left; min-width: 180px; }
+  .gap-numstat-line { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.65; color: rgba(244,247,244,0.55); display: block; opacity: 0; transition: opacity 350ms ease-out; }
+
+  /* Dot grid visual */
+  .gap-dots-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .gap-dots { display: grid; grid-template-columns: repeat(10, 1fr); gap: 14px; aspect-ratio: 1 / 1; max-width: 320px; width: 100%; }
+  .gap-dot { aspect-ratio: 1 / 1; border-radius: 50%; background: var(--color-paper-deep); opacity: 0; transition: opacity 200ms ease-out, background 500ms cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes gap-dot-ping { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) {
+    .gap-numstat-line, .gap-dot { transition: none !important; animation: none !important; }
+  }
 
   /* Product section */
   .product-card { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 12px; }
@@ -251,7 +274,12 @@
 
   /* Mobile */
   @media (max-width: 880px) {
-    .step-grid, .pillars, .diff-grid, .sponsor-grid, .gap-grid { grid-template-columns: 1fr; }
+    .step-grid, .pillars, .diff-grid, .sponsor-grid { grid-template-columns: 1fr; }
+    .gap-stats-row { grid-template-columns: 1fr; gap: 56px; }
+    .gap-stat-headline { font-size: 1.25rem; }
+    .gap-dots { gap: 10px; max-width: 280px; }
+    .gap-numstat-number { font-size: 6.5rem; }
+    .gap-numstat-rule { margin: 0 16px; }
     #product .diff-grid { grid-template-columns: 1fr; }
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
@@ -349,9 +377,9 @@
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-text">
-      <span class="eyebrow" style="display: block; margin-bottom: 20px;">The research framework that converts</span>
-      <h1 class="display">Stop chasing the read. Start owning the lead.</h1>
-      <p class="subhead">Buyers self-score against analyst-grade methodology and land in your CRM with the full scoring rationale, so sales stops cold-pitching and starts following up on a real conversation. Exclusive to one sponsor per vertical.</p>
+      <span class="eyebrow" style="display: block; margin-bottom: 20px;">The missing demand-gen layer</span>
+      <h1 class="display">The live research framework that earns you the read and the lead.</h1>
+      <p class="subhead">Gated research builds trust but converts under 3%, while interactive quizzes produce leads sales can't open with. Voranta is the surface in between: a licensed, opinionated research framework that doubles as your funnel.</p>
       <div class="cta-row">
         <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg">Book an intro call</a>
         <a href="#framework" class="btn btn-ghost btn-lg">How it works</a>
@@ -367,24 +395,37 @@
 <section id="gap">
   <div class="section-inner">
     <div class="section-head">
-      <span class="eyebrow">The category gap</span>
-      <h2>Demand-gen content is breaking on both ends.</h2>
+      <span class="eyebrow">Where your buyer is actually deciding</span>
+      <h2>Your buyer's research runs on someone's framework.<br>It should run on yours.</h2>
       <div class="rule"></div>
+      <p class="gap-intro">Most B2B research now happens in private, against frameworks the buyer picks up from analysts, competitors, and AI summaries. Voranta builds that framework with your brand on it, citable, indexable, and convertible on your domain. The buyer self-educates inside your category POV before any contact, so the lead that lands in your CRM is warm by the time you see it.</p>
     </div>
-    <p class="gap-intro">Research builds trust but converts under three percent. Interactive tools convert but signal nothing. And the tools built to score buyers skip the framework entirely. Voranta is the surface where rigor and conversion stop trading off.</p>
-    <div class="gap-grid">
-      <div class="diff-card">
-        <span class="diff-tag">The trust ceiling</span>
-        <h3>Research wins the room. It doesn't fill the form.</h3>
-        <p>Analyst-grade frameworks are the highest-trust content a B2B buyer reads. Buyers cite them in meetings, share them with the CFO, and use them to justify budget. They also gate behind a PDF download with under three percent conversion, so you earn the read but don't capture the buyer.</p>
+
+    <div class="gap-stats-row">
+      <div class="gap-stat" id="gap-stat-bar">
+        <p class="gap-stat-headline">By the time your buyer talks to you, they've already decided.</p>
+        <div class="gap-bar-wrap" role="img" aria-label="70% of the B2B buying journey happens before vendor contact">
+          <div class="gap-numstat">
+            <div class="gap-numstat-number">
+              <span class="gap-numstat-count" id="gap-count">0</span><span class="gap-numstat-pct">%</span>
+            </div>
+            <div class="gap-numstat-rule"></div>
+            <div class="gap-numstat-lines">
+              <span class="gap-numstat-line">of the buyer's evaluation<br>happens in private<br>before they ever talk to you.</span>
+            </div>
+          </div>
+        </div>
+        <p class="gap-stat-caption">Source: Gartner</p>
       </div>
-      <div class="diff-card">
-        <span class="diff-tag">The conversion floor</span>
-        <h3>Quiz funnels convert. They don't carry weight.</h3>
-        <p>Interactive content tools generate completions and nothing else. Buyers walk away with a result your sales team can't open a call on, your CRM gets a name and an email, and your AE gets a cold-pitch problem.</p>
+
+      <div class="gap-stat" id="gap-stat-dots">
+        <p class="gap-stat-headline">And the gated PDF they're researching with converts under 3%.</p>
+        <div class="gap-dots-wrap" role="img" aria-label="Three percent gated-PDF conversion rate, visualized as three of 100 dots">
+          <div class="gap-dots" id="gap-dots"></div>
+        </div>
+        <p class="gap-stat-caption">Source: DemandGen Report</p>
       </div>
     </div>
-    <p class="gap-close">Voranta licenses a research framework as the conversion surface itself. Buyers take an opinionated assessment built like an analyst report, and the completion lands in your CRM as a self-scored account brief with full reasoning, not a name and a form.</p>
   </div>
 </section>
 
@@ -936,6 +977,93 @@
 
     // Default: highlight weakest pillar
     setActivePillar("exception");
+  })();
+
+  /* Gap section stat animations */
+  (function () {
+    var dotsContainer = document.getElementById('gap-dots');
+    if (dotsContainer) {
+      for (var i = 0; i < 100; i++) {
+        var dot = document.createElement('div');
+        dot.className = 'gap-dot';
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function animateBar(instant) {
+      var countEl = document.getElementById('gap-count');
+      var lines = document.querySelectorAll('#gap-stat-bar .gap-numstat-line');
+      if (!countEl) return;
+      if (instant) {
+        countEl.textContent = '70';
+        lines.forEach(function (l) { l.style.opacity = '1'; });
+        animateDots(true);
+        return;
+      }
+      var duration = 2200;
+      var start = null;
+      function ease(t) { return Math.sin(t * Math.PI / 2); }
+      function frame(ts) {
+        if (!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        countEl.textContent = Math.round(ease(progress) * 70);
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          countEl.textContent = '70';
+          lines.forEach(function (l) {
+            setTimeout(function () { l.style.opacity = '1'; }, 120);
+          });
+          setTimeout(function () { animateDots(reduced); }, 700);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function animateDots(instant) {
+      if (!dotsContainer) return;
+      var dots = dotsContainer.querySelectorAll('.gap-dot');
+      if (instant) {
+        dots.forEach(function (d, i) {
+          d.style.opacity = '1';
+          if (i >= 97) d.style.background = 'var(--color-accent)';
+        });
+        return;
+      }
+      dots.forEach(function (d, i) {
+        d.style.transitionDelay = (i * 8) + 'ms';
+        d.style.opacity = '1';
+      });
+      setTimeout(function () {
+        [dots[97], dots[98], dots[99]].forEach(function (d, i) {
+          setTimeout(function () {
+            d.style.transitionDelay = '0ms';
+            d.style.background = 'var(--color-accent)';
+            d.style.animation = 'gap-dot-ping 500ms cubic-bezier(0.22, 1, 0.36, 1)';
+          }, i * 220);
+        });
+      }, 1300);
+    }
+
+    if (!window.IntersectionObserver) {
+      animateBar(true);
+      return;
+    }
+
+    var statObs = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var el = e.target;
+        el.classList.add('is-visible');
+        obs.unobserve(el);
+        if (el.id === 'gap-stat-bar') animateBar(reduced);
+      });
+    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
+
+    var barEl = document.getElementById('gap-stat-bar');
+    if (barEl) statObs.observe(barEl);
   })();
 
   /* Scroll-entry fade-up via IntersectionObserver */
