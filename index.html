@@ -416,7 +416,11 @@
             </div>
             <div class="gap-numstat-rule"></div>
             <div class="gap-numstat-lines">
-              <span class="gap-numstat-line">of the buyer's<br>evaluation<br>happens privately<br>before they even<br>talk to you.</span>
+              <span class="gap-numstat-line">of the buyer's</span>
+              <span class="gap-numstat-line">evaluation</span>
+              <span class="gap-numstat-line">happens privately</span>
+              <span class="gap-numstat-line">before they even</span>
+              <span class="gap-numstat-line">talk to you.</span>
             </div>
           </div>
         </div>
@@ -1027,8 +1031,8 @@
           requestAnimationFrame(frame);
         } else {
           countEl.textContent = '70';
-          lines.forEach(function (l) {
-            setTimeout(function () { l.style.opacity = '1'; }, 80);
+          lines.forEach(function (l, i) {
+            setTimeout(function () { l.style.opacity = '1'; }, 80 + i * 100);
           });
           setTimeout(function () { animateDots(reduced); }, 200);
         }
