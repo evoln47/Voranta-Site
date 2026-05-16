@@ -174,11 +174,11 @@
 
   /* Category gap */
   .gap-intro { font-size: 15px; color: var(--color-ink-soft); line-height: 1.6; margin-top: 20px; margin-bottom: 0; }
-  .gap-stats-row { display: grid; grid-template-columns: 1fr 1.15fr; gap: 64px; align-items: stretch; }
+  .gap-stats-row { display: grid; grid-template-columns: 1fr 1.15fr; gap: 64px; align-items: stretch; margin: 48px 0; }
   .gap-stat { text-align: left; display: flex; flex-direction: column; }
   #gap-stat-bar { background: var(--color-ink); border-radius: 16px; border: 0.5px solid var(--color-ink); padding: 20px 24px; }
   #gap-stat-dots { background: var(--color-paper-light); border-radius: 16px; border: 0.5px solid var(--color-border-subtle); padding: 20px 24px; }
-  .gap-stat-headline { font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500; color: var(--color-ink); letter-spacing: -0.02em; margin: 0 0 24px; line-height: 1.3; }
+  .gap-stat-headline { font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500; color: var(--color-ink); letter-spacing: -0.03em; margin: 0 0 16px; line-height: 1.2; }
   #gap-stat-bar .gap-stat-headline { color: var(--color-paper-light); }
   .gap-stat-caption { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); margin-top: auto; padding-top: 20px; }
   .gap-stat-pull { font-family: var(--font-display); font-style: italic; font-variation-settings: "opsz" 72, "wght" 400, "SOFT" 100, "WONK" 0; }
@@ -408,7 +408,7 @@
 
     <div class="gap-stats-row">
       <div class="gap-stat" id="gap-stat-bar">
-        <p class="gap-stat-headline">Customers are making up their minds<br>before your first sales call.</p>
+        <p class="gap-stat-headline">Customers are making up their minds before your first sales call.</p>
         <div class="gap-bar-wrap" role="img" aria-label="70% of the B2B buying journey happens before vendor contact">
           <div class="gap-numstat">
             <div class="gap-numstat-number">
@@ -428,7 +428,7 @@
       </div>
 
       <div class="gap-stat" id="gap-stat-dots">
-        <p class="gap-stat-headline">And the gated PDF they're reading<br>converts under 3%.</p>
+        <p class="gap-stat-headline">And the gated PDF they're reading converts under 3%.</p>
         <div class="gap-dots-wrap" role="img" aria-label="Three percent gated-PDF conversion rate, visualized as three of 100 dots">
           <div class="gap-dots" id="gap-dots"></div>
         </div>
@@ -442,31 +442,31 @@
 <section id="product" style="background: var(--color-paper-light);">
   <div class="section-inner">
     <div class="section-head">
-      <span class="eyebrow">What you deploy</span>
+      <span class="eyebrow">What we deploy</span>
       <h2>One licensed framework. Four working parts.</h2>
       <div class="rule"></div>
-      <p class="subhead" style="margin-top: 20px;">Branded on your domain, framework-driven, and routed to your CRM with the rationale behind every score.</p>
+      <p class="subhead" style="margin-top: 20px;">A category-defining framework on your domain, and everything it takes to route what comes back into your sales motion.</p>
     </div>
     <div class="diff-grid">
       <div class="product-card">
         <span class="card-tag">The framework</span>
-        <h4>Opinionated, peer-validated, exclusive to your category.</h4>
-        <p>Voranta builds and validates the framework with you. Once your category is licensed, no competitor can deploy the same methodology; the framework, the benchmark, and the published research all carry your brand for the term.</p>
+        <h4>An opinionated framework, exclusive to your category.</h4>
+        <p>Voranta builds and validates the framework with you, then locks it to your category for the term. The methodology, the benchmark, and the published research all carry your brand. No competitor can license the same one.</p>
       </div>
       <div class="product-card">
         <span class="card-tag">The assessment</span>
-        <h4>A branded experience on your domain.</h4>
-        <p>Fifteen to twenty-five framework-driven questions with branching logic and save-and-resume. Buyers complete in 8–12 minutes and leave with a publishable scorecard: a score, a named archetype, a six-dimension radar, and a prescriptive recommendation against their weakest area.</p>
+        <h4>A branded assessment on your domain.</h4>
+        <p>Fifteen to twenty-five questions, branded as yours, hosted on your domain. Buyers leave with a publishable scorecard: a score, an archetype, a radar, and a prescriptive recommendation against their weakest pillar.</p>
       </div>
       <div class="product-card">
-        <span class="card-tag">The lead intelligence</span>
-        <h4>Every completion comes with an AI-generated SDR brief.</h4>
-        <p>Every completion routes to your CRM with the buyer's score, archetype, full scoring radar, and a framework-bounded SDR brief drafted against their result. Your team opens with the buyer's own scorecard, not a cold pitch from a job title and an email.</p>
+        <span class="card-tag">The lead</span>
+        <h4>A pre-diagnosed lead, not a name and an email.</h4>
+        <p>Every completion routes to your CRM with the buyer's score, archetype, and an AI-generated brief written against their result. Sales opens with the buyer's own diagnosis, not a cold pitch.</p>
       </div>
       <div class="product-card">
         <span class="card-tag">The benchmark</span>
         <h4>Your audience is the panel. No panel cost.</h4>
-        <p>As completions accumulate, aggregate insights become a co-authored annual research report under your brand. No syndicated panel fees, no third-party data buys; the buyers running your assessment are the methodology's evidence base.</p>
+        <p>As completions accumulate, the aggregate becomes a co-authored annual research report under your brand. No syndicated panels, no third-party data buys. The buyers taking your assessment are the evidence base.</p>
       </div>
     </div>
   </div>
@@ -1034,7 +1034,8 @@
           lines.forEach(function (l, i) {
             setTimeout(function () { l.style.opacity = '1'; }, 80 + i * 100);
           });
-          setTimeout(function () { animateDots(reduced); }, 200);
+          var lastLineStart = 80 + (lines.length - 1) * 100;
+          setTimeout(function () { animateDots(reduced); }, lastLineStart + 350);
         }
       }
       requestAnimationFrame(frame);
@@ -1070,13 +1071,16 @@
       return;
     }
 
+    var gapEl = document.getElementById('gap');
+    var labelFadeMs = (gapEl && gapEl.getBoundingClientRect().top < window.innerHeight) ? 600 : 280;
+
     var statObs = new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         var el = e.target;
         el.classList.add('is-visible');
         obs.unobserve(el);
-        if (el.id === 'gap-stat-bar') animateBar(reduced);
+        if (el.id === 'gap-stat-bar') setTimeout(function () { animateBar(reduced); }, labelFadeMs);
       });
     }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
 
