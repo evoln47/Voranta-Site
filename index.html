@@ -185,11 +185,11 @@
 
   /* Numstat visual */
   .gap-bar-wrap { flex: 1; display: flex; align-items: center; justify-content: flex-start; }
-  .gap-numstat { display: flex; align-items: stretch; }
+  .gap-numstat { display: flex; align-items: stretch; width: 100%; }
   .gap-numstat-number { font-family: var(--font-sans); font-size: 10rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: var(--color-paper-light); display: flex; align-items: baseline; flex-shrink: 0; }
-  .gap-numstat-count { display: inline-block; min-width: 2ch; text-align: right; }
+  .gap-numstat-count { display: inline-block; min-width: 2ch; text-align: left; }
   .gap-numstat-rule { width: 2px; background: var(--color-accent); flex-shrink: 0; margin: 0 28px; }
-  .gap-numstat-lines { display: flex; flex-direction: column; justify-content: center; text-align: left; min-width: 180px; }
+  .gap-numstat-lines { display: flex; flex-direction: column; justify-content: center; text-align: left; flex: 1; }
   .gap-numstat-line { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.65; color: rgba(244,247,244,0.55); display: block; white-space: nowrap; opacity: 0; transition: opacity 350ms ease-out; }
 
   /* Dot grid visual */
