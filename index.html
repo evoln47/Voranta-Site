@@ -322,16 +322,16 @@
   }
   .btn:hover { transform: translateY(-2px); }
 
-  .diff-card, .product-card, .sc-card, .card, .feature-card {
+  .diff-card, .product-card, .sc-card, .card, .feature-card, #gap-stat-bar, #gap-stat-dots {
     transition: transform 220ms ease-out, border-color 220ms ease-out, background 220ms ease-out;
   }
   .diff-card:hover, .product-card:hover, .sc-card:not(.is-dark):hover,
-  .card:hover, .feature-card:hover {
+  .card:hover, .feature-card:hover, #gap-stat-dots:hover {
     transform: translateY(-4px);
     border-color: var(--color-accent);
     background: var(--color-paper-light);
   }
-  .sc-card.is-dark:hover { transform: translateY(-4px); border-color: var(--color-accent); }
+  .sc-card.is-dark:hover, #gap-stat-bar:hover { transform: translateY(-4px); border-color: var(--color-accent); }
 
   .sponsor-card:not(.is-featured) { transition: transform 220ms ease-out, border-color 220ms ease-out; }
   .sponsor-card:not(.is-featured):hover { transform: translateY(-4px); border-color: var(--color-accent); }
