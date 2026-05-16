@@ -277,11 +277,14 @@
   /* Mobile */
   @media (max-width: 880px) {
     .step-grid, .pillars, .diff-grid, .sponsor-grid { grid-template-columns: 1fr; }
-    .gap-stats-row { grid-template-columns: 1fr; gap: 56px; }
-    .gap-stat-headline { font-size: 1.25rem; }
-    .gap-dots { gap: 10px; max-width: 280px; }
-    .gap-numstat-number { font-size: 6.5rem; }
-    .gap-numstat-rule { margin: 0 16px; }
+    .gap-stats-row { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .gap-stat-headline { font-size: 1.125rem; }
+    .gap-dots { gap: 8px; max-width: 240px; }
+    .gap-numstat-number { font-size: 6rem; }
+    .gap-numstat { flex-direction: column; align-items: flex-start; }
+    .gap-numstat-rule { width: 100%; height: 2px; margin: 14px 0; }
+    .gap-numstat-lines { text-align: left; }
+    .gap-numstat-line { white-space: normal; }
     #product .diff-grid { grid-template-columns: 1fr; }
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
