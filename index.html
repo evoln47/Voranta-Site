@@ -167,24 +167,25 @@
 
   /* Category gap */
   .gap-intro { font-size: 15px; color: var(--color-ink-soft); line-height: 1.6; margin-top: 20px; margin-bottom: 0; }
-  .gap-stats-row { display: grid; grid-template-columns: 1fr 1.15fr; gap: 64px; align-items: stretch; margin: 48px 0; }
+  .gap-stats-row { display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: stretch; }
   .gap-stat { text-align: left; display: flex; flex-direction: column; }
   #gap-stat-bar { background: var(--color-ink); border-radius: 16px; border: 0.5px solid var(--color-ink); padding: 20px 24px; }
   #gap-stat-dots { background: var(--color-paper-light); border-radius: 16px; border: 0.5px solid var(--color-border-subtle); padding: 20px 24px; }
-  .gap-stat-headline { font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500; color: var(--color-ink); letter-spacing: -0.03em; margin: 0 0 16px; line-height: 1.2; }
-  #gap-stat-bar .gap-stat-headline { color: var(--color-paper-light); }
+  .gap-stat-headline { font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500; color: var(--color-ink); letter-spacing: -0.03em; margin: 0 0 28px; line-height: 1.2; }
+  #gap-stat-bar .gap-stat-headline { color: var(--color-paper-light); text-align: center; }
   .gap-stat-caption { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); margin-top: auto; padding-top: 20px; }
   .gap-stat-pull { font-family: var(--font-display); font-style: italic; font-variation-settings: "opsz" 72, "wght" 400, "SOFT" 100, "WONK" 0; }
   #gap-stat-bar .gap-stat-caption { color: rgba(244,247,244,0.45); }
 
   /* Numstat visual */
-  .gap-bar-wrap { flex: 1; display: flex; align-items: center; justify-content: flex-start; }
-  .gap-numstat { display: flex; align-items: stretch; width: 100%; }
+  .gap-bar-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .gap-numstat { display: flex; flex-direction: column; align-items: center; width: 100%; }
   .gap-numstat-number { font-family: var(--font-sans); font-size: 10rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: var(--color-paper-light); display: flex; align-items: baseline; flex-shrink: 0; }
   .gap-numstat-count { }
-  .gap-numstat-rule { width: 2px; background: var(--color-accent); flex-shrink: 0; margin: 0 28px; }
-  .gap-numstat-lines { display: flex; flex-direction: column; justify-content: center; text-align: right; flex: 1; min-width: 0; overflow: hidden; }
-  .gap-numstat-line { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.65; color: rgba(244,247,244,0.55); display: block; white-space: nowrap; opacity: 0; transition: opacity 350ms ease-out; }
+  .gap-numstat-rule { display: none; }
+  .gap-numstat-lines { display: block; width: fit-content; text-align: center; border-top: 2px solid var(--color-accent); padding-top: 16px; margin-top: 20px; }
+  .gap-line-break { display: none; }
+  .gap-numstat-line { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.65; color: rgba(244,247,244,0.55); display: inline; white-space: nowrap; opacity: 0; transition: opacity 350ms ease-out; }
 
   /* Dot grid visual */
   .gap-dots-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
@@ -274,10 +275,7 @@
     .gap-stat-headline { font-size: 1.125rem; }
     .gap-dots { gap: 8px; max-width: 240px; }
     .gap-numstat-number { font-size: 6rem; }
-    .gap-numstat { flex-direction: column; align-items: flex-start; }
-    .gap-numstat-rule { width: 100%; height: 2px; margin: 14px 0; }
-    .gap-numstat-lines { text-align: left; }
-    .gap-numstat-line { white-space: normal; }
+    .gap-numstat-lines { margin-top: 14px; padding-top: 14px; }
     #product .diff-grid { grid-template-columns: 1fr; }
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
@@ -411,7 +409,7 @@
             <div class="gap-numstat-lines">
               <span class="gap-numstat-line">of the buyer's</span>
               <span class="gap-numstat-line">evaluation</span>
-              <span class="gap-numstat-line">happens privately</span>
+              <span class="gap-numstat-line">happens privately</span><br>
               <span class="gap-numstat-line">before they even</span>
               <span class="gap-numstat-line">talk to you.</span>
             </div>
