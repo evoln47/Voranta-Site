@@ -30,7 +30,7 @@
   .wordmark::after { content: "*"; color: var(--color-accent); font-size: 0.42em; vertical-align: 0.85em; margin-left: 0.05em; font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 15, "WONK" 0; }
 
   /* Headings — SANS */
-  h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: 600; color: var(--color-ink); letter-spacing: -0.02em; line-height: 1.2; }
+  h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: 600; color: var(--color-ink); letter-spacing: -0.02em; line-height: 1.2; overflow-wrap: break-word; }
   h1 { font-size: 3rem; line-height: 1.05; letter-spacing: -0.03em; }
   h2 { font-size: 2.25rem; }
   h3 { font-size: 1.5rem; font-weight: 500; }
@@ -281,6 +281,8 @@
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
     h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.25rem; }
+    .sc-summary-header h3 { font-size: 1.375rem; }
     .display { font-size: 2.25rem; line-height: 1.1; }
     .hero { padding-top: 48px; padding-bottom: 48px; }
     .hero-inner { grid-template-columns: 1fr; gap: 0; }
