@@ -253,16 +253,17 @@
   .sc-quadrant .q-name { font-size: 12px; font-weight: 500; color: var(--color-ink); line-height: 1.3; }
   .sc-buyer-dot { position: absolute; width: 14px; height: 14px; background: var(--color-accent); border: 3px solid var(--color-paper); border-radius: 50%; transform: translate(-50%, 50%); z-index: 2; pointer-events: none; left: 76%; bottom: 48%; }
   .sc-buyer-dot::after { content: ""; position: absolute; inset: -7px; border: 1px dashed var(--color-accent); border-radius: 50%; opacity: 0.4; }
-  .sc-quadrant-callout { margin-top: 14px; padding-top: 0; border-top: none; font-size: 13px; line-height: 1.55; color: var(--color-ink-soft); }
+  .sc-quadrant-callout { margin-top: auto; padding-top: 18px; border-top: 0.5px solid var(--color-border-subtle); font-size: 13px; line-height: 1.55; color: var(--color-ink-soft); }
   .sc-quadrant-callout strong { color: var(--color-ink); font-weight: 500; }
 
   /* Full-width cyan summary */
-  .sc-summary { background: var(--color-accent-tint); border-left: 3px solid var(--color-accent); border-radius: 0 16px 16px 0; padding: 48px 56px; margin-top: 32px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: start; }
-  .sc-summary-left .sc-summary-eyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 16px; display: block; }
-  .sc-summary-left h3 { font-size: 1.625rem; font-weight: 500; color: var(--color-ink); margin-bottom: 18px; letter-spacing: -0.02em; line-height: 1.2; }
+  .sc-summary { background: var(--color-accent-tint); border-left: 3px solid var(--color-accent); border-radius: 0 16px 16px 0; padding: 48px 56px; margin-top: 32px; display: grid; grid-template-columns: 1.1fr 1fr; column-gap: 56px; row-gap: 20px; align-items: start; }
+  .sc-summary-header { grid-column: 1 / -1; }
+  .sc-summary-header .sc-summary-eyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 16px; display: block; }
+  .sc-summary-header h3 { font-size: 1.625rem; font-weight: 500; color: var(--color-ink); margin-bottom: 0; letter-spacing: -0.02em; line-height: 1.2; }
   .sc-summary-left p { font-size: 15px; line-height: 1.65; color: var(--color-accent-dark); margin-bottom: 14px; }
   .sc-summary-left p:last-child { margin-bottom: 0; }
-  .sc-summary-right { display: flex; flex-direction: column; gap: 18px; padding-top: 33px; }
+  .sc-summary-right { display: flex; flex-direction: column; gap: 18px; }
   .sc-summary-row { display: grid; grid-template-columns: 48px 1fr; gap: 16px; }
   .sc-summary-row-label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--color-accent); letter-spacing: 0.04em; padding-top: 3px; }
   .sc-summary-row-body { font-size: 14px; line-height: 1.55; color: var(--color-accent-dark); }
@@ -339,9 +340,6 @@
   }
   .vfade { opacity: 0; transform: translateY(18px); transition: opacity 280ms ease-out, transform 280ms ease-out; }
   .vfade.vfade-in { opacity: 1; transform: none; }
-
-  /* Page-load animation for #gap (visible in viewport on open) */
-  #gap { animation: voranta-fade-up 400ms ease-out 200ms both; }
 
   /* Methodology section uses a 2x2 manifesto grid */
   #methodology .diff-grid {
@@ -508,7 +506,7 @@
       <span class="eyebrow">Where your buyer is actually deciding</span>
       <h2>Your buyer's research runs on someone's framework.<br>It should run on yours.</h2>
       <div class="rule"></div>
-      <p class="gap-intro">Most B2B research now happens in private, against frameworks the buyer picks up from analysts, competitors, and AI summaries. Voranta builds that framework with your brand on it, citable, indexable, and convertible on your domain. The buyer self-educates inside your category POV before any contact, so the lead that lands in your CRM is warm by the time you see it.</p>
+      <p class="subhead" style="margin-top: 20px;">Most B2B research now happens in private, against frameworks the buyer picks up from analysts, competitors, and AI summaries. Voranta builds that framework with your brand on it, citable, indexable, and convertible on your domain. The buyer self-educates inside your category POV before any contact, so the lead that lands in your CRM is warm by the time you see it.</p>
     </div>
 
     <div class="gap-stats-row">
@@ -739,8 +737,7 @@
             <div class="sc-x-axis-label">Technical Readiness →</div>
           </div>
         </div>
-        <p class="sc-matrix-caption">Axes derived from the six AIPQ pillars. Technical readiness rolls up pillars 01–03. Operational fit rolls up pillars 04–06.</p>
-        <div class="sc-quadrant-callout" id="sc-quadrant-callout">
+<div class="sc-quadrant-callout" id="sc-quadrant-callout">
           <strong>Stranded Capability</strong> · Technical readiness is high but operational conditions block production. The pilot will land. The rollout will stall unless exception handling and adoption mechanics are addressed first.
         </div>
       </div>
@@ -749,9 +746,11 @@
 
     <!-- Full-width cyan summary -->
     <div class="sc-summary">
-      <div class="sc-summary-left">
+      <div class="sc-summary-header">
         <span class="sc-summary-eyebrow">Now imagine the exchange</span>
         <h3>The buyer learned something real. Your sales team got a warm lead.</h3>
+      </div>
+      <div class="sc-summary-left">
         <p>Northwind Customer Support spent a few minutes with AIPQ and walked out with a diagnosis they didn't have when they started: their pilots will land, their rollouts will stall, and Exception Tolerance is the gap to close first. That's a finding they can carry into Monday's leadership meeting. That's not what a gated PDF gives them.</p>
         <p>The sponsor didn't extract that diagnosis. They gave it. The warm lead that landed in their CRM is the byproduct of a useful exchange, not the price of admission. By the time sales picks up the phone, the buyer associates the sponsor with the framework that taught them something true about themselves.</p>
       </div>
@@ -781,7 +780,7 @@
       <span class="eyebrow">Methodology</span>
       <h2>The bar for every framework we publish.</h2>
       <div class="rule"></div>
-      <p class="subhead">Four standards. Every framework meets all of them. Or it doesn't ship.</p>
+      <p class="subhead" style="margin-top: 20px;">Four standards. Every framework meets all of them. Or it doesn't ship.</p>
     </div>
     <div class="diff-grid">
       <div class="diff-card">
@@ -796,8 +795,8 @@
       </div>
       <div class="diff-card">
         <span class="diff-tag">Independent</span>
-        <h3>Sponsors license the framework. They don't shape it.</h3>
-        <p>Sponsors get exclusivity in their category and the credibility of the framework's findings. They don't get a vote on the framework's assertions. The framework's job is to be right, not to flatter the sponsor.</p>
+        <h3>The framework speaks for itself. So your sales team doesn't have to.</h3>
+        <p>Sponsors get exclusivity, the brand association, and the credibility of an independently held methodology. Buyers can stress-test the scoring and ask the hard questions. The answers hold up because they weren't written to flatter anyone. Your team gets to point to the framework instead of defending it.</p>
       </div>
       <div class="diff-card">
         <span class="diff-tag">Living</span>
@@ -819,12 +818,12 @@
       <div>
         <div class="section-head" style="margin-bottom: 36px;">
           <span class="eyebrow">About</span>
-          <h2>Research-led, not VC-led.</h2>
+          <h2>Rewiring the research funnel.</h2>
           <div class="rule"></div>
         </div>
         <div class="founder-content">
-          <p class="lede">Voranta was founded by a named contributor to two flagship B2B AI research programs at a major enterprise technology company, the kind of analyst-grade work that gets cited in executive meetings and shared with the CFO.</p>
-          <p>After publishing across thousands of buyer responses, one pattern kept repeating: the research that earned the highest trust in the room sat behind a PDF gate at a fraction-of-a-percent conversion rate, and the interactive tools built to fix that produced completions with no methodology, no rationale, and nothing a sales team could open a call on. Research had a trust ceiling. Quizzes had a conversion floor. Voranta is what lives in between.</p>
+          <p class="lede">After years building analyst-grade research frameworks inside enterprise software, Voranta's founder saw the same gap repeat: massive investment in the research, almost nothing back from the funnel. The question was how to make research work harder for the businesses paying for it. Voranta was created as the answer.</p>
+          <p>Voranta is the first studio of its kind, building toward a future where the most cited content in enterprise software is also the highest-converting. The aspiration is bigger than a single framework: a new demand-gen layer, owned by the sponsors who back it, trusted by the buyers who use it, and built to do what neither research nor conversion tools have ever done alone. Voranta's sponsors will get the first-mover advantage in a category of B2B research that didn't exist a year ago.</p>
         </div>
       </div>
     </div>
@@ -838,7 +837,7 @@
       <span class="eyebrow">For inaugural sponsors</span>
       <h2>Three tiers. One framework per vertical.</h2>
       <div class="rule"></div>
-      <p class="subhead">Pricing is set by category depth and scope. Founding sponsors get terms that no later sponsor will get, by design.</p>
+      <p class="subhead" style="margin-top: 20px;">Pricing is set by category depth and scope. Founding sponsors get terms that no later sponsor will get, by design.</p>
     </div>
     <div class="sponsor-grid">
       <div class="sponsor-card">
@@ -1216,7 +1215,7 @@
     }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
 
     document.querySelectorAll('section, footer').forEach(function (el) {
-      if (el.getBoundingClientRect().top >= window.innerHeight) {
+      if (el.getBoundingClientRect().top > window.innerHeight * 0.3) {
         el.classList.add('vfade');
         io.observe(el);
       }
