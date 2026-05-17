@@ -30,7 +30,7 @@
   .wordmark::after { content: "*"; color: var(--color-accent); font-size: 0.42em; vertical-align: 0.85em; margin-left: 0.05em; font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 15, "WONK" 0; }
 
   /* Headings — SANS */
-  h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: 600; color: var(--color-ink); letter-spacing: -0.02em; line-height: 1.2; }
+  h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: 600; color: var(--color-ink); letter-spacing: -0.02em; line-height: 1.2; overflow-wrap: break-word; }
   h1 { font-size: 3rem; line-height: 1.05; letter-spacing: -0.03em; }
   h2 { font-size: 2.25rem; }
   h3 { font-size: 1.5rem; font-weight: 500; }
@@ -275,12 +275,16 @@
     .gap-stats-row { grid-template-columns: 1fr; gap: 28px; align-items: start; }
     .gap-stat-headline { font-size: 1.125rem; }
     .gap-dots { gap: 8px; max-width: 240px; }
-    .gap-numstat-number { font-size: 6rem; }
+    .gap-numstat-number { font-size: 4rem; }
+    .gap-numstat-line { white-space: normal; }
     .gap-numstat-lines { margin-top: 14px; padding-top: 14px; }
     #product .diff-grid { grid-template-columns: 1fr; }
+    #methodology .diff-grid { grid-template-columns: 1fr; }
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
     h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.25rem; }
+    .sc-summary-header h3 { font-size: 1.375rem; }
     .display { font-size: 2.25rem; line-height: 1.1; }
     .hero { padding-top: 48px; padding-bottom: 48px; }
     .hero-inner { grid-template-columns: 1fr; gap: 0; }
@@ -288,9 +292,11 @@
     .hero .subhead { font-size: 1.0625rem; }
     .hero .cta-row { flex-direction: column; align-items: stretch; }
     .hero .meta-line { margin-top: 36px; gap: 20px; }
-    section { padding: 64px 24px; }
-    .cta-section { padding: 64px 24px; }
-    .framework-block { padding: 40px 24px; }
+    section { padding: 48px 20px; }
+    .cta-section { padding: 48px 20px; }
+    .section-head { margin-bottom: 40px; }
+    .framework-block { padding: 32px 20px; }
+    .sponsor-card { padding: 24px 20px; }
     .framework-name { font-size: 3.25rem; }
     .founder-grid { grid-template-columns: 1fr; gap: 16px; }
     .about-grid { grid-template-columns: 1fr; }
@@ -305,6 +311,8 @@
     .pillar-axes { grid-template-columns: 1fr; }
     .pillar-axis:first-child { border-right: none; border-bottom: 0.5px solid var(--color-border-subtle); }
     .pillar-axis { padding: 28px 24px; }
+    footer { padding: 36px 20px 24px; }
+    footer .meta { gap: 20px; }
   }
 
   /* ============================================================
