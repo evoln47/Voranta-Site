@@ -95,10 +95,17 @@
   .section-head .subhead { margin-top: 20px; }
 
   /* AIPQ framework section */
-  .framework-block { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 16px; padding: 64px 48px; }
+  .framework-block { border: 0.5px solid var(--color-border-subtle); border-radius: 16px; overflow: hidden; }
   .framework-name { font-family: var(--font-display); font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 15, "WONK" 0; font-style: italic; font-size: 5rem; line-height: 1; letter-spacing: -0.02em; color: var(--color-ink); margin-bottom: 24px; }
   .framework-full { font-size: 1.25rem; color: var(--color-ink-soft); margin-bottom: 8px; font-weight: 500; }
   .framework-desc { font-size: 15px; color: var(--color-ink-soft); line-height: 1.6; margin-bottom: 40px; }
+  .framework-block-head { background: var(--color-ink); padding: 48px 48px 40px; }
+  .framework-block-body { background: var(--color-paper-light); padding: 40px 48px 48px; }
+  .framework-block-head .framework-name { color: var(--color-paper-light); }
+  .framework-block-head .framework-full { color: rgba(244,247,244,0.65); }
+  .framework-block-head .framework-desc { color: rgba(244,247,244,0.7); margin-bottom: 0; }
+  .framework-block-head .badge { background: rgba(244,247,244,0.08); color: rgba(244,247,244,0.75); border: 0.5px solid rgba(244,247,244,0.25); }
+  .framework-block-head .badge-dot { background: var(--color-accent); }
   .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--color-border-subtle); border: 0.5px solid var(--color-border-subtle); border-radius: 12px; overflow: hidden; }
   .pillar { background: var(--color-paper-light); padding: 24px; display: flex; flex-direction: column; gap: 8px; }
   .pillar-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--color-accent); font-weight: 500; }
@@ -295,7 +302,8 @@
     section { padding: 48px 20px; }
     .cta-section { padding: 48px 20px; }
     .section-head { margin-bottom: 40px; }
-    .framework-block { padding: 32px 20px; }
+    .framework-block-head { padding: 32px 20px 24px; }
+    .framework-block-body { padding: 24px 20px 32px; }
     .sponsor-card { padding: 24px 20px; }
     .framework-name { font-size: 3.25rem; }
     .founder-grid { grid-template-columns: 1fr; gap: 16px; }
