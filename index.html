@@ -459,6 +459,12 @@
     color: var(--color-ink-soft);
     line-height: 1.5;
   }
+  @media (max-width: 880px) {
+    #methodology .diff-grid { grid-template-columns: 1fr; }
+    .pillar-axes { grid-template-columns: 1fr; }
+    .pillar-axis { padding: 28px 24px; }
+    .pillar-axis:first-child { border-right: none; border-bottom: 0.5px solid var(--color-border-subtle); }
+  }
 </style>
 </head>
 <body>
