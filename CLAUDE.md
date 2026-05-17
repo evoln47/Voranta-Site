@@ -41,6 +41,19 @@ The locked Voranta design system is defined authoritatively in `globals.css` (Ta
 - `voranta-favicon.svg` — primary favicon (cyan asterisk on paper)
 - `voranta-favicon-*.png` — PNG fallbacks
 
+## Copy rules
+
+- No em-dashes anywhere — use commas or periods instead
+
+## CSS conventions
+
+- Section-specific layout overrides use `#section-id .class` selectors (see `#product .diff-grid`, `#methodology .diff-grid`) — never modify the base rule
+- New CSS appends to the single `<style>` block in `index.html`; mobile overrides go inside the existing `@media (max-width: 880px)` block
+
+## Section structure
+
+- `.section-head` pattern: `<span class="eyebrow">` → `<h2>` → `<div class="rule">` → optional `<p class="subhead" style="margin-top: 20px;">`
+
 ## Future Next.js context
 
 `fonts.ts` and `globals.css` are design-system artifacts intended for a future Next.js app. `fonts.ts` shows how to load the three fonts via `next/font/google`; `globals.css` is the Tailwind v4 (CSS-first) config. When migrating, remove the `@import url(...)` Google Fonts CDN line from `globals.css` since `next/font` handles font loading.
