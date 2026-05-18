@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Voranta</title>
 <meta name="description" content="Voranta licenses opinionated, peer-validated assessment frameworks to B2B software companies, exclusively per category.">
+<link rel="canonical" href="https://voranta.co/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://voranta.co/">
+<meta property="og:title" content="Voranta — B2B Research Frameworks">
+<meta property="og:description" content="Voranta licenses opinionated, peer-validated assessment frameworks to B2B software companies, exclusively per category.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Voranta — B2B Research Frameworks">
+<meta name="twitter:description" content="Voranta licenses opinionated, peer-validated assessment frameworks to B2B software companies, exclusively per category.">
 <link rel="icon" href="voranta-favicon-transparent.svg" type="image/svg+xml">
 <link rel="icon" href="voranta-favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="voranta-favicon-180.png">
@@ -192,7 +201,8 @@
   .gap-numstat-rule { display: none; }
   .gap-numstat-lines { display: block; width: fit-content; text-align: center; border-top: 2px solid var(--color-accent); padding-top: 16px; margin-top: 20px; }
   .gap-line-break { display: none; }
-  .gap-numstat-line { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.65; color: rgba(244,247,244,0.55); display: inline; white-space: nowrap; opacity: 0; transition: opacity 350ms ease-out; }
+  .gap-numstat-line { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.65; color: rgba(244,247,244,0.55); display: inline; white-space: nowrap; }
+  .js .gap-numstat-line { opacity: 0; transition: opacity 350ms ease-out; }
 
   /* Dot grid visual */
   .gap-dots-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
@@ -474,6 +484,20 @@
     .pillar-axis:first-child { border-right: none; border-bottom: 0.5px solid var(--color-border-subtle); }
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Voranta",
+  "url": "https://voranta.co",
+  "description": "Voranta licenses opinionated, peer-validated assessment frameworks to B2B software companies, exclusively per category.",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "evan@voranta.co",
+    "contactType": "sales"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -504,6 +528,7 @@
 </header>
 
 <!-- HERO -->
+<main>
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-text">
@@ -537,7 +562,7 @@
         <div class="gap-bar-wrap" role="img" aria-label="70% of the B2B buying journey happens before vendor contact">
           <div class="gap-numstat">
             <div class="gap-numstat-number">
-              <span class="gap-numstat-count" id="gap-count">0</span><span class="gap-numstat-pct">%</span>
+              <span class="gap-numstat-count" id="gap-count">70</span><span class="gap-numstat-pct">%</span>
             </div>
             <div class="gap-numstat-rule"></div>
             <div class="gap-numstat-lines">
@@ -848,7 +873,7 @@
           <div class="rule"></div>
         </div>
         <div class="founder-content">
-          <p class="lede">After years building analyst-grade research frameworks inside enterprise software, Voranta's founder saw the same gap repeat: massive investment in the research, almost nothing back from the funnel. The question was how to make research work harder for the businesses paying for it. Voranta was created as the answer.</p>
+          <p>After years building analyst-grade research frameworks inside enterprise software, Voranta's founder saw the same gap repeat: massive investment in the research, almost nothing back from the funnel. The question was how to make research work harder for the businesses paying for it. Voranta was created as the answer.</p>
           <p>Voranta is the first studio of its kind, building toward a future where the most cited content in enterprise software is also the highest-converting. The aspiration is bigger than a single framework: a new demand-gen layer, owned by the sponsors who back it, trusted by the buyers who use it, and built to do what neither research nor conversion tools have ever done alone. Voranta's sponsors will get the first-mover advantage in a category of B2B research that didn't exist a year ago.</p>
         </div>
       </div>
@@ -924,6 +949,7 @@
     <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg">Book an intro call</a>
   </div>
 </section>
+</main>
 
 <!-- FOOTER -->
 <footer>
@@ -1160,7 +1186,7 @@
         animateDots(true);
         return;
       }
-      var duration = 1300;
+      var duration = 900;
       var start = null;
       function ease(t) { return Math.sin(t * Math.PI / 2); }
       function frame(ts) {
@@ -1212,7 +1238,7 @@
     }
 
     var gapEl = document.getElementById('gap');
-    var labelFadeMs = (gapEl && gapEl.getBoundingClientRect().top < window.innerHeight) ? 600 : 280;
+    var labelFadeMs = (gapEl && gapEl.getBoundingClientRect().top < window.innerHeight) ? 300 : 100;
 
     var statObs = new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (e) {
