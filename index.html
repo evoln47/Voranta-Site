@@ -477,11 +477,105 @@
     color: var(--color-ink-soft);
     line-height: 1.5;
   }
+  /* Founding sponsor hero block — full-width dark card, primary offer */
+  .founding-hero {
+    background: var(--color-ink);
+    color: var(--color-paper-light);
+    border-radius: 16px;
+    padding: 56px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: stretch;
+    margin-bottom: 56px;
+  }
+  .founding-hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+  }
+  .founding-badge {
+    background: rgba(8, 145, 178, 0.18);
+    color: var(--color-accent);
+    width: fit-content;
+  }
+  .founding-headline {
+    font-family: var(--font-sans);
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: var(--color-paper-light);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0;
+  }
+  .founding-tagline {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: rgba(244, 247, 244, 0.75);
+    margin: 0;
+  }
+  .founding-cta {
+    margin-top: 8px;
+    width: fit-content;
+  }
+  .founding-hero-right {
+    display: flex;
+    align-items: center;
+  }
+  .founding-benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+  }
+  .founding-benefits li {
+    font-size: 15px;
+    color: rgba(244, 247, 244, 0.85);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.5;
+  }
+  .founding-benefits li::before {
+    content: "✓";
+    color: var(--color-accent);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  /* Post-launch tiers label */
+  .post-launch-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .post-launch-label::after {
+    content: "";
+    flex: 1;
+    height: 0.5px;
+    background: var(--color-border-subtle);
+  }
+
+  /* Secondary 2-card grid — Category Sponsor + Enterprise */
+  .sponsor-grid-secondary {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px;
+  }
+
   @media (max-width: 880px) {
     #methodology .diff-grid { grid-template-columns: 1fr; }
     .pillar-axes { grid-template-columns: 1fr; }
     .pillar-axis { padding: 28px 24px; }
     .pillar-axis:first-child { border-right: none; border-bottom: 0.5px solid var(--color-border-subtle); }
+    .founding-hero { grid-template-columns: 1fr; gap: 32px; padding: 36px 28px; }
+    .founding-hero-left { gap: 16px; }
+    .founding-headline { font-size: 2rem; }
+    .sponsor-grid-secondary { grid-template-columns: 1fr !important; }
   }
 </style>
 <script type="application/ld+json">
@@ -886,40 +980,50 @@
   <div class="section-inner">
     <div class="section-head">
       <span class="eyebrow">For inaugural sponsors</span>
-      <h2>Three tiers. One framework per vertical.</h2>
+      <h2>Founding sponsors close first.</h2>
       <div class="rule"></div>
-      <p class="subhead" style="margin-top: 20px;">Pricing is set by category depth and scope. Founding sponsors get terms that no later sponsor will get, by design.</p>
+      <p class="subhead" style="margin-top: 20px;">Cohort 1 is in formation. The category sponsor and enterprise tiers open after the founding cohort closes.</p>
     </div>
-    <div class="sponsor-grid">
+    <!-- Founding sponsor hero block -->
+    <div class="founding-hero">
+      <div class="founding-hero-left">
+        <span class="badge founding-badge"><span class="badge-dot"></span>Cohort 1 in formation</span>
+        <h3 class="founding-headline">Founding Sponsor</h3>
+        <p class="founding-tagline">Co-build the inaugural framework. Lock category exclusivity on founding terms.</p>
+        <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg founding-cta">Inquire about founding terms</a>
+      </div>
+      <div class="founding-hero-right">
+        <ul class="founding-benefits">
+          <li>Co-build the inaugural framework directly with the methodology team</li>
+          <li>Named as a founding benchmark contributor on the published methodology</li>
+          <li>Locked pricing, no step-up at renewal, for the life of the engagement</li>
+          <li>Exclusive category license, 12-month term, renewable on founding terms</li>
+          <li>Logo and case study rights at co-launch</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Post-launch tiers label -->
+    <div class="post-launch-label">
+      <span class="eyebrow">Post-launch tiers</span>
+    </div>
+
+    <!-- Secondary 2-card grid -->
+    <div class="sponsor-grid sponsor-grid-secondary">
       <div class="sponsor-card">
         <div>
-          <span class="badge" style="margin-bottom: 16px;">Limited · first 2 only</span>
-          <h3 style="margin-bottom: 18px;">Founding Sponsor</h3>
-          <p class="price-value">Co-build cohort</p>
-        </div>
-        <ul>
-          <li>Co-build the inaugural framework with the methodology team</li>
-          <li>Named as a founding benchmark contributor on the methodology page</li>
-          <li>Locked pricing for the term, no renewal step-up</li>
-          <li>Logo and case study rights at co-launch</li>
-          <li>Exclusive category license, 12-month term</li>
-        </ul>
-        <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top: auto;">Inquire about terms</a>
-      </div>
-      <div class="sponsor-card is-featured">
-        <div>
-          <span class="badge badge-ink" style="background: var(--color-accent); color: #fff; margin-bottom: 16px;">Standard tier</span>
+          <span class="badge" style="margin-bottom: 16px;">Standard tier</span>
           <h3 style="margin-bottom: 18px;">Category Sponsor</h3>
           <p class="price-value">Annual license</p>
         </div>
         <ul>
-          <li>Everything in Founding Sponsor, post-launch terms</li>
           <li>White-labeled assessment on your domain</li>
           <li>CRM-routed leads with full scoring rationale and AI-generated SDR brief</li>
           <li>Quarterly framework and benchmark updates</li>
           <li>Co-authored annual category research report</li>
+          <li>Exclusive category license, 12-month term</li>
         </ul>
-        <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn" style="margin-top: auto;">Talk to us</a>
+        <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top: auto;">Talk to us about Year 2</a>
       </div>
       <div class="sponsor-card">
         <div>
@@ -930,7 +1034,7 @@
         <ul>
           <li>Everything in Category Sponsor</li>
           <li>Multi-vertical or global category coverage</li>
-          <li>Custom framework module (3–5 sponsor-specific questions)</li>
+          <li>Custom framework module of sponsor-specific questions</li>
           <li>Extended segmented benchmarks for your buyer base</li>
           <li>Direct line to the methodology team and roadmap input</li>
         </ul>
