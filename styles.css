@@ -150,9 +150,10 @@
   .sponsor-card li::before { content: "✓"; color: var(--color-accent); font-weight: 600; }
 
   /* CTA block */
-  .cta-section { background: var(--color-ink); color: var(--color-paper-light); padding: 88px 48px; text-align: center; display: flex; flex-direction: column; gap: 24px; align-items: center; border-bottom: none; }
-  .cta-section h2 { color: var(--color-paper-light); max-width: 640px; }
-  .cta-section p { color: rgba(244,247,244,0.75); max-width: 520px; font-size: 1.0625rem; }
+  .cta-section { background: var(--color-ink); color: var(--color-paper-light); padding: 88px 24px; text-align: center; border-bottom: none; }
+  .cta-section .section-inner { display: flex; flex-direction: column; gap: 24px; align-items: center; }
+  .cta-section h2 { color: var(--color-paper-light); }
+  .cta-section p { color: rgba(244,247,244,0.75); font-size: 1.0625rem; }
   .cta-section .btn-ghost { color: var(--color-paper-light); border-color: rgba(244,247,244,0.3); background: transparent; }
   .cta-section .btn-ghost:hover { background: var(--color-paper-light); color: var(--color-ink); border-color: var(--color-paper-light); }
 
