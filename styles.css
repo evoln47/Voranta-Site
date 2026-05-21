@@ -54,6 +54,15 @@
   .topbar nav a.cta-link { padding: 8px 16px; background: var(--color-ink); color: var(--color-paper-light); border-radius: 6px; font-weight: 500; }
   .topbar nav a.cta-link:hover { background: var(--color-accent); color: #fff; }
 
+  /* Hamburger */
+  .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; color: var(--color-ink); align-items: center; justify-content: center; flex-shrink: 0; border-radius: 6px; transition: background 120ms ease; }
+  .hamburger:hover { background: var(--color-paper-deep); }
+  .hamburger-lines { display: flex; flex-direction: column; gap: 5px; width: 20px; pointer-events: none; }
+  .hamburger-lines span { display: block; height: 1.5px; background: currentColor; border-radius: 2px; transition: transform 200ms ease, opacity 200ms ease; }
+  .hamburger[aria-expanded="true"] .hamburger-lines span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] .hamburger-lines span:nth-child(2) { opacity: 0; }
+  .hamburger[aria-expanded="true"] .hamburger-lines span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
   /* Hero */
   .hero { padding: 96px 24px 80px; border-bottom: 0.5px solid var(--color-border-subtle); overflow: hidden; }
   .hero-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); gap: 64px; align-items: start; }
@@ -298,8 +307,12 @@
     .about-image { display: none; }
     .topbar-logo { height: 32px; }
     .topbar-logo svg { height: 32px; }
-    .topbar nav { gap: 16px; }
-    .topbar nav a:not(.cta-link) { display: none; }
+    .hamburger { display: flex; }
+    .topbar nav { position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--color-paper); border-bottom: 0.5px solid var(--color-border-subtle); padding: 0 24px 20px; display: none; z-index: 49; }
+    .topbar nav.is-open { display: flex; }
+    .topbar nav a:not(.cta-link) { display: block; }
+    .topbar nav a { padding: 14px 0; font-size: 15px; border-bottom: 0.5px solid var(--color-border-faint); color: var(--color-ink-soft); }
+    .topbar nav a.cta-link { margin-top: 8px; border-bottom: none; text-align: center; width: 100%; }
     .scorecard-grid { grid-template-columns: 1fr; }
     .sc-summary { grid-template-columns: 1fr; gap: 32px; padding: 32px 28px; margin-top: 24px; }
     .sc-score-value { font-size: 4rem; }
