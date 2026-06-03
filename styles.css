@@ -129,6 +129,9 @@
   .founder-credentials .cred-item { display: flex; flex-direction: column; gap: 4px; }
   .founder-credentials .cred-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); }
   .founder-credentials .cred-value { font-size: 14px; color: var(--color-ink); font-weight: 500; }
+  .founder-photo { border-radius: 12px; overflow: hidden; position: relative; }
+  .founder-photo img { width: 100%; display: block; object-fit: cover; object-position: center top; }
+  .founder-photo::after { content: ""; position: absolute; inset: 0; border: 0.5px solid rgba(10,9,8,0.1); border-radius: 12px; pointer-events: none; }
 
   /* About section two-column */
   .about-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 72px; align-items: center; }
@@ -304,6 +307,7 @@
     .sponsor-card { padding: 24px 20px; }
     .framework-name { font-size: 3.25rem; }
     .founder-grid { grid-template-columns: 1fr; gap: 16px; }
+    .founder-photo { width: 160px; margin-bottom: 8px; }
     .about-grid { grid-template-columns: 1fr; }
     .about-image { display: none; }
     .topbar-logo { height: 32px; }
