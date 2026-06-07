@@ -21,6 +21,22 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&family=Geist:wght@300..700&family=Geist+Mono:wght@300..600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+.founder-social {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+.social-icon-link {
+  display: inline-flex;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 0.15s ease;
+}
+.social-icon-link:hover { opacity: 0.5; }
+.social-icon-link img { display: block; width: 28px; height: 28px; }
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -103,10 +119,15 @@
           <p class="lede">Evan has spent his career building AI-powered research frameworks for enterprise software, working across categories from developer tooling to go-to-market operations.</p>
           <p>His methodology sits at the intersection of analyst-grade rigor and conversion-grade output, a combination most B2B research never reaches. Voranta is built directly on that work.</p>
         </div>
-        <div class="founder-credentials">
-          <div class="cred-item">
-            <a href="https://linkedin.com/in/evanvolness" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn →</a>
-          </div>
+        <div class="founder-social">
+          <a href="https://linkedin.com/in/evanvolness" target="_blank" rel="noopener"
+             aria-label="Evan Volness on LinkedIn" class="social-icon-link">
+            <img src="InBug-Black.png" alt="" width="28" height="28" />
+          </a>
+          <a href="mailto:evan@voranta.co" aria-label="Email Evan at evan@voranta.co"
+             class="social-icon-link">
+            <img src="email-svgrepo-com.svg" alt="" width="28" height="28" />
+          </a>
         </div>
       </div>
     </div>
