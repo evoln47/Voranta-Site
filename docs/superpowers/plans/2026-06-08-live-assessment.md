@@ -669,13 +669,28 @@ const FROM = process.env.LEAD_FROM || 'Voranta Assessment <onboarding@resend.dev
 const TO = process.env.LEAD_TO || 'evan@voranta.co';
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
+// Vercel's Node helper usually parses JSON into req.body, but fall back to the
+// raw request stream if it does not, so the contract holds without a package.json.
+async function readJson(req) {
+  if (req.body !== undefined && req.body !== null) return req.body;
+  let raw = '';
+  for await (const chunk of req) raw += chunk;
+  return raw ? JSON.parse(raw) : {};
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
 
-  const body = req.body || {};
+  let body;
+  try {
+    body = await readJson(req);
+  } catch (err) {
+    res.status(400).json({ error: 'Invalid JSON' });
+    return;
+  }
   if (body.website) { res.status(200).json({ ok: true }); return; } // honeypot: silently accept
 
   const email = String(body.email || '').trim();
@@ -735,6 +750,8 @@ The implementer or Evan creates a Resend account, gets an API key, and adds it t
 
 Run: `vercel env add RESEND_API_KEY` (or set it in the Vercel dashboard for Production and Preview).
 Optionally set `LEAD_FROM` to a verified-domain sender (e.g. `Voranta <noreply@voranta.co>`) once the domain is verified in Resend; until then the default `onboarding@resend.dev` works for testing.
+
+Note: with the `onboarding@resend.dev` sender, Resend only delivers to the email address the Resend account was registered under, until a sending domain is verified. So for the Task 6 Step 3 test send to actually arrive, either register Resend under `evan@voranta.co` (the `TO`), point `LEAD_TO` at the Resend signup address temporarily, or verify the `voranta.co` domain in Resend first. Otherwise the API returns success but no mail lands.
 
 - [ ] **Step 3: Verify on a Vercel preview deploy**
 
@@ -800,6 +817,8 @@ In `index.html`, immediately after the Product section's closing `</section>` (t
 
 Run the local server, open `http://localhost:8000/` (or `/index.html`).
 Expected: the hero ghost button reads "Take the 2-minute assessment" and links to `/assessment`; a new inline CTA band appears between the Product section and the framework teaser, with a working "Take the assessment" button. Both navigate to the assessment page.
+
+Note: the bare `/assessment` clean URL is a Vercel deploy feature. Under local `serve` the link may 404 and only resolve as `/assessment.html`; this is expected and works on the Vercel preview. To confirm locally, append `.html`.
 
 - [ ] **Step 5: Commit**
 
