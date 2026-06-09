@@ -35,7 +35,8 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  // Primary name is RESEND_API_KEY; also accept "Resend" in case the dashboard var was named that way.
+  const apiKey = process.env.RESEND_API_KEY || process.env.Resend;
   if (!apiKey) {
     res.status(500).json({ error: 'Email not configured' });
     return;
@@ -72,9 +73,15 @@ module.exports = async (req, res) => {
         text,
       }),
     });
-    if (!r.ok) { res.status(502).json({ error: 'Send failed' }); return; }
+    if (!r.ok) {
+      const detail = await r.text().catch(() => '');
+      console.error('Resend send failed', r.status, detail);
+      res.status(502).json({ error: 'Send failed' });
+      return;
+    }
     res.status(200).json({ ok: true });
   } catch (err) {
+    console.error('Resend request threw', err);
     res.status(502).json({ error: 'Send failed' });
   }
 };
