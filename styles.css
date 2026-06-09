@@ -630,3 +630,15 @@
 .inline-cta-section { background: var(--color-paper); padding: 56px 24px; border-top: 0.5px solid var(--color-border-subtle); }
 .inline-cta { max-width: 880px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; }
 .inline-cta p { font-size: 1.0625rem; line-height: 1.5; color: var(--color-ink-soft); margin: 0; max-width: 560px; }
+
+@media (max-width: 880px) {
+  .assessment { padding: 48px 20px 72px; }
+  .dri-results-grid { grid-template-columns: 1fr; }
+  .dri-q-text { font-size: 1.25rem; }
+  .dri-capture-inner { flex-direction: column; align-items: stretch; }
+  .dri-capture-form { flex-direction: column; }
+  .dri-capture-form input[type="email"] { min-width: 0; width: 100%; }
+  .dri-capture-form .btn { width: 100%; justify-content: center; }
+  .inline-cta { flex-direction: column; align-items: flex-start; }
+  .inline-cta .btn { width: 100%; justify-content: center; }
+}
