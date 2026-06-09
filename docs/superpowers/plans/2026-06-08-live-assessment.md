@@ -665,7 +665,7 @@ git commit -m "feat: wire client-side email capture with validation and fallback
 // Vercel serverless function (Node runtime, CommonJS, no dependencies).
 // Emails a pre-diagnosed Demand Research Index lead via the Resend REST API.
 
-const FROM = process.env.LEAD_FROM || 'Voranta Assessment <onboarding@resend.dev>';
+const FROM = process.env.LEAD_FROM || 'Voranta <noreply@voranta.co>';
 const TO = process.env.LEAD_TO || 'evan@voranta.co';
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
@@ -744,14 +744,14 @@ module.exports = async (req, res) => {
 };
 ```
 
-- [ ] **Step 2: Set the Resend env var (manual, one time)**
+- [ ] **Step 2: Confirm the Resend env var (mostly done for this project)**
 
-The implementer or Evan creates a Resend account, gets an API key, and adds it to the Vercel project:
+Status: the `voranta.co` domain is verified in Resend and the sender `Voranta <noreply@voranta.co>` is baked into the `FROM` default above, so no `LEAD_FROM` is needed and `TO` defaults to `evan@voranta.co`. The only required variable is **`RESEND_API_KEY`**, added via the Vercel dashboard (Settings → Environment Variables) for Production, Preview, and Development.
 
-Run: `vercel env add RESEND_API_KEY` (or set it in the Vercel dashboard for Production and Preview).
-Optionally set `LEAD_FROM` to a verified-domain sender (e.g. `Voranta <noreply@voranta.co>`) once the domain is verified in Resend; until then the default `onboarding@resend.dev` works for testing.
+Before running Step 3, confirm it is set:
 
-Note: with the `onboarding@resend.dev` sender, Resend only delivers to the email address the Resend account was registered under, until a sending domain is verified. So for the Task 6 Step 3 test send to actually arrive, either register Resend under `evan@voranta.co` (the `TO`), point `LEAD_TO` at the Resend signup address temporarily, or verify the `voranta.co` domain in Resend first. Otherwise the API returns success but no mail lands.
+Run: `vercel --cwd /Users/evanvolness/Voranta-Site env ls`
+Expected: `RESEND_API_KEY` is listed for production, preview, and development. (The Vercel CLI's interactive `env add` stalls without a TTY, so add this one in the dashboard, not the CLI.)
 
 - [ ] **Step 3: Verify on a Vercel preview deploy**
 
