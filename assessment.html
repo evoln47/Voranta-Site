@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Voranta</title>
-<meta name="description" content="Voranta licenses opinionated, peer-validated assessment frameworks to B2B software companies, exclusively per category.">
-<link rel="canonical" href="https://voranta.co/">
+<title>Demand Research Index | Voranta</title>
+<meta name="description" content="Two minutes, eight questions. Get your Demand Research Index score, your archetype, and the one gap to close. No email required to see your result.">
+<link rel="canonical" href="https://voranta.co/assessment">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://voranta.co/">
-<meta property="og:title" content="Voranta — B2B Research Frameworks">
-<meta property="og:description" content="Voranta licenses opinionated, peer-validated assessment frameworks to B2B software companies, exclusively per category.">
+<meta property="og:url" content="https://voranta.co/assessment">
+<meta property="og:title" content="Demand Research Index by Voranta">
+<meta property="og:description" content="Two minutes, eight questions. Get your Demand Research Index score, your archetype, and the one gap to close. No email required to see your result.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Voranta — B2B Research Frameworks">
-<meta name="twitter:description" content="Voranta licenses opinionated, peer-validated assessment frameworks to B2B software companies, exclusively per category.">
+<meta name="twitter:title" content="Demand Research Index by Voranta">
+<meta name="twitter:description" content="Two minutes, eight questions. Get your Demand Research Index score, your archetype, and the one gap to close. No email required to see your result.">
 <link rel="icon" href="voranta-favicon-transparent.svg" type="image/svg+xml">
 <link rel="icon" href="voranta-favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="voranta-favicon-180.png">
@@ -27,7 +27,7 @@
   "@type": "Organization",
   "name": "Voranta",
   "url": "https://voranta.co",
-  "description": "Voranta licenses opinionated, peer-validated assessment frameworks to B2B software companies, exclusively per category.",
+  "description": "Two minutes, eight questions. Get your Demand Research Index score, your archetype, and the one gap to close. No email required to see your result.",
   "contactPoint": {
     "@type": "ContactPoint",
     "email": "evan@voranta.co",
@@ -66,201 +66,73 @@
   </div>
 </header>
 
-<!-- HERO -->
 <main>
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-text">
-      <span class="eyebrow" style="display: block; margin-bottom: 20px;">The missing demand-gen layer</span>
-      <h1 class="display">The live research framework that earns you both the read <em>and</em> the lead.</h1>
-      <p class="subhead">For B2B software marketing leaders whose best content can't convert and whose best forms can't earn trust: always-on research infrastructure that doubles as your funnel.</p>
-      <div class="cta-row">
-        <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg">Book an intro call</a>
-        <a href="/assessment" class="btn btn-ghost btn-lg">Take the 2-minute assessment</a>
-      </div>
-    </div>
-    <div class="hero-visual" aria-hidden="true">
-      <img src="voranta-hero.webp" alt="" loading="eager" />
-    </div>
-  </div>
-</section>
-
-<!-- CATEGORY GAP -->
-<section id="gap">
+<section class="assessment">
   <div class="section-inner">
-    <div class="section-head">
-      <span class="eyebrow">Where your buyer is actually deciding</span>
-      <h2>Your buyer's research runs on someone's framework.<br>It should run on yours.</h2>
-      <div class="rule"></div>
-      <p class="subhead" style="margin-top: 20px;">Most B2B research now happens in private, against frameworks the buyer picks up from analysts, competitors, and AI summaries.</p>
-    </div>
+    <div class="dri-app" id="dri-app">
 
-    <div class="gap-stats-row">
-      <div class="gap-stat" id="gap-stat-bar">
-        <p class="gap-stat-headline">Customers are making up their minds before your first sales call.</p>
-        <div class="gap-bar-wrap" role="img" aria-label="70% of the B2B buying journey happens before vendor contact">
-          <div class="gap-numstat">
-            <div class="gap-numstat-number">
-              <span class="gap-numstat-count" id="gap-count">70</span><span class="gap-numstat-pct">%</span>
+      <!-- INTRO -->
+      <div class="dri-screen" data-screen="intro">
+        <span class="eyebrow">Voranta Demand Research Index</span>
+        <h1 class="display">How ready is your funnel to earn both the read and the lead?</h1>
+        <p class="subhead">Two minutes, eight questions. You get your score, your archetype, and the one gap to close. No email required to see your result.</p>
+        <button class="btn btn-lg" id="dri-start" type="button">Start the assessment</button>
+      </div>
+
+      <!-- QUIZ -->
+      <div class="dri-screen" data-screen="quiz" hidden>
+        <div class="dri-progress">
+          <div class="dri-progress-bar"><span id="dri-progress-fill"></span></div>
+          <span class="dri-progress-label" id="dri-progress-label">Question 1 of 8</span>
+        </div>
+        <div id="dri-question" class="dri-question"></div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="dri-screen" data-screen="results" hidden>
+        <div class="dri-results-grid">
+          <div class="sc-card is-dark dri-score-card">
+            <div class="sc-card-head"><h3>Demand Research Index</h3></div>
+            <div class="sc-score-value"><span id="dri-score">0</span><span class="denom">/100</span></div>
+            <div>
+              <span class="sc-archetype-label">Archetype</span>
+              <h4 class="sc-archetype-name" id="dri-archetype-name"></h4>
+              <p class="sc-archetype-desc" id="dri-archetype-blurb"></p>
             </div>
-            <div class="gap-numstat-rule"></div>
-            <div class="gap-numstat-lines">
-              <span class="gap-numstat-line">of the buyer's</span>
-              <span class="gap-numstat-line">evaluation</span>
-              <span class="gap-numstat-line">happens privately</span><br>
-              <span class="gap-numstat-line">before they even</span>
-              <span class="gap-numstat-line">talk to you.</span>
+          </div>
+          <div class="sc-card dri-dimensions">
+            <div class="sc-card-head"><h3>Four-dimension diagnostic</h3></div>
+            <div id="dri-bars" class="dri-bars"></div>
+            <div class="sc-pillar-callout dri-gap">
+              <div class="pc-head">
+                <span class="pc-name">Your #1 gap</span>
+                <span class="pc-score" id="dri-gap-label"></span>
+              </div>
+              <p class="pc-reading" id="dri-gap-blurb"></p>
             </div>
           </div>
         </div>
-        <p class="gap-stat-caption">Source: Gartner</p>
-      </div>
 
-      <div class="gap-stat" id="gap-stat-dots">
-        <p class="gap-stat-headline">And the gated PDF they're reading converts under 3%.</p>
-        <div class="gap-dots-wrap" role="img" aria-label="Three percent gated-PDF conversion rate, visualized as three of 100 dots">
-          <div class="gap-dots" id="gap-dots"></div>
+        <!-- CAPTURE -->
+        <div class="dri-capture">
+          <div class="dri-capture-inner">
+            <div class="dri-capture-copy">
+              <span class="eyebrow">Take it with you</span>
+              <h3>Get the full breakdown, with benchmarks, by email.</h3>
+            </div>
+            <form class="dri-capture-form" id="dri-capture-form" novalidate>
+              <input type="text" name="website" class="dri-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <input type="email" id="dri-email" name="email" placeholder="you@company.com" required aria-label="Your work email">
+              <button type="submit" class="btn btn-lg" id="dri-capture-submit">Email me the breakdown</button>
+            </form>
+          </div>
+          <p class="dri-capture-msg" id="dri-capture-msg" hidden></p>
+          <div class="dri-results-cta">
+            <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">Book a call to close the gap</a>
+          </div>
         </div>
-        <p class="gap-stat-caption">Source: DemandGen Report</p>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- THE PRODUCT -->
-<section id="product" style="background: var(--color-paper-light);">
-  <div class="section-inner">
-    <div class="section-head">
-      <span class="eyebrow">What we deploy</span>
-      <h2>One licensed framework. Four working parts.</h2>
-      <div class="rule"></div>
-      <p class="subhead" style="margin-top: 20px;">With a gated PDF, the buyer trades an email for a download. With Voranta, they trade answers for a research-backed diagnosis, while your CRM receives the score, the archetype, and the gap to close: ammunition your sales team can open with.</p>
-    </div>
-    <div class="diff-grid">
-      <div class="product-card">
-        <span class="card-tag">The framework</span>
-        <h4>An opinionated framework, exclusive to your category.</h4>
-        <p>Voranta builds and validates the framework with you, then locks it to your category for the term. The methodology, the benchmark, and the published research all carry your brand. No competitor can license the same one.</p>
-      </div>
-      <div class="product-card">
-        <span class="card-tag">The assessment</span>
-        <h4>A branded assessment on your domain.</h4>
-        <p>A focused, framework-driven diagnostic, branded as yours, hosted on your domain. Buyers walk away with a diagnosis they didn't have before: a score, an archetype, and a specific gap to close. The kind of clarity they'd normally pay a consultant for.</p>
-      </div>
-      <div class="product-card">
-        <span class="card-tag">The lead</span>
-        <h4>A pre-diagnosed lead, not a name and an email.</h4>
-        <p>Every completion routes to your CRM with the buyer's score, archetype, and an AI-generated brief written against their result. Sales opens with the diagnosis on the table, not a cold pitch.</p>
-      </div>
-      <div class="product-card">
-        <span class="card-tag">The benchmark</span>
-        <h4>Your audience is the panel. No panel cost.</h4>
-        <p>As completions accumulate, the aggregate becomes a co-authored annual research report under your brand. No syndicated panels, no third-party data buys, because the buyers taking your assessment are the evidence base.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- INLINE ASSESSMENT CTA -->
-<section class="inline-cta-section">
-  <div class="section-inner">
-    <div class="inline-cta">
-      <p>See the mechanic for yourself. Take the 2-minute Demand Research Index and get your funnel's score, your archetype, and the one gap to close.</p>
-      <a href="/assessment" class="btn btn-lg">Take the assessment</a>
-    </div>
-  </div>
-</section>
-
-<!-- FRAMEWORK TEASER -->
-<section style="background: var(--color-paper);">
-  <div class="section-inner">
-    <div class="framework-teaser-row" style="display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap;">
-      <div style="max-width: 640px;">
-        <span class="eyebrow" style="display: block; margin-bottom: 14px;">The AI Production Quotient</span>
-        <h2>AIPQ maps the six conditions that determine whether AI reaches production.</h2>
-        <div class="rule" style="margin-top: 18px;"></div>
-        <p class="subhead" style="margin-top: 20px;">Enterprise AI buyers want to know why their pilots stall. AIPQ names the archetype that fits their situation and surfaces the one constraint most likely to block them.</p>
-      </div>
-      <div>
-        <a href="/aipq" class="btn btn-ghost btn-lg">Explore the framework &nbsp;&rarr;</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SPONSORS -->
-<section id="sponsors" class="sponsor-section">
-  <div class="section-inner">
-    <div class="section-head">
-      <span class="eyebrow">For inaugural sponsors</span>
-      <h2>Founding sponsors close first.</h2>
-      <div class="rule"></div>
-      <p class="subhead" style="margin-top: 20px;">Built for sponsors who want to own the category conversation, not just participate in it.</p>
-    </div>
-    <!-- Founding sponsor hero block -->
-    <div class="founding-hero">
-      <div class="founding-hero-left">
-        <h3 class="founding-headline">Founding Sponsor</h3>
-        <p class="founding-tagline">Co-build the inaugural framework. Lock category exclusivity on founding terms.</p>
-        <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg founding-cta">Inquire about founding terms</a>
-      </div>
-      <div class="founding-hero-right">
-        <ul class="founding-benefits">
-          <li>Co-build the inaugural framework directly with the methodology team</li>
-          <li>Named as a founding benchmark contributor on the published methodology</li>
-          <li>Locked pricing, no step-up at renewal, for the life of the engagement</li>
-          <li>Exclusive category license, 12-month term, renewable on founding terms</li>
-          <li>Logo and case study rights at co-launch</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Post-launch tiers label -->
-    <div class="post-launch-label">
-      <span class="eyebrow">Post-launch tiers</span>
-    </div>
-
-    <!-- Secondary 2-card grid -->
-    <div class="sponsor-grid sponsor-grid-secondary">
-      <div class="sponsor-card">
-        <div>
-          <span class="badge" style="margin-bottom: 16px;">Standard tier</span>
-          <h3 style="margin-bottom: 18px;">Category Sponsor</h3>
-          <p class="price-value">Annual license</p>
-        </div>
-        <ul>
-          <li>White-labeled assessment on your domain</li>
-          <li>CRM-routed leads with full scoring rationale and AI-generated SDR brief</li>
-          <li>Quarterly framework and benchmark updates</li>
-          <li>Co-authored annual category research report</li>
-          <li>Exclusive category license, 12-month term</li>
-        </ul>
-      </div>
-      <div class="sponsor-card">
-        <div>
-          <span class="badge" style="margin-bottom: 16px;">Multi-vertical</span>
-          <h3 style="margin-bottom: 18px;">Enterprise</h3>
-          <p class="price-value">Custom</p>
-        </div>
-        <ul>
-          <li>Everything in Category Sponsor</li>
-          <li>Multi-vertical or global category coverage</li>
-          <li>Custom framework module of sponsor-specific questions</li>
-          <li>Extended segmented benchmarks for your buyer base</li>
-          <li>Direct line to the methodology team and roadmap input</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CLOSING CTA -->
-<section id="contact" class="cta-section">
-  <div class="section-inner">
-    <h2>Own the framework. Own the category.</h2>
-    <p>One sponsor per vertical. Once your category is licensed, it's yours for the term, including the framework, the benchmark, and the published research.</p>
-    <div style="display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
-      <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg">Book an intro call</a>
     </div>
   </div>
 </section>
@@ -285,8 +157,9 @@
     </a>
     <div class="meta">
       <a href="/aipq">Framework</a>
+      <a href="#methodology">Methodology</a>
       <a href="/about">About</a>
-      <a href="#sponsors">Sponsors</a>
+      <a href="/#sponsors">Sponsors</a>
       <a href="mailto:hello@voranta.co">Contact</a>
     </div>
     <span class="eyebrow">© 2026 Voranta · voranta.co</span>
@@ -294,134 +167,6 @@
 </footer>
 
 <script>
-  function syncHeroVisual() {
-    var text = document.querySelector('.hero-text');
-    var visual = document.querySelector('.hero-visual');
-    if (text && visual) { visual.style.height = text.offsetHeight + 'px'; }
-  }
-  window.addEventListener('load', syncHeroVisual);
-  window.addEventListener('resize', syncHeroVisual);
-
-  /* Gap section stat animations */
-  (function () {
-    var dotsContainer = document.getElementById('gap-dots');
-    if (dotsContainer) {
-      for (var i = 0; i < 100; i++) {
-        var dot = document.createElement('div');
-        dot.className = 'gap-dot';
-        dotsContainer.appendChild(dot);
-      }
-    }
-
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    /* Lock the number element width to its final "70%" size so rule and labels never shift */
-    var numEl = document.querySelector('.gap-numstat-number');
-    var countEl = document.getElementById('gap-count');
-    if (numEl && countEl) {
-      countEl.textContent = '70';
-      numEl.style.width = numEl.offsetWidth + 'px';
-      numEl.style.flexShrink = '0';
-      countEl.textContent = '0';
-    }
-
-    function animateBar(instant) {
-      var lines = document.querySelectorAll('#gap-stat-bar .gap-numstat-line');
-      if (!countEl) return;
-      if (instant) {
-        countEl.textContent = '70';
-        lines.forEach(function (l) { l.style.opacity = '1'; });
-        animateDots(true);
-        return;
-      }
-      var duration = 900;
-      var start = null;
-      function ease(t) { return Math.sin(t * Math.PI / 2); }
-      function frame(ts) {
-        if (!start) start = ts;
-        var progress = Math.min((ts - start) / duration, 1);
-        countEl.textContent = Math.round(ease(progress) * 70);
-        if (progress < 1) {
-          requestAnimationFrame(frame);
-        } else {
-          countEl.textContent = '70';
-          lines.forEach(function (l, i) {
-            setTimeout(function () { l.style.opacity = '1'; }, 80 + i * 100);
-          });
-          var lastLineStart = 80 + (lines.length - 1) * 100;
-          setTimeout(function () { animateDots(reduced); }, lastLineStart + 350);
-        }
-      }
-      requestAnimationFrame(frame);
-    }
-
-    function animateDots(instant) {
-      if (!dotsContainer) return;
-      var dots = dotsContainer.querySelectorAll('.gap-dot');
-      if (instant) {
-        dots.forEach(function (d, i) {
-          d.style.opacity = '1';
-          if (i >= 97) d.style.background = 'var(--color-accent)';
-        });
-        return;
-      }
-      dots.forEach(function (d, i) {
-        d.style.transitionDelay = (i * 5) + 'ms';
-        d.style.opacity = '1';
-      });
-      setTimeout(function () {
-        [dots[97], dots[98], dots[99]].forEach(function (d, i) {
-          setTimeout(function () {
-            d.style.transitionDelay = '0ms';
-            d.style.background = 'var(--color-accent)';
-            d.style.animation = 'gap-dot-ping 500ms cubic-bezier(0.22, 1, 0.36, 1)';
-          }, i * 100);
-        });
-      }, 700);
-    }
-
-    if (!window.IntersectionObserver) {
-      animateBar(true);
-      return;
-    }
-
-    var gapEl = document.getElementById('gap');
-    var labelFadeMs = (gapEl && gapEl.getBoundingClientRect().top < window.innerHeight) ? 300 : 100;
-
-    var statObs = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var el = e.target;
-        el.classList.add('is-visible');
-        obs.unobserve(el);
-        if (el.id === 'gap-stat-bar') setTimeout(function () { animateBar(reduced); }, labelFadeMs);
-      });
-    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
-
-    var barEl = document.getElementById('gap-stat-bar');
-    if (barEl) statObs.observe(barEl);
-  })();
-
-  /* Scroll-entry fade-up via IntersectionObserver */
-  (function () {
-    if (!window.IntersectionObserver) return;
-
-    var io = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('vfade-in');
-        obs.unobserve(e.target);
-      });
-    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
-
-    document.querySelectorAll('section, footer').forEach(function (el) {
-      if (el.getBoundingClientRect().top > window.innerHeight * 0.3) {
-        el.classList.add('vfade');
-        io.observe(el);
-      }
-    });
-  })();
-
   /* Hamburger menu */
   (function () {
     var btn = document.getElementById('hamburger');
@@ -444,5 +189,6 @@
     nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
   })();
 </script>
+<script type="module" src="assessment/main.mjs"></script>
 </body>
 </html>
