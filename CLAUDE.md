@@ -57,3 +57,29 @@ The locked Voranta design system is defined authoritatively in `globals.css` (Ta
 ## Future Next.js context
 
 `fonts.ts` and `globals.css` are design-system artifacts intended for a future Next.js app. `fonts.ts` shows how to load the three fonts via `next/font/google`; `globals.css` is the Tailwind v4 (CSS-first) config. When migrating, remove the `@import url(...)` Google Fonts CDN line from `globals.css` since `next/font` handles font loading.
+
+## Agent playbook
+
+This repo ships eight project-level subagents in `.claude/agents/`. The main thread dispatches them; they cannot call each other. When an agent flags out-of-lane work, route it to the owning agent.
+
+**Ownership map:**
+
+- `ux-reviewer` (read-only) — user flows, IA, funnel friction, interaction design, accessibility.
+- `design-reviewer` (read-only) — brand/design-system compliance (the locked rules), plus approval-gated proposals to evolve the system.
+- `visual-designer` (read-only) — best-in-class visual craft (layout, hierarchy, whitespace, type) within the system.
+- `conversion-copywriter` (edits) — the words: headlines, subheads, CTAs, microcopy, capture/result copy.
+- `framework-architect` (edits, Opus) — research methodology, questions, scoring logic, archetypes.
+- `frontend-engineer` (edits) — static HTML/CSS and the vanilla-JS `.mjs` assessment.
+- `api-engineer` (edits) — Vercel serverless functions, lead capture, env/secrets.
+- `seo-engineer` (edits) — titles, meta, OG/Twitter, JSON-LD, semantic HTML, sitemap/robots.
+
+**Default build sequence for a new section or feature:**
+
+1. `framework-architect` if any methodology or scoring is involved.
+2. `conversion-copywriter` for the words.
+3. `frontend-engineer` and/or `api-engineer` to build.
+4. `visual-designer`, `ux-reviewer`, and `design-reviewer` in parallel (read-only review).
+5. Apply fixes via the relevant producer.
+6. `seo-engineer` pass on any new or changed page.
+
+**Pre-commit convention:** run `visual-designer`, `ux-reviewer`, and `design-reviewer` on any changed page before committing. Run `seo-engineer` when a page is added or its content or structure changes.
