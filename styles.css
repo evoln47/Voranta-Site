@@ -546,14 +546,10 @@
     .founding-hero-left { gap: 16px; }
     .founding-headline { font-size: 2rem; }
     .framework-teaser-row { flex-direction: column; align-items: flex-start; }
-    /* P4: at 880px, CTA column (radar + button) stacks below copy; radar at 160px; button full-width */
+    /* P4: at 880px, CTA column (scorecard + button) stacks below copy; button full-width */
     .framework-teaser-row > div:last-child { width: 100%; align-items: stretch; }
     .framework-teaser-row .btn { width: 100%; justify-content: center; }
-    .framework-teaser-radar { width: 160px; height: 160px; align-self: center; }
-    .framework-teaser-radar svg { width: 160px; height: 160px; }
-    /* P5: founding scorecard illustration stacks above benefits, already handled
-       by flex-direction: column on .founding-hero-right */
-    .founding-scorecard-illus { max-width: 200px; margin-bottom: 20px; }
+    .teaser-scorecard-illus { max-width: 260px; }
   }
 
 /* ===== Assessment (Demand Research Index) ===== */
@@ -684,39 +680,29 @@
 }
 
 /* ============================================================
-   FRAMEWORK TEASER RADAR (P4)
-   Empty-state AIPQ radar outline as a flex item in
-   .framework-teaser-row. Sized at ~200px, centred in its column.
+   FRAMEWORK TEASER SCORECARD (P4)
+   Sample scorecard output illustration as a flex item in
+   .framework-teaser-row, above the CTA button in its column.
    ============================================================ */
 .framework-teaser-row { display: flex; align-items: center; gap: 64px; flex-wrap: wrap; }
 .framework-teaser-copy { max-width: 560px; }
 /* Reuse the section-head pattern (eyebrow, rule, subhead spacing + the cyan rule);
-   drop its 56px bottom margin so the copy stays vertically centred against the radar. */
+   drop its 56px bottom margin so the copy stays vertically centred against the scorecard. */
 .framework-teaser-copy .section-head { margin-bottom: 0; }
-.framework-teaser-cta { display: flex; flex-direction: column; align-items: center; gap: 24px; }
-.framework-teaser-radar {
+.framework-teaser-cta { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+.teaser-scorecard-illus {
   flex-shrink: 0;
-  width: 200px;
-  height: 200px;
-}
-.framework-teaser-radar svg {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
   display: block;
+  align-self: center;
 }
 
 /* ============================================================
-   FOUNDING SPONSOR SCORECARD ILLUSTRATION (P5)
-   Inline SVG scorecard/report-cover in .founding-hero-right,
-   above the benefits list. ~280px wide.
+   FOUNDING SPONSOR HERO RIGHT (P5)
+   Benefits list, vertically centred against the pitch column.
    ============================================================ */
-.founding-scorecard-illus {
-  width: 100%;
-  max-width: 280px;
-  height: auto;
-  display: block;
-  margin-bottom: 24px;
-}
 #sponsors .founding-hero-right {
   flex-direction: column;
   align-items: flex-start;

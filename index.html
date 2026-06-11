@@ -291,27 +291,52 @@
           <p class="subhead">Enterprise AI buyers want to know why their pilots stall. AIPQ names the archetype that fits their situation and surfaces the one constraint most likely to block them.</p>
         </div>
       </div>
-      <!-- CTA column: radar above button, both centred -->
+      <!-- CTA column: sample scorecard above button, both centred -->
       <div class="framework-teaser-cta">
-        <!-- Empty-state AIPQ radar outline: structure only, no scores plotted -->
-        <!-- Cyan on outer ring only -->
-        <div class="framework-teaser-radar" aria-hidden="true">
-          <svg viewBox="0 0 200 200" aria-hidden="true" focusable="false">
-            <!-- 6 axes from centre -->
-            <line x1="100" y1="100" x2="100" y2="24" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
-            <line x1="100" y1="100" x2="165.8" y2="62" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
-            <line x1="100" y1="100" x2="165.8" y2="138" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
-            <line x1="100" y1="100" x2="100" y2="176" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
-            <line x1="100" y1="100" x2="34.2" y2="138" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
-            <line x1="100" y1="100" x2="34.2" y2="62" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
-            <!-- Inner ring (r=25) -->
-            <polygon points="100,75 121.7,87.5 121.7,112.5 100,125 78.3,112.5 78.3,87.5" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.3"/>
-            <!-- Mid ring (r=50) -->
-            <polygon points="100,50 143.3,75 143.3,125 100,150 56.7,125 56.7,75" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.3"/>
-            <!-- Outer ring (r=76) -- cyan, one element; no axis labels on teaser -->
-            <polygon points="100,24 165.8,62 165.8,138 100,176 34.2,138 34.2,62" fill="none" stroke="#0891B2" stroke-width="1" opacity="0.6"/>
-          </svg>
-        </div>
+        <!-- Sample scorecard output illustration; cyan on score value only; ink/grey ramp on paper -->
+        <svg class="teaser-scorecard-illus" viewBox="0 0 240 220" aria-hidden="true" focusable="false">
+          <!-- Card body (raised surface) -->
+          <rect x="8" y="8" width="224" height="204" rx="6" fill="#F4F7F4" stroke="rgba(10,9,8,0.12)" stroke-width="0.75"/>
+          <!-- Card header band -->
+          <rect x="8" y="8" width="224" height="36" rx="6" fill="#DDE6E0" stroke="none"/>
+          <rect x="8" y="26" width="224" height="18" fill="#DDE6E0" stroke="none"/>
+          <!-- Header label -->
+          <text x="22" y="29" font-family="Geist Mono,monospace" font-size="8" fill="#6B6E6B" letter-spacing="0.08em">SAMPLE SCORECARD</text>
+          <!-- Divider -->
+          <line x1="8" y1="44" x2="232" y2="44" stroke="rgba(10,9,8,0.1)" stroke-width="0.5"/>
+          <!-- Score label -->
+          <text x="22" y="68" font-family="Geist Mono,monospace" font-size="8" fill="#6B6E6B" letter-spacing="0.06em">OVERALL SCORE</text>
+          <!-- Score value -- cyan, one element -->
+          <text x="22" y="102" font-family="Geist,sans-serif" font-size="42" fill="#0891B2" letter-spacing="-0.04em" font-weight="500">58</text>
+          <text x="72" y="102" font-family="Geist Mono,monospace" font-size="16" fill="#A8ACA8" letter-spacing="-0.02em">/100</text>
+          <!-- Divider -->
+          <line x1="22" y1="112" x2="218" y2="112" stroke="rgba(10,9,8,0.08)" stroke-width="0.5"/>
+          <!-- Archetype label -->
+          <text x="22" y="130" font-family="Geist Mono,monospace" font-size="8" fill="#6B6E6B" letter-spacing="0.08em">ARCHETYPE</text>
+          <text x="22" y="143" font-family="Geist,sans-serif" font-size="13" fill="#3F3F3D" letter-spacing="-0.01em" font-weight="500">Stranded</text>
+          <text x="22" y="159" font-family="Geist,sans-serif" font-size="13" fill="#3F3F3D" letter-spacing="-0.01em" font-weight="500">Capability</text>
+          <!-- Mini radar (grey-ramp), pulled right for breathing room -->
+          <g transform="translate(174,120)">
+            <!-- 6 axes r=44 -->
+            <line x1="0" y1="0" x2="0" y2="-44" stroke="#A8ACA8" stroke-width="0.5" opacity="0.6"/>
+            <line x1="0" y1="0" x2="38.1" y2="-22" stroke="#A8ACA8" stroke-width="0.5" opacity="0.6"/>
+            <line x1="0" y1="0" x2="38.1" y2="22" stroke="#A8ACA8" stroke-width="0.5" opacity="0.6"/>
+            <line x1="0" y1="0" x2="0" y2="44" stroke="#A8ACA8" stroke-width="0.5" opacity="0.6"/>
+            <line x1="0" y1="0" x2="-38.1" y2="22" stroke="#A8ACA8" stroke-width="0.5" opacity="0.6"/>
+            <line x1="0" y1="0" x2="-38.1" y2="-22" stroke="#A8ACA8" stroke-width="0.5" opacity="0.6"/>
+            <!-- Outer ring -->
+            <polygon points="0,-44 38.1,-22 38.1,22 0,44 -38.1,22 -38.1,-22" fill="none" stroke="#A8ACA8" stroke-width="0.75" opacity="0.7"/>
+            <!-- Mid ring -->
+            <polygon points="0,-28 24.2,-14 24.2,14 0,28 -24.2,14 -24.2,-14" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.5"/>
+            <!-- Data shape (grey -- cyan reserved for score above) -->
+            <polygon points="0,-36 30,-16 28,18 0,30 -22,16 -24,-20" fill="rgba(10,9,8,0.05)" stroke="#6B6E6B" stroke-width="1"/>
+          </g>
+          <!-- Bottom divider -->
+          <line x1="8" y1="174" x2="232" y2="174" stroke="rgba(10,9,8,0.08)" stroke-width="0.5"/>
+          <!-- Archetype descriptor text -->
+          <text x="22" y="185" font-family="Geist Mono,monospace" font-size="7.5" fill="#6B6E6B" letter-spacing="0.05em">TECHNICAL READINESS STRONG</text>
+          <text x="22" y="198" font-family="Geist Mono,monospace" font-size="7.5" fill="#A8ACA8" letter-spacing="0.04em">CONSTRAINT: EXCEPTION TOLERANCE</text>
+        </svg>
         <a href="/aipq" class="btn btn-ghost btn-lg">Explore the framework &nbsp;&rarr;</a>
       </div>
     </div>
@@ -335,49 +360,6 @@
         <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg founding-cta">Inquire about founding terms</a>
       </div>
       <div class="founding-hero-right">
-        <!-- Scorecard output illustration; cyan on score value only; light strokes on dark background -->
-        <svg class="founding-scorecard-illus" viewBox="0 0 240 220" aria-hidden="true" focusable="false">
-          <!-- Card outline -->
-          <rect x="8" y="8" width="224" height="204" rx="6" fill="none" stroke="rgba(244,247,244,0.12)" stroke-width="0.75"/>
-          <!-- Card header band -->
-          <rect x="8" y="8" width="224" height="36" rx="6" fill="rgba(244,247,244,0.05)" stroke="none"/>
-          <!-- Header label -->
-          <text x="22" y="29" font-family="Geist Mono,monospace" font-size="8" fill="rgba(244,247,244,0.45)" letter-spacing="0.08em">SAMPLE SCORECARD</text>
-          <!-- Divider -->
-          <line x1="8" y1="44" x2="232" y2="44" stroke="rgba(244,247,244,0.1)" stroke-width="0.5"/>
-          <!-- Score label -->
-          <text x="22" y="68" font-family="Geist Mono,monospace" font-size="8" fill="rgba(244,247,244,0.4)" letter-spacing="0.06em">OVERALL SCORE</text>
-          <!-- Score value -- cyan, one element -->
-          <text x="22" y="102" font-family="Geist,sans-serif" font-size="42" fill="#0891B2" letter-spacing="-0.04em" font-weight="500">58</text>
-          <text x="72" y="102" font-family="Geist Mono,monospace" font-size="16" fill="rgba(244,247,244,0.25)" letter-spacing="-0.02em">/100</text>
-          <!-- Divider -->
-          <line x1="22" y1="112" x2="218" y2="112" stroke="rgba(244,247,244,0.08)" stroke-width="0.5"/>
-          <!-- Archetype label -->
-          <text x="22" y="130" font-family="Geist Mono,monospace" font-size="8" fill="rgba(244,247,244,0.35)" letter-spacing="0.08em">ARCHETYPE</text>
-          <text x="22" y="143" font-family="Geist,sans-serif" font-size="13" fill="rgba(244,247,244,0.8)" letter-spacing="-0.01em" font-weight="500">Stranded</text>
-          <text x="22" y="159" font-family="Geist,sans-serif" font-size="13" fill="rgba(244,247,244,0.8)" letter-spacing="-0.01em" font-weight="500">Capability</text>
-          <!-- Mini radar (grey-ramp on dark) -->
-          <g transform="translate(148,120)">
-            <!-- 6 axes r=44 -->
-            <line x1="0" y1="0" x2="0" y2="-44" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
-            <line x1="0" y1="0" x2="38.1" y2="-22" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
-            <line x1="0" y1="0" x2="38.1" y2="22" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
-            <line x1="0" y1="0" x2="0" y2="44" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
-            <line x1="0" y1="0" x2="-38.1" y2="22" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
-            <line x1="0" y1="0" x2="-38.1" y2="-22" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
-            <!-- Outer ring -->
-            <polygon points="0,-44 38.1,-22 38.1,22 0,44 -38.1,22 -38.1,-22" fill="none" stroke="rgba(244,247,244,0.2)" stroke-width="0.75"/>
-            <!-- Mid ring -->
-            <polygon points="0,-28 24.2,-14 24.2,14 0,28 -24.2,14 -24.2,-14" fill="none" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
-            <!-- Data shape (grey, not cyan -- cyan used above on score) -->
-            <polygon points="0,-36 30,-16 28,18 0,30 -22,16 -24,-20" fill="rgba(244,247,244,0.06)" stroke="rgba(244,247,244,0.35)" stroke-width="1"/>
-          </g>
-          <!-- Bottom divider -->
-          <line x1="8" y1="174" x2="232" y2="174" stroke="rgba(244,247,244,0.08)" stroke-width="0.5"/>
-          <!-- Archetype descriptor text -->
-          <text x="22" y="185" font-family="Geist Mono,monospace" font-size="7.5" fill="rgba(244,247,244,0.35)" letter-spacing="0.05em">TECHNICAL READINESS STRONG</text>
-          <text x="22" y="198" font-family="Geist Mono,monospace" font-size="7.5" fill="rgba(244,247,244,0.2)" letter-spacing="0.04em">CONSTRAINT: EXCEPTION TOLERANCE</text>
-        </svg>
         <ul class="founding-benefits">
           <li>Co-build the inaugural framework directly with the methodology team</li>
           <li>Named as a founding benchmark contributor on the published methodology</li>
