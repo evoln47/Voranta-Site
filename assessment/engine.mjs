@@ -45,7 +45,7 @@ export function createQuiz({ mountEl, progressFill, progressLabel, onComplete })
   }
 
   function choose(choiceIndex) {
-    // Overwrite by index — idempotent, never double-counts.
+    // Overwrite by index, idempotent, never double-counts.
     answers[index] = { questionId: questions[index].id, choiceIndex };
 
     // Update button states in place (no full re-render to avoid focus loss).
