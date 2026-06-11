@@ -55,9 +55,9 @@ const DIMENSIONS = [
 ];
 
 const ARCHETYPES = {
-  renter: { key: 'renter', label: 'The Renter', blurb: "Your content reaches buyers who then research the problem using someone else's framework. The lead goes to whoever owns that lens, and right now that is not you. Owning the framework the market researches against is what turns your content into pipeline you can claim. The call is about how you get there." },
+  renter: { key: 'renter', label: 'The Renter', blurb: "Your content reaches buyers who then research the problem using someone else's framework. The lead goes to whoever owns that lens, and right now that is not you. Owning the framework the market researches against is what turns your content into pipeline you can claim." },
   publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You have built a genuine point of view and buyers read it. The leak is what happens next. The conversion path, the value at capture, or the hand-off to sales is not closing the gap between earned attention and identifiable pipeline.' },
-  operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong demand engine. What it is missing is the lens. You compete on a framework someone else defined, which means a well-resourced rival can outspend you on the category point of view you are currently renting. The call is about making that lens yours before they do.' },
+  operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong demand engine. What it is missing is the lens. You compete on a framework someone else defined, which means a well-resourced rival can outspend you on the category point of view you are currently renting.' },
   authority: { key: 'authority', label: 'The Authority', blurb: 'You own the lens buyers use to research the problem, and the rest of your demand engine is broadly strong. That combination is hard to build and easy to copy once it is visible. The question is how quickly you can extend the lead before a rival reverse-engineers it.' },
 };
 
@@ -209,10 +209,10 @@ const DIMENSION_FIRST_SENTENCE = {
 // POSITIONING: one paragraph per archetype. evenLow uses renter, evenHigh uses authority.
 // These paragraphs are cluster-silent for renter, operator, and authority per spec.
 const POSITIONING = {
-  renter:    'The Authority position requires two things: a point of view the market names and researches against, and a demand engine that converts and hands off that interest reliably. Your result shows open distance on both axes. That is not an unusual place to be. Most B2B software marketing teams compete on borrowed frameworks and measure pipeline loosely, if at all. What separates teams that close the gap is sequencing: they build the lens before they build the engine, because a well-designed conversion surface amplifies a proprietary framework, while the same surface running on a rented framework just sends buyers back to the framework\'s owner. The call is about where your sequence starts.',
-  publisher: 'You hold the harder of the two axes to build. A proprietary point of view the market associates with your brand cannot be bought quickly or replicated by outspending you. What separates The Publisher from The Authority is not the lens: it is what the lens connects to downstream. The strongest Publisher-to-Authority moves share a pattern: the same framework that earns the read becomes the mechanism that qualifies the hand-raise and briefs the rep. The point of view stops being a content asset and starts being the conversion architecture. The call is about closing that gap.',
-  operator:  'You have built the downstream infrastructure that most teams lack. Your demand engine is working at a level where adding a proprietary framework would compound immediately, because you have the machinery to convert the authority it generates. The risk is not your engine: it is that a well-funded competitor builds the framework first and your engine starts feeding their category. The Operator-to-Authority move is the most direct path in the framework: one axis to close, with the other already in place to amplify it. The call is about what that axis looks like for your category.',
-  authority: 'You hold both axes. That is a structural position most teams in your category do not have and cannot acquire quickly. The pattern among teams that sustain it is aggressive deepening, not coasting: they make the framework harder to reverse-engineer by building proprietary research, named constructs, and published methodology that take years to replicate. The risk is not a rival outperforming you on execution. It is a rival publishing a credible competing framework before you have locked the category\'s vocabulary. The call is about how fast you can make your position structurally irreversible.',
+  renter:    'The Authority position requires two things: a point of view the market names and researches against, and a demand engine that converts and hands off that interest reliably. Your result shows open distance on both axes. That is not an unusual place to be. Most B2B software marketing teams compete on borrowed frameworks and measure pipeline loosely, if at all. What separates teams that close the gap is sequencing: they build the lens before they build the engine, because a well-designed conversion surface amplifies a proprietary framework, while the same surface running on a rented framework just sends buyers back to the framework\'s owner.',
+  publisher: 'You hold the harder of the two axes to build. A proprietary point of view the market associates with your brand cannot be bought quickly or replicated by outspending you. What separates The Publisher from The Authority is not the lens: it is what the lens connects to downstream. The strongest Publisher-to-Authority moves share a pattern: the same framework that earns the read becomes the mechanism that qualifies the hand-raise and briefs the rep. The point of view stops being a content asset and starts being the conversion architecture.',
+  operator:  'You have built the downstream infrastructure that most teams lack. Your demand engine is working at a level where adding a proprietary framework would compound immediately, because you have the machinery to convert the authority it generates. The risk is not your engine: it is that a well-funded competitor builds the framework first and your engine starts feeding their category. The Operator-to-Authority move is the most direct path in the framework: one axis to close, with the other already in place to amplify it.',
+  authority: 'You hold both axes. That is a structural position most teams in your category do not have and cannot acquire quickly. The pattern among teams that sustain it is aggressive deepening, not coasting: they make the framework harder to reverse-engineer by building proprietary research, named constructs, and published methodology that take years to replicate. The risk is not a rival outperforming you on execution. It is a rival publishing a credible competing framework before you have locked the category\'s vocabulary.',
 };
 
 // CTA_FRAMING: sentence before the booking button, keyed on archetype key.
@@ -282,7 +282,7 @@ function buildVisitorText(result) {
     priorityBody = f.blurb;
   } else if (result.evenTier === 'high') {
     priorityLabel = 'Strong across every dimension';
-    priorityBody = 'All four dimensions score in the high band. That is a real position. The call is about extending the lead before a competitor reverse-engineers it.';
+    priorityBody = 'All four dimensions score in the high band. That is a real position. The priority now is to extend the lead before a competitor reverse-engineers it.';
   } else {
     priorityLabel = 'A systemic opportunity';
     priorityBody = 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
@@ -362,7 +362,7 @@ function buildVisitorHtml(result) {
     priorityBody = f.blurb;
   } else if (result.evenTier === 'high') {
     priorityLabel = 'Strong across every dimension';
-    priorityBody = 'All four dimensions score in the high band. That is a real position. The call is about extending the lead before a competitor reverse-engineers it.';
+    priorityBody = 'All four dimensions score in the high band. That is a real position. The priority now is to extend the lead before a competitor reverse-engineers it.';
   } else {
     priorityLabel = 'A systemic opportunity';
     priorityBody = 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
