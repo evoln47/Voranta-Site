@@ -27,6 +27,7 @@ export function wireCapture(form, msgEl, getResult) {
       if (!res.ok) throw new Error(`bad status ${res.status}`);
       showMsg(msgEl, 'Sent. Check your inbox for the full breakdown.', true);
       form.hidden = true;
+      msgEl.focus();
     } catch (err) {
       showMsg(msgEl, 'We could not send that. Email evan@voranta.co and we will get it to you.', false);
       submitBtn.disabled = false;

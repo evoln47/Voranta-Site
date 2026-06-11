@@ -87,7 +87,7 @@
       <div class="dri-screen" data-screen="quiz" hidden>
         <div class="dri-progress">
           <div class="dri-progress-bar"><span id="dri-progress-fill"></span></div>
-          <span class="dri-progress-label" id="dri-progress-label">Question 1 of 8</span>
+          <span class="dri-progress-label" id="dri-progress-label" aria-live="polite">Question 1 of 8</span>
         </div>
         <div id="dri-question" class="dri-question"></div>
       </div>
@@ -131,7 +131,7 @@
               <button type="submit" class="btn btn-lg" id="dri-capture-submit">Email me the breakdown</button>
             </form>
           </div>
-          <p class="dri-capture-msg" id="dri-capture-msg" role="alert" hidden></p>
+          <p class="dri-capture-msg" id="dri-capture-msg" role="alert" tabindex="-1" hidden></p>
           <div class="dri-results-cta">
             <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">Book a call to close the gap</a>
           </div>

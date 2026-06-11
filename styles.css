@@ -158,7 +158,7 @@
   .sponsor-card.is-featured h3, .sponsor-card.is-featured .price-value, .sponsor-card.is-featured .price-label { color: var(--color-paper-light); }
   .sponsor-card.is-featured .price-period, .sponsor-card.is-featured li { color: rgba(244,247,244,0.75); }
   .sponsor-card .price-value { font-family: var(--font-sans); font-size: 2.5rem; font-weight: 500; line-height: 1; letter-spacing: -0.03em; color: var(--color-ink); }
-  .sponsor-card .price-label { font-family: var(--font-sans); font-size: 1.125rem; font-weight: 500; color: var(--color-ink-soft); }
+  .sponsor-card .price-label { font-family: var(--font-sans); font-size: 1.125rem; font-weight: 400; color: var(--color-ink-soft); }
   .sponsor-card.is-featured .price-label { color: rgba(244,247,244,0.75); }
   .sponsor-card .price-period { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); margin-top: 6px; }
   .sponsor-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -571,8 +571,8 @@
   }
 
   /* Secondary 2-card grid - Category Sponsor + Enterprise */
-  .sponsor-grid-secondary {
-    grid-template-columns: 1fr 1fr !important;
+  #sponsors .sponsor-grid-secondary {
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
 
