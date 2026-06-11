@@ -333,22 +333,34 @@ function buildVisitorHtml(result) {
   const f = result.focus;
   const archetypeKey = result.archetype.key;
 
-  // Section 4: four dimension rows with the /100 score, band, and first-sentence read.
+  // Section 4: four dimension rows with /100 score, band, first-sentence read, and score bar.
   const dimRows = DIMENSIONS.map(([key, label]) => {
-    const raw = ds[key];
-    const b = band(raw);
+    const score100 = ds[key];
+    const b = band(score100);
     const firstSentence = b === 'high'
       ? DIMENSION_FIRST_SENTENCE[key].edge
       : DIMENSION_FIRST_SENTENCE[key].gap;
+    // Score bar: filled cell is cyan (#0891B2), track remainder is light grey (#E3E8E4).
+    // font-size:0;line-height:0 ensures 0-width cells collapse cleanly.
+    const filledWidth = score100;
+    const trackWidth = 100 - score100;
     return `
-              <tr><td style="padding:10px 0;border-bottom:1px solid #E6EAE6;">
+              <tr><td style="padding:12px 0 0;border-bottom:1px solid #E3E8E4;">
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                   <tr>
-                    <td style="font-size:15px;font-weight:600;color:#0A0908;">${escapeHtml(label)}</td>
-                    <td align="right" style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#57564F;white-space:nowrap;">${escapeHtml(raw)} / 100&nbsp;&nbsp;${escapeHtml(b)}</td>
+                    <td style="font-size:15px;font-weight:600;color:#0A0908;font-family:system-ui,'Segoe UI',Helvetica,Arial,sans-serif;">${escapeHtml(label)}</td>
+                    <td align="right" style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B6E6B;white-space:nowrap;">${escapeHtml(score100)}&nbsp;/&nbsp;100&nbsp;&nbsp;${escapeHtml(b)}</td>
                   </tr>
+                  <tr><td colspan="2" style="padding-top:6px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="${filledWidth}%" style="height:4px;background:#0891B2;font-size:0;line-height:0;">&nbsp;</td>
+                        <td width="${trackWidth}%" style="height:4px;background:#E3E8E4;font-size:0;line-height:0;">&nbsp;</td>
+                      </tr>
+                    </table>
+                  </td></tr>
                   <tr>
-                    <td colspan="2" style="padding-top:4px;font-size:14px;line-height:1.5;color:#3A3A38;">${escapeHtml(firstSentence)}</td>
+                    <td colspan="2" style="padding-top:6px;padding-bottom:12px;font-size:14px;line-height:1.5;color:#3F3F3D;font-family:system-ui,'Segoe UI',Helvetica,Arial,sans-serif;">${escapeHtml(firstSentence)}</td>
                   </tr>
                 </table>
               </td></tr>`;
@@ -383,57 +395,88 @@ function buildVisitorHtml(result) {
 
   return `<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#ECF1ED;">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+</head>
+<body style="margin:0;padding:0;background:#ECF1ED;color-scheme:light;">
   <!-- Section 1: hidden preheader -->
   <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;color:#ECF1ED;line-height:1px;">${escapeHtml(PREHEADER[archetypeKey])}</div>
 
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ECF1ED;">
-    <tr><td align="center" style="padding:32px 16px;">
-      <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0A0908;">
+    <tr><td align="center" style="padding:48px 16px;">
+      <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;font-family:system-ui,'Segoe UI',Helvetica,Arial,sans-serif;color:#0A0908;">
 
-        <!-- Section 2: eyebrow + score -->
-        <tr><td style="padding-bottom:10px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#0891B2;font-weight:600;">Demand Research Index</td></tr>
-        <tr><td style="padding-bottom:6px;">
-          <span style="font-size:56px;font-weight:600;line-height:1;">${escapeHtml(result.score)}</span>
-          <span style="font-size:20px;color:#57564F;"> / 100</span>
+        <!-- Masthead: text wordmark, no image -->
+        <tr><td style="padding-bottom:16px;">
+          <span style="font-family:Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-0.025em;font-size:22px;color:#0A0908;">Voranta<span style="color:#0891B2;font-size:10px;vertical-align:4px;">*</span></span>
+        </td></tr>
+        <tr><td style="border-bottom:1px solid #CDD3CE;font-size:1px;line-height:1px;">&nbsp;</td></tr>
+        <tr><td style="height:24px;line-height:24px;font-size:1px;">&nbsp;</td></tr>
+
+        <!-- Dark score hero: eyebrow + score + archetype -->
+        <tr><td style="background:#0A0908;padding:28px 24px;border-radius:8px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0891B2;font-weight:600;padding-bottom:12px;">Demand Research Index</td></tr>
+            <tr><td>
+              <span style="font-size:56px;font-weight:600;line-height:1;color:#ECF1ED;">${escapeHtml(result.score)}</span><span style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:20px;color:#CDD3CE;"> / 100</span>
+            </td></tr>
+            <tr><td style="height:16px;line-height:16px;font-size:1px;">&nbsp;</td></tr>
+            <tr><td style="font-size:20px;font-weight:600;color:#ECF1ED;padding-bottom:6px;">${escapeHtml(result.archetype.label)}</td></tr>
+            <tr><td style="font-size:15px;line-height:1.55;color:#CDD3CE;padding-bottom:6px;">${escapeHtml(LEAD_IN[archetypeKey](result.score))}</td></tr>
+            <tr><td style="font-size:15px;line-height:1.55;color:#CDD3CE;">${escapeHtml(result.archetype.blurb)}</td></tr>
+          </table>
         </td></tr>
 
-        <!-- Section 3: archetype label + lead-in + blurb -->
-        <tr><td style="padding:10px 0 4px;font-size:20px;font-weight:600;">${escapeHtml(result.archetype.label)}</td></tr>
-        <tr><td style="padding-bottom:6px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(LEAD_IN[archetypeKey](result.score))}</td></tr>
-        <tr><td style="padding-bottom:24px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(result.archetype.blurb)}</td></tr>
+        <!-- Spacer -->
+        <tr><td style="height:28px;line-height:28px;font-size:1px;">&nbsp;</td></tr>
 
-        <!-- Section 4: dimension breakdown -->
-        <tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#57564F;font-weight:600;">Where you stand</td></tr>
+        <!-- Section 4: dimension scorecard -->
+        <tr><td style="border-top:1px solid #CDD3CE;padding:20px 0 8px;font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6E6B;font-weight:600;">Where you stand</td></tr>
         ${dimRows}
 
+        <!-- Spacer -->
+        <tr><td style="height:20px;line-height:20px;font-size:1px;">&nbsp;</td></tr>
+
         <!-- Section 5: PRIORITY focus callout -->
-        <tr><td style="padding:20px 0 0;">
+        <tr><td>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-            <tr><td style="border-left:3px solid #0891B2;background:#F0F4F1;padding:16px;">
-              <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;margin-bottom:8px;">${escapeHtml(priorityLabel)}</div>
-              <div style="font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(priorityBody)}</div>
+            <tr><td style="border-left:3px solid #0891B2;background:#E0EFF1;padding:16px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;padding-bottom:8px;">${escapeHtml(priorityLabel)}</td></tr>
+                <tr><td style="font-size:15px;line-height:1.55;color:#155E75;font-family:system-ui,'Segoe UI',Helvetica,Arial,sans-serif;">${escapeHtml(priorityBody)}</td></tr>
+              </table>
             </td></tr>
           </table>
         </td></tr>
 
+        <!-- Spacer -->
+        <tr><td style="height:28px;line-height:28px;font-size:1px;">&nbsp;</td></tr>
+
         <!-- Section 6: positioning paragraph -->
-        <tr><td style="padding:24px 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#57564F;font-weight:600;border-top:1px solid #D2D8D3;margin-top:20px;">Where you stand in the framework</td></tr>
-        <tr><td style="padding-bottom:24px;font-size:15px;line-height:1.6;color:#3A3A38;">${escapeHtml(positioning)}</td></tr>
+        <tr><td style="border-top:1px solid #CDD3CE;padding-top:20px;font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6E6B;font-weight:600;padding-bottom:8px;">Where you stand in the framework</td></tr>
+        <tr><td style="padding-bottom:24px;font-size:15px;line-height:1.6;color:#3F3F3D;font-family:system-ui,'Segoe UI',Helvetica,Arial,sans-serif;">${escapeHtml(positioning)}</td></tr>
 
         <!-- Section 7: CTA block -->
-        <tr><td style="padding-bottom:16px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(ctaFraming)}</td></tr>
-        <tr><td style="padding-bottom:30px;">
+        <tr><td style="padding-bottom:16px;font-size:15px;line-height:1.55;color:#3F3F3D;font-family:system-ui,'Segoe UI',Helvetica,Arial,sans-serif;">${escapeHtml(ctaFraming)}</td></tr>
+        <tr><td style="padding-bottom:32px;">
           <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-            <td style="background:#0891B2;border-radius:8px;">
-              <a href="${BOOKING_URL}" style="display:inline-block;padding:13px 24px;color:#ECF1ED;font-size:15px;font-weight:600;text-decoration:none;">${escapeHtml(buttonLabel)}</a>
+            <td style="background:#0891B2;border-radius:8px;padding:13px 24px;">
+              <a href="${BOOKING_URL}" style="display:block;color:#FFFFFF;font-size:15px;font-weight:600;text-decoration:none;font-family:system-ui,'Segoe UI',Helvetica,Arial,sans-serif;">${escapeHtml(buttonLabel)}</a>
             </td>
           </tr></table>
         </td></tr>
 
-        <!-- Section 8: footer -->
-        <tr><td style="border-top:1px solid #D2D8D3;padding-top:16px;font-size:13px;line-height:1.55;color:#57564F;">You took the Demand Research Index at voranta.co. Reply to this email and it reaches us directly.</td></tr>
+        <!-- Section 8: structured footer -->
+        <tr><td style="border-top:1px solid #CDD3CE;padding-top:20px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:13px;line-height:1.55;color:#6B6E6B;padding-bottom:4px;">You took the Demand Research Index at voranta.co.</td></tr>
+            <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:13px;line-height:1.55;color:#6B6E6B;padding-bottom:12px;">Questions? Reply here or email evan@voranta.co.</td></tr>
+            <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:11px;color:#A8ACA8;">Voranta</td></tr>
+          </table>
+        </td></tr>
+
       </table>
     </td></tr>
   </table>
