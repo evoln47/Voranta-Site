@@ -83,7 +83,7 @@ export const questions = [
   { id: 'signal', dimension: 'signalToSales', text: "Before a rep's first conversation with a new lead, what account-specific intelligence do they have, and how current is it?", options: [
     { label: 'A name and an email. The rep discovers everything live', points: 0 },
     { label: 'Firmographics and the downloaded asset, nothing about where the account stands', points: 20 },
-    { label: 'Leads land in one queue, reps pick by gut, no brief', points: 40 },
+    { label: 'Leads land in one queue. Reps pick by gut with no brief', points: 40 },
     { label: 'A brief exists, but it is stale or arrives after outreach started', points: 60 },
     { label: 'A current account-specific brief reaches the right rep, but only when the system fires cleanly', points: 80 },
     { label: 'Every lead is prioritized on consistent criteria and routed with a current account-specific brief before first contact', points: 100 },

@@ -451,10 +451,10 @@ function setActiveQuadrant(gridEl, calloutEl, archetypeKey) {
 // description lives only on Card 1 (the dark score card). Provisional wording;
 // conversion-copywriter refines.
 const QUADRANT_PLACEMENT = {
-  renter:    'Low strategy, low execution. The full build starts here.',
-  publisher: 'Strong strategy, execution is the gap to close.',
-  operator:  'Strong execution, strategy is the gap to close.',
-  authority: 'Strong strategy and strong execution. Extend the position.',
+  renter:    'Both strategy and execution are open ground. The build starts here.',
+  publisher: 'Upstream strategy is built. Closing the downstream gap unlocks the pipeline.',
+  operator:  'Downstream execution is broadly strong. The structural gap is upstream.',
+  authority: 'Both strategy and execution are broadly strong. Extend the position now.',
 };
 
 function setCalloutText(calloutEl, archetypeKey) {

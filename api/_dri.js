@@ -178,7 +178,7 @@ function escapeHtml(str) {
 
 const PREHEADER = {
   renter:    'The framework buyers use to research your category belongs to someone else. Here is what your score means and what to do about it.',
-  publisher: 'You have built a real point of view. The leak is downstream. Here is your full breakdown.',
+  publisher: 'You have built real upstream strategy: a point of view the market engages with and a read on what your buyers are researching. The leak is downstream. Here is your full breakdown.',
   operator:  'Your demand engine is broadly strong. What it is missing is a lens you own. Here is your full breakdown.',
   authority: 'You hold the position. The question is how fast you can extend it before a rival catches up. Here is your full breakdown.',
 };
@@ -187,7 +187,7 @@ const PREHEADER = {
 // Interpolated at render time with result.score.
 const LEAD_IN = {
   renter:    (score) => `A score of ${score} places you in the largest group of B2B software marketing teams: reaching buyers who then research the problem on someone else's terms.`,
-  publisher: (score) => `A score of ${score} reflects a real content asset with a gap in what comes after the read.`,
+  publisher: (score) => `A score of ${score} reflects real upstream strategy with a gap in what comes after the read.`,
   operator:  (score) => `A score of ${score} reflects a broadly capable demand engine that competes on borrowed authority.`,
   authority: (score) => `A score of ${score} reflects a demand engine with a genuine structural advantage over most of your peers.`,
 };
@@ -205,7 +205,7 @@ const DIMENSION_FIRST_SENTENCE = {
 // These paragraphs are cluster-silent for renter, operator, and authority per spec.
 const POSITIONING = {
   renter:    'The Authority position requires two things: a framework the market names and researches against, and a funnel that turns that interest into identifiable, sales-ready pipeline. Your result shows open ground on both. That is not an unusual starting point. Most B2B software marketing teams compete on borrowed frameworks and measure pipeline loosely, if at all. What separates teams that close the gap is sequencing: they build the point of view first, because a proprietary framework gives the funnel something worth running on. The same funnel running on a rented framework sends buyers back to whoever owns it.',
-  publisher: 'You have built the harder thing to build. A proprietary point of view the market associates with your brand cannot be bought quickly or replicated by outspending you. What separates The Publisher from The Authority is not the point of view: it is what connects to the point of view downstream. The strongest Publisher-to-Authority moves share a pattern: the same framework that earns the read becomes the mechanism that qualifies the hand-raise and briefs the rep. The point of view stops being a content asset and starts being the architecture that turns interest into pipeline.',
+  publisher: 'You have built the harder thing to build. A proprietary point of view grounded in a read on what buyers research cannot be bought quickly or replicated by outspending you. What separates The Publisher from The Authority is not the upstream strategy: it is what connects to that strategy downstream. The strongest Publisher-to-Authority moves share a pattern: the same framework that earns the read becomes the mechanism that qualifies the hand-raise and briefs the rep. The point of view stops being a content asset and starts being the architecture that turns interest into pipeline.',
   operator:  'You have built the downstream infrastructure most teams lack. Your funnel is working at a level where adding a proprietary framework would compound immediately, because you have the machinery to act on the authority it generates. The risk is not your funnel. It is that a well-funded competitor builds the category framework first and your funnel starts feeding their pipeline. The Operator-to-Authority move is the most direct path: one structural gap to close, with the rest of the build already in place.',
   authority: 'You own the framework buyers research against and the funnel behind it is broadly strong. That is a structural position most teams in your category do not have and cannot acquire quickly. The pattern among teams that sustain it is aggressive deepening, not coasting: they make the framework harder to reverse-engineer by building proprietary research, named constructs, and published methodology that take years to replicate. The risk is not a rival outperforming you operationally. It is a rival publishing a credible competing framework before you have locked the category\'s vocabulary.',
 };
@@ -214,7 +214,7 @@ const POSITIONING = {
 // evenHigh uses authority, evenLow uses renter (same as POSITIONING key).
 const CTA_FRAMING = {
   renter:    'Your score shows where the build starts. In 30 minutes, Voranta can map the sequence so you are building in the right order.',
-  publisher: 'The point of view is the hard part, and you have it. A 30-minute call with Voranta pinpoints the specific gap between your content and the pipeline it should be generating.',
+  publisher: 'The upstream strategy is the hard part, and you have it. A 30-minute call with Voranta pinpoints the specific gap between your content and the pipeline it should be generating.',
   operator:  'Your funnel is ready to compound a framework you own. A 30-minute call with Voranta scopes what that framework looks like for your category and how quickly you can move.',
   authority: 'You have the position. A 30-minute call with Voranta identifies the specific move that makes it structurally harder to challenge before a rival decides to try.',
 };
