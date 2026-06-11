@@ -150,20 +150,9 @@
   .about-image img { width: 100%; display: block; aspect-ratio: 4 / 5; object-fit: cover; object-position: center; }
   .about-image::after { content: ""; position: absolute; inset: 0; border: 0.5px solid rgba(10,9,8,0.1); border-radius: 12px; pointer-events: none; }
 
-  /* Sponsor card */
+  /* Sponsor section */
   .sponsor-section { background: var(--color-paper-deep); border-bottom: none; }
-  .sponsor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1280px; margin: 0 auto; }
-  .sponsor-card { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 16px; padding: 36px 32px; display: flex; flex-direction: column; gap: 24px; }
-  .sponsor-card.is-featured { background: var(--color-ink); color: var(--color-paper-light); border-color: var(--color-ink); }
-  .sponsor-card.is-featured h3, .sponsor-card.is-featured .price-value, .sponsor-card.is-featured .price-label { color: var(--color-paper-light); }
-  .sponsor-card.is-featured .price-period, .sponsor-card.is-featured li { color: rgba(244,247,244,0.75); }
-  .sponsor-card .price-value { font-family: var(--font-sans); font-size: 2.5rem; font-weight: 500; line-height: 1; letter-spacing: -0.03em; color: var(--color-ink); }
-  .sponsor-card .price-label { font-family: var(--font-sans); font-size: 1.125rem; font-weight: 400; color: var(--color-ink-soft); }
-  .sponsor-card.is-featured .price-label { color: rgba(244,247,244,0.75); }
-  .sponsor-card .price-period { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); margin-top: 6px; }
-  .sponsor-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-  .sponsor-card li { font-size: 15px; color: var(--color-ink-soft); display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
-  .sponsor-card li::before { content: "✓"; color: var(--color-accent); font-weight: 600; }
+  #sponsors .founding-hero { margin-bottom: 0; }
 
   /* CTA block */
   .cta-section { background: var(--color-ink); color: var(--color-paper-light); padding: 88px 24px; text-align: center; border-bottom: none; }
@@ -292,7 +281,7 @@
 
   /* Mobile */
   @media (max-width: 880px) {
-    .pillars, .diff-grid, .sponsor-grid { grid-template-columns: 1fr; }
+    .pillars, .diff-grid { grid-template-columns: 1fr; }
     .gap-stats-row { grid-template-columns: 1fr; gap: 28px; align-items: start; }
     .gap-stat-headline { font-size: 1.125rem; }
     .gap-dots { gap: 8px; max-width: 240px; }
@@ -318,7 +307,6 @@
     .section-head { margin-bottom: 40px; }
     .framework-block-head { padding: 32px 20px 24px; }
     .framework-block-body { padding: 24px 20px 32px; }
-    .sponsor-card { padding: 24px 20px; }
     .framework-name { font-size: 3.25rem; }
     .founder-grid { grid-template-columns: 1fr; gap: 16px; }
     .founder-photo { width: 160px; margin-bottom: 8px; }
@@ -362,11 +350,6 @@
     background: var(--color-paper-light);
   }
   .sc-card.is-dark:hover, #gap-stat-bar:hover { transform: translateY(-4px); border-color: var(--color-accent); }
-
-  .sponsor-card:not(.is-featured) { transition: transform 220ms ease-out, border-color 220ms ease-out; }
-  .sponsor-card:not(.is-featured):hover { transform: translateY(-4px); border-color: var(--color-accent); }
-  .sponsor-card.is-featured { transition: transform 220ms ease-out, border-color 220ms ease-out; }
-  .sponsor-card.is-featured:hover { transform: translateY(-4px); border-color: rgba(244,247,244,0.4); }
 
   /* Scroll-entry fade-up - IntersectionObserver (all browsers) */
   @keyframes voranta-fade-up {
@@ -556,26 +539,6 @@
     flex-shrink: 0;
   }
 
-  /* Post-launch tiers label */
-  .post-launch-label {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-  .post-launch-label::after {
-    content: "";
-    flex: 1;
-    height: 0.5px;
-    background: var(--color-border-subtle);
-  }
-
-  /* Secondary 2-card grid - Category Sponsor + Enterprise */
-  #sponsors .sponsor-grid-secondary {
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
   @media (max-width: 880px) {
     #methodology .diff-grid { grid-template-columns: 1fr; }
     .pillar-axes { grid-template-columns: 1fr; }
@@ -584,7 +547,6 @@
     .founding-hero { grid-template-columns: 1fr; gap: 32px; padding: 36px 28px; }
     .founding-hero-left { gap: 16px; }
     .founding-headline { font-size: 2rem; }
-    .sponsor-grid-secondary { grid-template-columns: 1fr !important; }
     .framework-teaser-row { flex-direction: column; align-items: flex-start; }
     .framework-teaser-row .btn { width: 100%; justify-content: center; }
   }
