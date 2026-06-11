@@ -24,6 +24,17 @@ Plan: design-first (framework-architect designs mechanism + outcome map + measur
 2. Add a visual component to the DRI RESULTS like the AIPQ radar chart + 2x2 quadrant. [v1 built; redesigning to AIPQ-quality per review]
 3. Make the EMAIL results breakdown more in-depth and valuable, tailored to the specific results. [next]
 
+## APPROVED (human, 2026-06-10): /100 per-dimension scoring rebuild
+Decisions: (1) GRANULARITY = 12 questions, 3 per dimension (was 2). (2) WEIGHTING = equal.
+Model (from framework-architect proposal):
+- Each dimension scored /100 = rawPoints/maxPerDim * 100. DRI = equal-weight mean of the four dimension FRACTIONS, round ONCE at the end (so displayed dims average to the shown total).
+- Add 4 new questions (pov3/conv3/trust3/signal3), options 0/1/2, each top answer keying off a DISTINCT capability (constructs specified by framework-architect): pov3 = POV durability/proprietariness; conv3 = relevance-matching of the next step; trust3 = immediacy of value at capture (keeps the interactive-assessment artifact anchored to Trust); signal3 = timeliness/freshness of the brief. Preserve construct independence + coherence.
+- Archetype restated on FRACTION thresholds (classification-preserving): POV high = povFrac >= 0.75; Execution high = mean(conv,trust,signal frac) >= 2/3 (epsilon for the cluster=8 boundary). 2x2 unchanged.
+- Bands on /100: low <50, mid 50-<75, high >=75. Focus = lowest /100; deficit <75 / edge >=75; tie-break funnel order. all-equal -> null + evenTier.
+- Ripple: framework.mjs (4 new Qs), scoring.mjs, api/_dri.js (mirror + email "/4"->"/100" rows), scorecard.mjs (/4->/100), scorecard-viz.mjs (radar divisors, aria "of 4"->"of 100", BUYER-DOT magic constants 8/3/12/4 -> fraction thresholds 0.75 & 2/3, ring labels 25/50/75/100), test/scoring.test.mjs (enumeration 5^4=625 -> 7^4=2401, rewrite split/answersFor, update hardcoded expected scores, no-focus 5->7, add fraction-threshold + round-once tests). NOTE: questions are DATA in framework.mjs rendered by engine.mjs; no per-question markup needed in assessment.html/index.html.
+- No-focus rate drops 0.80% -> ~0.29% (uniform enumeration) with 3 Qs/dim.
+BUILD SEQUENCE (after the in-flight CTA copy pass commits, to avoid _dri.js/scorecard.mjs clobber): framework-architect implements scoring+questions+_dri mirror+test -> conversion-copywriter polishes the 4 new question wordings (constructs/points LOCKED) -> frontend-engineer the /4->/100 display swaps -> review -> verify -> push.
+
 ## STATUS (latest): v2 framework + results visual experience DONE to AIPQ bar. Email enrichment (#3) in progress.
 - Framework v2: no-focus 0.80%, band-adaptive deficit/edge framing, tailored sales copy per outcome, cluster-silent coherence guard, 625-profile enumeration. 18/18 tests.
 - Results redesign: unified AIPQ 3-card row (Score|Radar|Quadrant), retired redundant bars, animated 4-axis radar + 2x2 quadrant (POV x execution), roving-tabindex a11y, decoupled aria-live, sr-only fallback, quadrant focus-visible, QUADRANT copy from guarded source.
