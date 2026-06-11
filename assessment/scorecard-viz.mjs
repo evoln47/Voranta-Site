@@ -88,10 +88,11 @@ export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, 
     fillEl.setAttribute('points', centerPts);
   }
 
-  // Score points (interactive circles)
+  // Score points (interactive circles) - roving tabindex: ONE tab stop for the group.
   const pointsG = svgEl.querySelector('#dri-score-points');
   if (pointsG) {
     pointsG.innerHTML = '';
+    const circles = [];
     RADAR_DIMS.forEach((dim, i) => {
       const frac = dimensionScores[dim.key] / 4;
       const pt = polar(angles[i], maxR * frac);
@@ -101,8 +102,8 @@ export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, 
       circle.setAttribute('r', '9');
       circle.setAttribute('class', 'sc-radar-point');
       circle.setAttribute('data-dim', dim.key);
-      // Accessibility
-      circle.setAttribute('tabindex', '0');
+      // Roving tabindex: first point gets tabindex=0, rest start at -1.
+      circle.setAttribute('tabindex', i === 0 ? '0' : '-1');
       circle.setAttribute('role', 'button');
       circle.setAttribute('aria-label', `${dim.label}: ${dimensionScores[dim.key]} of 4`);
       // Start off-center for animate-in
@@ -119,14 +120,37 @@ export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, 
         onVisualActivate(dim.key);
         onLiveActivate(dim.key);
       });
-      circle.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onVisualActivate(dim.key);
-          onLiveActivate(dim.key);
-        }
-      });
       pointsG.appendChild(circle);
+      circles.push(circle);
+    });
+
+    // Arrow key navigation within the radar group.
+    pointsG.addEventListener('keydown', (e) => {
+      const current = document.activeElement;
+      const idx = circles.indexOf(current);
+      if (idx === -1) return;
+
+      let next = -1;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        next = (idx + 1) % circles.length;
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        next = (idx - 1 + circles.length) % circles.length;
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const dim = RADAR_DIMS[idx];
+        onVisualActivate(dim.key);
+        onLiveActivate(dim.key);
+        return;
+      } else {
+        return;
+      }
+      e.preventDefault();
+      // Move roving tabindex.
+      circles[idx].setAttribute('tabindex', '-1');
+      circles[next].setAttribute('tabindex', '0');
+      circles[next].focus();
+      const nextDim = RADAR_DIMS[next];
+      onVisualActivate(nextDim.key);
     });
   }
 
@@ -278,9 +302,10 @@ export function renderQuadrant(gridEl, calloutEl, result) {
   const exec = dimensionScores.conversionSurface + dimensionScores.trustAtCapture + dimensionScores.signalToSales;
   const pov = dimensionScores.pointOfView;
 
-  // Build quadrant cells
+  // Build quadrant cells - roving tabindex: ONE tab stop for the group.
   gridEl.innerHTML = '';
-  QUADRANT_ORDER.forEach((q) => {
+  const cells = [];
+  QUADRANT_ORDER.forEach((q, cellIdx) => {
     const cell = document.createElement('div');
     cell.className = 'sc-quadrant';
     if (q.archetype === archetype.key) cell.classList.add('is-buyer');
@@ -295,8 +320,10 @@ export function renderQuadrant(gridEl, calloutEl, result) {
       cell.style.borderRight = '0.5px solid var(--color-border-subtle)';
     }
     cell.setAttribute('role', 'button');
-    cell.setAttribute('tabindex', '0');
-    cell.setAttribute('aria-label', q.name + (q.archetype === archetype.key ? ' (your archetype)' : ''));
+    // Roving tabindex: user's archetype cell starts as the one tab stop.
+    const isOwn = q.archetype === archetype.key;
+    cell.setAttribute('tabindex', isOwn ? '0' : '-1');
+    cell.setAttribute('aria-label', q.name + (isOwn ? ' (your archetype)' : ''));
 
     const numSpan = document.createElement('span');
     numSpan.className = 'q-num';
@@ -314,14 +341,45 @@ export function renderQuadrant(gridEl, calloutEl, result) {
     cell.addEventListener('focus', () => setActiveQuadrantVisual(gridEl, q.archetype));
     // aria-live update only on click/Enter/Space
     cell.addEventListener('click', () => setActiveQuadrant(gridEl, calloutEl, q.archetype));
-    cell.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        setActiveQuadrant(gridEl, calloutEl, q.archetype);
-      }
-    });
 
     gridEl.appendChild(cell);
+    cells.push(cell);
+  });
+
+  // Arrow key navigation within the quadrant group.
+  gridEl.addEventListener('keydown', (e) => {
+    const current = document.activeElement;
+    const idx = cells.indexOf(current);
+    if (idx === -1) return;
+
+    // 2x2 grid layout: top-left(0), top-right(1), bottom-left(2), bottom-right(3)
+    // Arrow keys move between adjacent cells; edges wrap within the group.
+    let next = -1;
+    if (e.key === 'ArrowRight') {
+      // Move right within row, wrapping to opposite column.
+      next = idx % 2 === 0 ? idx + 1 : idx - 1;
+    } else if (e.key === 'ArrowLeft') {
+      // Move left within row, wrapping to opposite column.
+      next = idx % 2 === 0 ? idx + 1 : idx - 1;
+    } else if (e.key === 'ArrowDown') {
+      // Move down within column, wrapping to opposite row.
+      next = idx < 2 ? idx + 2 : idx - 2;
+    } else if (e.key === 'ArrowUp') {
+      // Move up within column, wrapping to opposite row.
+      next = idx < 2 ? idx + 2 : idx - 2;
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setActiveQuadrant(gridEl, calloutEl, QUADRANT_ORDER[idx].archetype);
+      return;
+    } else {
+      return;
+    }
+    e.preventDefault();
+    // Move roving tabindex.
+    cells[idx].setAttribute('tabindex', '-1');
+    cells[next].setAttribute('tabindex', '0');
+    cells[next].focus();
+    setActiveQuadrantVisual(gridEl, QUADRANT_ORDER[next].archetype);
   });
 
   // Buyer dot - piecewise-linear mapping so the dot accurately reflects quadrant boundaries.

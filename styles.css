@@ -253,7 +253,7 @@
   .sc-radar-fill { fill: var(--color-accent); fill-opacity: 0.15; stroke: var(--color-accent); stroke-width: 1.5; }
   .sc-radar-point { fill: var(--color-paper-light); stroke: var(--color-accent); stroke-width: 2.5; cursor: pointer; transition: r 150ms ease, fill 150ms ease; }
   .sc-radar-point:hover, .sc-radar-point.is-active { fill: var(--color-accent); r: 13; }
-  .sc-radar-label { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.04em; fill: var(--color-ink-soft); text-transform: uppercase; cursor: pointer; transition: fill 150ms ease, font-weight 150ms ease; }
+  .sc-radar-label { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; fill: var(--color-ink-soft); text-transform: uppercase; cursor: pointer; transition: fill 150ms ease, font-weight 150ms ease; }
   .sc-radar-label:hover, .sc-radar-label.is-active { fill: var(--color-accent-dark); font-weight: 600; }
 
   .sc-pillar-callout { margin-top: auto; padding-top: 18px; border-top: 0.5px solid var(--color-border-subtle); }
@@ -264,8 +264,8 @@
 
   /* 2x2 */
   .sc-matrix-wrap { display: grid; grid-template-columns: 28px 1fr; grid-template-rows: 1fr 28px; gap: 8px; flex: 1; max-width: 360px; margin: 0 auto; width: 100%; }
-  .sc-y-axis-label { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); display: flex; align-items: center; justify-content: center; }
-  .sc-x-axis-label { text-align: center; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); padding-top: 8px; grid-column: 2; }
+  .sc-y-axis-label { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); display: flex; align-items: center; justify-content: center; }
+  .sc-x-axis-label { text-align: center; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); padding-top: 8px; grid-column: 2; }
   .sc-matrix-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; aspect-ratio: 1 / 1; border: 0.5px solid var(--color-border-strong); border-radius: 8px; overflow: hidden; position: relative; background: var(--color-paper); }
   .sc-quadrant { padding: 12px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: background 150ms ease; position: relative; border: 0.5px solid var(--color-border-faint); }
   .sc-quadrant:hover, .sc-quadrant.is-active { background: var(--color-accent-tint); }
@@ -591,12 +591,17 @@
 
 /* ===== Assessment (Demand Research Index) ===== */
 .assessment { padding: 72px 24px 96px; }
-.assessment .section-inner { max-width: 980px; margin: 0 auto; }
+/* Results area uses 1160px so the radar card gets meaningful width.
+   Quiz and intro screens are capped below to keep reading width comfortable. */
+.assessment .section-inner { max-width: 1160px; margin: 0 auto; }
 .dri-screen[hidden] { display: none; }
 
-.dri-screen[data-screen="intro"] { max-width: 640px; }
+.dri-screen[data-screen="intro"] { max-width: 640px; margin-inline: auto; }
 .dri-screen[data-screen="intro"] .display { margin: 16px 0 18px; }
 .dri-screen[data-screen="intro"] .btn { margin-top: 28px; }
+/* Cap the quiz surface so questions/options/progress stay at a readable width
+   even though the outer container is now 1160px. */
+.dri-screen[data-screen="quiz"] { max-width: 760px; margin-inline: auto; }
 
 /* Progress */
 .dri-progress { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
@@ -625,21 +630,20 @@
    The DRI version uses the same columns with a slightly tighter center card. */
 .dri-scorecard-grid { grid-template-columns: 1fr 1.5fr 1fr; }
 .dri-score-card .sc-score-value { margin-top: 12px; }
-/* Override the global margin-top:auto on sc-divider for the DRI score card.
-   In AIPQ the divider separates archetype from likelihood rows below it (auto = push down).
-   In DRI the divider separates score from archetype block and there is nothing below archetype,
-   so auto would pull archetype to the card bottom creating an awkward gap. */
-.dri-score-card .sc-divider { margin-top: 20px; }
+/* The divider uses margin-top: auto (inheriting the base .sc-divider rule) so the
+   score sits at top and the archetype block anchors at the bottom of the card,
+   filling any height without stranded blank space. */
 
-/* Primary CTA block: prominent placement directly below scorecard */
-.dri-cta-block { margin-top: 16px; padding: 28px 32px; background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-.dri-cta-frame { font-size: 1.0625rem; line-height: 1.5; color: var(--color-ink-soft); margin: 0; max-width: 520px; }
+/* Primary CTA block: prominent placement directly below scorecard.
+   Left-accent pattern (matches .callout-research / .sc-summary) signals primary action. */
+.dri-cta-block { margin-top: 32px; padding: 28px 32px; background: var(--color-accent-tint); border-left: 3px solid var(--color-accent); border-radius: 0 16px 16px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.dri-cta-frame { font-size: 1.0625rem; line-height: 1.5; color: var(--color-ink-soft); margin: 0; max-width: 480px; }
 
 /* Quadrant: distinct focus-visible ring that is not confused with is-buyer/is-active tint */
 .sc-quadrant:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
 
-/* Capture */
-.dri-capture { margin-top: 16px; padding: 28px; border: 0.5px solid var(--color-border-subtle); border-radius: 16px; background: var(--color-paper-light); }
+/* Capture: secondary block, plainer than the CTA above */
+.dri-capture { margin-top: 24px; padding: 28px; border: 0.5px solid var(--color-border-subtle); border-radius: 16px; background: var(--color-paper-light); }
 .dri-capture-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .dri-capture-copy h3 { margin: 8px 0 0; }
 .dri-capture-form { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -648,10 +652,15 @@
 .dri-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .dri-capture-msg { margin: 16px 0 0; font-size: 14px; }
 .dri-capture-msg.is-ok { color: var(--color-accent-dark); }
-.dri-capture-msg.is-error { color: var(--color-ink-soft); }
+/* Error state uses ink + weight 500 so it reads heavier than ambient grey text,
+   clearly more urgent than the cyan success state. (Red is barred by design system.) */
+.dri-capture-msg.is-error { color: var(--color-ink); font-weight: 500; }
 
-/* Radar focus state - keyboard parity with hover/is-active */
-#dri-radar-svg .sc-radar-point:focus-visible { outline: none; fill: var(--color-accent); r: 13; }
+/* Radar focus state - keyboard focus is DISTINCT from hover.
+   Hover/is-active: fill accent + r 13 (no stroke change).
+   Focus-visible: fill accent + r 13 + thicker dark-accent stroke so keyboard users
+   see a clear ring that mouse hover does not show. */
+#dri-radar-svg .sc-radar-point:focus-visible { outline: none; fill: var(--color-accent); r: 13; stroke: var(--color-accent-dark); stroke-width: 4; }
 
 /* Inline assessment CTA (homepage) */
 .inline-cta-section { background: var(--color-paper); padding: 56px 24px; border-top: 0.5px solid var(--color-border-subtle); }

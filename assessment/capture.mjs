@@ -2,14 +2,18 @@ const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 export function wireCapture(form, msgEl, getResult) {
   if (!form) return;
+  const emailInput = form.elements.email;
   const submitBtn = form.querySelector('button[type="submit"]');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = form.elements.email.value.trim();
+    const email = emailInput.value.trim();
     const website = form.elements.website.value; // honeypot
 
     if (!EMAIL_RE.test(email)) {
+      // Mark the field invalid so assistive technology announces the error.
+      emailInput.setAttribute('aria-invalid', 'true');
+      emailInput.setAttribute('aria-describedby', msgEl.id);
       showMsg(msgEl, 'Please enter a valid email.', false);
       return;
     }
@@ -25,11 +29,15 @@ export function wireCapture(form, msgEl, getResult) {
         body: JSON.stringify({ email, website, ...getResult() }),
       });
       if (!res.ok) throw new Error(`bad status ${res.status}`);
+      // Clear invalid state on success before hiding the form.
+      emailInput.removeAttribute('aria-invalid');
+      emailInput.removeAttribute('aria-describedby');
       // Placeholder copy: conversion-copywriter to refine.
       showMsg(msgEl, 'Check your inbox for the full breakdown. When you are ready to act on it, book a call with Evan above.', true);
       form.hidden = true;
       msgEl.focus();
     } catch (err) {
+      // Network error: the address itself is not invalid, so do not mark the field.
       showMsg(msgEl, 'We could not send that. Email evan@voranta.co and we will get it to you.', false);
       submitBtn.disabled = false;
       submitBtn.textContent = original;
