@@ -16,11 +16,11 @@ export function renderScorecard(result, els) {
   if (els.cta) {
     let ctaText;
     if (f) {
-      ctaText = f.tier === 'edge' ? 'Book a call to extend your lead' : 'Book a call to scope the fix';
+      ctaText = f.tier === 'edge' ? 'Book a call to extend your lead' : 'Book a call to close the gap';
     } else if (result.evenTier === 'high') {
       ctaText = 'Book a call to extend your lead';
     } else {
-      ctaText = 'Book a call to map next steps';
+      ctaText = 'Book a call to sequence the build';
     }
     els.cta.textContent = ctaText;
 

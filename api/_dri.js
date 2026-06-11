@@ -253,9 +253,9 @@ function buildVisitorText(result) {
   const ctaFraming = CTA_FRAMING[ctaKey];
   let buttonLabel;
   if (f && f.tier === 'edge') buttonLabel = 'Book a call to extend your lead';
-  else if (f) buttonLabel = 'Book a call to scope the fix';
+  else if (f) buttonLabel = 'Book a call to close the gap';
   else if (result.evenTier === 'high') buttonLabel = 'Book a call to extend your lead';
-  else buttonLabel = 'Book a call to map next steps';
+  else buttonLabel = 'Book a call to sequence the build';
   const ctaLine = `${buttonLabel}: ${BOOKING_URL}`;
 
   return [
@@ -333,9 +333,9 @@ function buildVisitorHtml(result) {
   const ctaFraming = CTA_FRAMING[ctaKey];
   let buttonLabel;
   if (f && f.tier === 'edge') buttonLabel = 'Book a call to extend your lead';
-  else if (f) buttonLabel = 'Book a call to scope the fix';
+  else if (f) buttonLabel = 'Book a call to close the gap';
   else if (result.evenTier === 'high') buttonLabel = 'Book a call to extend your lead';
-  else buttonLabel = 'Book a call to map next steps';
+  else buttonLabel = 'Book a call to sequence the build';
 
   return `<!DOCTYPE html>
 <html lang="en">
