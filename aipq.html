@@ -73,7 +73,7 @@
 <main id="main" tabindex="-1">
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-inner" style="grid-template-columns: 1fr;">
+  <div class="hero-inner">
     <div class="hero-text">
       <span class="eyebrow" style="display: block; margin-bottom: 20px;">The inaugural Voranta framework</span>
       <h1 class="display">AI Production Quotient</h1>
@@ -82,6 +82,34 @@
         <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg">Book an intro call</a>
         <a href="#sample-scorecard" class="btn btn-ghost btn-lg">See a sample scorecard</a>
       </div>
+    </div>
+    <!-- Empty-state AIPQ radar: structure only, no scores plotted; hidden at 880px -->
+    <!-- Cyan on outer ring only -->
+    <div class="hero-visual hero-visual--diagram" aria-hidden="true">
+      <svg class="aipq-hero-radar" viewBox="0 0 320 320" aria-hidden="true" focusable="false">
+        <!-- 6 axes from centre cx=160, cy=160, maxR=122 -->
+        <line x1="160" y1="160" x2="160" y2="38" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+        <line x1="160" y1="160" x2="265.6" y2="99" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+        <line x1="160" y1="160" x2="265.6" y2="221" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+        <line x1="160" y1="160" x2="160" y2="282" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+        <line x1="160" y1="160" x2="54.4" y2="221" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+        <line x1="160" y1="160" x2="54.4" y2="99" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+        <!-- Inner ring (r=40) -->
+        <polygon points="160,120 194.6,140 194.6,180 160,200 125.4,180 125.4,140" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.3"/>
+        <!-- Mid ring (r=80) -->
+        <polygon points="160,80 229.3,120 229.3,200 160,240 90.7,200 90.7,120" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.3"/>
+        <!-- Outer ring (r=122) -- cyan, one element -->
+        <polygon points="160,38 265.6,99 265.6,221 160,282 54.4,221 54.4,99" fill="none" stroke="#0891B2" stroke-width="1.25" opacity="0.6"/>
+        <!-- Pillar labels (AIPQ: WS, DQ, OA, EA, IR, GV) -->
+        <text x="160" y="28" text-anchor="middle" font-family="Geist Mono,monospace" font-size="10" fill="#6B6E6B" letter-spacing="0.06em">WS</text>
+        <text x="273" y="100" text-anchor="start" font-family="Geist Mono,monospace" font-size="10" fill="#6B6E6B" letter-spacing="0.06em">DQ</text>
+        <text x="273" y="224" text-anchor="start" font-family="Geist Mono,monospace" font-size="10" fill="#6B6E6B" letter-spacing="0.06em">OA</text>
+        <text x="160" y="300" text-anchor="middle" font-family="Geist Mono,monospace" font-size="10" fill="#6B6E6B" letter-spacing="0.06em">EA</text>
+        <text x="47" y="224" text-anchor="end" font-family="Geist Mono,monospace" font-size="10" fill="#6B6E6B" letter-spacing="0.06em">IR</text>
+        <text x="47" y="100" text-anchor="end" font-family="Geist Mono,monospace" font-size="10" fill="#6B6E6B" letter-spacing="0.06em">GV</text>
+        <!-- Centre dot -->
+        <circle cx="160" cy="160" r="3" fill="#A8ACA8" opacity="0.4"/>
+      </svg>
     </div>
   </div>
 </section>

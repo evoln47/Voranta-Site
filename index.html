@@ -92,7 +92,7 @@
       </div>
     </div>
     <div class="hero-visual" aria-hidden="true">
-      <img src="voranta-hero.webp" alt="" loading="eager" />
+      <img src="voranta-hero.webp" alt="" loading="eager" class="img-brand-tone" />
     </div>
   </div>
 </section>
@@ -150,21 +150,117 @@
     </div>
     <div class="diff-grid">
       <div class="product-card">
+        <!-- Framework card: radar polygon outline; cyan on outer ring only -->
+        <svg class="product-card-illus" viewBox="0 0 180 100" aria-hidden="true" focusable="false">
+          <!-- 6 axes from centre -->
+          <line x1="90" y1="50" x2="90" y2="12" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <line x1="90" y1="50" x2="123" y2="31" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <line x1="90" y1="50" x2="123" y2="69" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <line x1="90" y1="50" x2="90" y2="88" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <line x1="90" y1="50" x2="57" y2="69" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <line x1="90" y1="50" x2="57" y2="31" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <!-- Inner ring (r=19) -->
+          <polygon points="90,31 107,40.5 107,59.5 90,69 73,59.5 73,40.5" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.3"/>
+          <!-- Mid ring (r=28.5) -->
+          <polygon points="90,21.5 115,35.75 115,64.25 90,78.5 65,64.25 65,35.75" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.3"/>
+          <!-- Outer ring -- cyan, one element -->
+          <polygon points="90,12 123,31 123,69 90,88 57,69 57,31" fill="none" stroke="#0891B2" stroke-width="1.5" opacity="0.7"/>
+          <!-- Framework polygon outline (hollow, grey-ink-soft) -->
+          <polygon points="90,22 115,41 112,65 90,76 65,62 64,37" fill="none" stroke="#3F3F3D" stroke-width="1.25"/>
+          <!-- Axis labels -->
+          <text x="90" y="9" text-anchor="middle" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.06em" text-transform="uppercase">01</text>
+          <text x="126" y="32" text-anchor="start" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.06em">02</text>
+          <text x="126" y="71" text-anchor="start" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.06em">03</text>
+          <text x="90" y="96" text-anchor="middle" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.06em">04</text>
+          <text x="54" y="71" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.06em">05</text>
+          <text x="54" y="32" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.06em">06</text>
+        </svg>
         <span class="card-tag">The framework</span>
         <h3>An opinionated framework, exclusive to your category.</h3>
         <p>Voranta builds and validates the framework with you, then locks it to your category for the term. The methodology, the benchmark, and the published research all carry your brand. No competitor can license the same one.</p>
       </div>
       <div class="product-card">
+        <!-- Assessment card: question + progress-bar schematic; cyan on progress fill only -->
+        <svg class="product-card-illus" viewBox="0 0 180 100" aria-hidden="true" focusable="false">
+          <!-- Question text lines -->
+          <rect x="14" y="14" width="108" height="6" rx="3" fill="#A8ACA8" opacity="0.4"/>
+          <rect x="14" y="24" width="80" height="6" rx="3" fill="#A8ACA8" opacity="0.4"/>
+          <!-- Answer option rows -->
+          <rect x="14" y="40" width="152" height="10" rx="3" fill="none" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <rect x="14" y="55" width="152" height="10" rx="3" fill="none" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <rect x="14" y="70" width="152" height="10" rx="3" fill="none" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <!-- Progress bar track -->
+          <rect x="14" y="88" width="152" height="4" rx="2" fill="#A8ACA8" opacity="0.2"/>
+          <!-- Progress fill -- cyan, one element, ~60% done -->
+          <rect x="14" y="88" width="92" height="4" rx="2" fill="#0891B2"/>
+          <!-- Step label -->
+          <text x="170" y="92" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.06em">3/5</text>
+        </svg>
         <span class="card-tag">The assessment</span>
         <h3>A branded assessment on your domain.</h3>
         <p>A focused, framework-driven diagnostic, branded as yours, hosted on your domain. Buyers walk away with a diagnosis they didn't have before: a score, an archetype, and a specific gap to close. The kind of clarity they'd normally pay a consultant for.</p>
       </div>
       <div class="product-card">
+        <!-- Lead card: CRM data-row with score + archetype tag; cyan on score value only -->
+        <svg class="product-card-illus" viewBox="0 0 180 100" aria-hidden="true" focusable="false">
+          <!-- Column headers -->
+          <text x="14" y="16" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.08em" text-transform="uppercase">COMPANY</text>
+          <text x="90" y="16" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.08em">ARCHETYPE</text>
+          <text x="154" y="16" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.08em">SCORE</text>
+          <!-- Header rule -->
+          <line x1="14" y1="20" x2="166" y2="20" stroke="#A8ACA8" stroke-width="0.5" opacity="0.4"/>
+          <!-- Row 1 (highlighted) -->
+          <rect x="10" y="24" width="160" height="18" rx="3" fill="#A8ACA8" opacity="0.07"/>
+          <rect x="14" y="29" width="52" height="6" rx="2" fill="#A8ACA8" opacity="0.4"/>
+          <!-- Archetype tag -->
+          <rect x="90" y="27" width="42" height="12" rx="6" fill="#A8ACA8" opacity="0.2"/>
+          <text x="111" y="35" text-anchor="middle" font-family="Geist Mono,monospace" font-size="6.5" fill="#6B6E6B" letter-spacing="0.04em">BUILDER</text>
+          <!-- Score -- cyan, one element -->
+          <text x="154" y="36" text-anchor="end" font-family="Geist Mono,monospace" font-size="11" fill="#0891B2" letter-spacing="-0.02em" font-weight="500">74</text>
+          <!-- Row divider -->
+          <line x1="14" y1="43" x2="166" y2="43" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
+          <!-- Row 2 -->
+          <rect x="14" y="49" width="44" height="5" rx="2" fill="#A8ACA8" opacity="0.25"/>
+          <rect x="90" y="47" width="38" height="12" rx="6" fill="#A8ACA8" opacity="0.12"/>
+          <rect x="14" y="59" width="35" height="5" rx="2" fill="#A8ACA8" opacity="0.18"/>
+          <rect x="90" y="57" width="44" height="12" rx="6" fill="#A8ACA8" opacity="0.12"/>
+          <!-- Row dividers -->
+          <line x1="14" y1="56" x2="166" y2="56" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
+          <line x1="14" y1="69" x2="166" y2="69" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
+          <!-- Row 3 -->
+          <rect x="14" y="75" width="50" height="5" rx="2" fill="#A8ACA8" opacity="0.18"/>
+          <rect x="90" y="73" width="40" height="12" rx="6" fill="#A8ACA8" opacity="0.12"/>
+          <line x1="14" y1="83" x2="166" y2="83" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
+        </svg>
         <span class="card-tag">The lead</span>
         <h3>A pre-diagnosed lead, not a name and an email.</h3>
         <p>Every completion routes to your CRM with the buyer's score, archetype, and an AI-generated brief written against their result. Sales opens with the diagnosis on the table, not a cold pitch.</p>
       </div>
       <div class="product-card">
+        <!-- Benchmark card: distribution histogram, one cyan bar (the peak) -->
+        <svg class="product-card-illus" viewBox="0 0 180 100" aria-hidden="true" focusable="false">
+          <!-- Baseline -->
+          <line x1="20" y1="84" x2="166" y2="84" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+          <!-- Y-axis -->
+          <line x1="20" y1="18" x2="20" y2="84" stroke="#A8ACA8" stroke-width="0.75" opacity="0.3"/>
+          <!-- Histogram bars (10 bars, distribution shape, bar 6 is cyan peak) -->
+          <!-- bar widths: 12px each, gap 2px, starting at x=24 -->
+          <rect x="24" y="74" width="11" height="10" rx="1" fill="#A8ACA8" opacity="0.3"/>
+          <rect x="38" y="66" width="11" height="18" rx="1" fill="#A8ACA8" opacity="0.3"/>
+          <rect x="52" y="56" width="11" height="28" rx="1" fill="#A8ACA8" opacity="0.3"/>
+          <rect x="66" y="44" width="11" height="40" rx="1" fill="#A8ACA8" opacity="0.3"/>
+          <rect x="80" y="36" width="11" height="48" rx="1" fill="#A8ACA8" opacity="0.3"/>
+          <!-- Cyan bar -- the peak, one element -->
+          <rect x="94" y="34" width="11" height="50" rx="1" fill="#0891B2" opacity="0.7"/>
+          <rect x="108" y="34" width="11" height="50" rx="1" fill="#A8ACA8" opacity="0.3"/>
+          <rect x="122" y="50" width="11" height="34" rx="1" fill="#A8ACA8" opacity="0.3"/>
+          <rect x="136" y="62" width="11" height="22" rx="1" fill="#A8ACA8" opacity="0.3"/>
+          <rect x="150" y="72" width="11" height="12" rx="1" fill="#A8ACA8" opacity="0.3"/>
+          <!-- X-axis labels -->
+          <text x="20" y="93" text-anchor="middle" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.04em">LOW</text>
+          <text x="166" y="93" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.04em">HIGH</text>
+          <text x="99.5" y="18" text-anchor="middle" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.04em">PEAK</text>
+        </svg>
         <span class="card-tag">The benchmark</span>
         <h3>Your audience is the panel. No panel cost.</h3>
         <p>As completions accumulate, the aggregate becomes a co-authored annual research report under your brand. No syndicated panels, no third-party data buys, because the buyers taking your assessment are the evidence base.</p>
@@ -186,14 +282,34 @@
 <!-- FRAMEWORK TEASER -->
 <section style="background: var(--color-paper);">
   <div class="section-inner">
-    <div class="framework-teaser-row" style="display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap;">
-      <div style="max-width: 640px;">
+    <div class="framework-teaser-row" style="display: flex; align-items: center; gap: 64px; flex-wrap: wrap;">
+      <div style="max-width: 560px;">
         <span class="eyebrow" style="display: block; margin-bottom: 14px;">The AI Production Quotient</span>
         <h2>AIPQ maps the six conditions that determine whether AI reaches production.</h2>
         <div class="rule" style="margin-top: 18px;"></div>
         <p class="subhead" style="margin-top: 20px;">Enterprise AI buyers want to know why their pilots stall. AIPQ names the archetype that fits their situation and surfaces the one constraint most likely to block them.</p>
       </div>
-      <div>
+      <!-- CTA column: radar above button, both centred -->
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+        <!-- Empty-state AIPQ radar outline: structure only, no scores plotted -->
+        <!-- Cyan on outer ring only -->
+        <div class="framework-teaser-radar" aria-hidden="true">
+          <svg viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+            <!-- 6 axes from centre -->
+            <line x1="100" y1="100" x2="100" y2="24" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+            <line x1="100" y1="100" x2="165.8" y2="62" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+            <line x1="100" y1="100" x2="165.8" y2="138" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+            <line x1="100" y1="100" x2="100" y2="176" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+            <line x1="100" y1="100" x2="34.2" y2="138" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+            <line x1="100" y1="100" x2="34.2" y2="62" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
+            <!-- Inner ring (r=25) -->
+            <polygon points="100,75 121.7,87.5 121.7,112.5 100,125 78.3,112.5 78.3,87.5" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.3"/>
+            <!-- Mid ring (r=50) -->
+            <polygon points="100,50 143.3,75 143.3,125 100,150 56.7,125 56.7,75" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.3"/>
+            <!-- Outer ring (r=76) -- cyan, one element; no axis labels on teaser -->
+            <polygon points="100,24 165.8,62 165.8,138 100,176 34.2,138 34.2,62" fill="none" stroke="#0891B2" stroke-width="1" opacity="0.6"/>
+          </svg>
+        </div>
         <a href="/aipq" class="btn btn-ghost btn-lg">Explore the framework &nbsp;&rarr;</a>
       </div>
     </div>
@@ -217,6 +333,48 @@
         <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg founding-cta">Inquire about founding terms</a>
       </div>
       <div class="founding-hero-right">
+        <!-- Scorecard output illustration; cyan on score value only; light strokes on dark background -->
+        <svg class="founding-scorecard-illus" viewBox="0 0 240 220" aria-hidden="true" focusable="false">
+          <!-- Card outline -->
+          <rect x="8" y="8" width="224" height="204" rx="6" fill="none" stroke="rgba(244,247,244,0.12)" stroke-width="0.75"/>
+          <!-- Card header band -->
+          <rect x="8" y="8" width="224" height="36" rx="6" fill="rgba(244,247,244,0.05)" stroke="none"/>
+          <!-- Header label -->
+          <text x="22" y="29" font-family="Geist Mono,monospace" font-size="8" fill="rgba(244,247,244,0.45)" letter-spacing="0.08em">SAMPLE SCORECARD</text>
+          <!-- Divider -->
+          <line x1="8" y1="44" x2="232" y2="44" stroke="rgba(244,247,244,0.1)" stroke-width="0.5"/>
+          <!-- Score label -->
+          <text x="22" y="68" font-family="Geist Mono,monospace" font-size="8" fill="rgba(244,247,244,0.4)" letter-spacing="0.06em">OVERALL SCORE</text>
+          <!-- Score value -- cyan, one element -->
+          <text x="22" y="102" font-family="Geist,sans-serif" font-size="42" fill="#0891B2" letter-spacing="-0.04em" font-weight="500">74</text>
+          <text x="72" y="102" font-family="Geist Mono,monospace" font-size="16" fill="rgba(244,247,244,0.25)" letter-spacing="-0.02em">/100</text>
+          <!-- Divider -->
+          <line x1="22" y1="112" x2="218" y2="112" stroke="rgba(244,247,244,0.08)" stroke-width="0.5"/>
+          <!-- Archetype label -->
+          <text x="22" y="130" font-family="Geist Mono,monospace" font-size="8" fill="rgba(244,247,244,0.35)" letter-spacing="0.08em">ARCHETYPE</text>
+          <text x="22" y="148" font-family="Geist,sans-serif" font-size="15" fill="rgba(244,247,244,0.8)" letter-spacing="-0.015em" font-weight="500">The Builder</text>
+          <!-- Mini radar (grey-ramp on dark) -->
+          <g transform="translate(148,120)">
+            <!-- 6 axes r=44 -->
+            <line x1="0" y1="0" x2="0" y2="-44" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
+            <line x1="0" y1="0" x2="38.1" y2="-22" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
+            <line x1="0" y1="0" x2="38.1" y2="22" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
+            <line x1="0" y1="0" x2="0" y2="44" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
+            <line x1="0" y1="0" x2="-38.1" y2="22" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
+            <line x1="0" y1="0" x2="-38.1" y2="-22" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
+            <!-- Outer ring -->
+            <polygon points="0,-44 38.1,-22 38.1,22 0,44 -38.1,22 -38.1,-22" fill="none" stroke="rgba(244,247,244,0.2)" stroke-width="0.75"/>
+            <!-- Mid ring -->
+            <polygon points="0,-28 24.2,-14 24.2,14 0,28 -24.2,14 -24.2,-14" fill="none" stroke="rgba(244,247,244,0.15)" stroke-width="0.5"/>
+            <!-- Data shape (grey, not cyan -- cyan used above on score) -->
+            <polygon points="0,-36 30,-16 28,18 0,30 -22,16 -24,-20" fill="rgba(244,247,244,0.06)" stroke="rgba(244,247,244,0.35)" stroke-width="1"/>
+          </g>
+          <!-- Bottom divider -->
+          <line x1="8" y1="174" x2="232" y2="174" stroke="rgba(244,247,244,0.08)" stroke-width="0.5"/>
+          <!-- Archetype descriptor text -->
+          <text x="22" y="185" font-family="Geist Mono,monospace" font-size="7.5" fill="rgba(244,247,244,0.35)" letter-spacing="0.05em">TECHNICAL READINESS IN PLACE</text>
+          <text x="22" y="198" font-family="Geist Mono,monospace" font-size="7.5" fill="rgba(244,247,244,0.2)" letter-spacing="0.04em">CONSTRAINT: ADOPTION SURFACE</text>
+        </svg>
         <ul class="founding-benefits">
           <li>Co-build the inaugural framework directly with the methodology team</li>
           <li>Named as a founding benchmark contributor on the published methodology</li>
