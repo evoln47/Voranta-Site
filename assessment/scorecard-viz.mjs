@@ -37,7 +37,7 @@ const QUADRANT_ORDER = [
  * @param {Function} onLiveActivate - called with dimension key on click/Enter/Space (updates aria-live)
  */
 export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, onLiveActivate) {
-  const cx = 230, cy = 195, maxR = 145;
+  const cx = 230, cy = 218, maxR = 145;
   const n = RADAR_DIMS.length; // 5
   // Angles: start at top (-PI/2) going clockwise
   const angles = RADAR_DIMS.map((_, i) => (-Math.PI / 2) + (i * 2 * Math.PI / n));

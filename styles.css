@@ -255,14 +255,14 @@
   .sc-matrix-wrap { display: grid; grid-template-columns: 28px 1fr; grid-template-rows: 1fr 28px; gap: 8px; flex: 1; max-width: 360px; margin: 0 auto; width: 100%; }
   .sc-y-axis-label { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); display: flex; align-items: center; justify-content: space-between; }
   .sc-x-axis-label { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); padding-top: 8px; grid-column: 2; }
-  .sc-quadrant-callout { margin-top: auto; padding-top: 12px; border-top: 0.5px solid var(--color-border-subtle); font-size: 12px; line-height: 1.4; color: var(--color-ink-soft); }
+  .sc-quadrant-callout { margin-top: auto; padding-top: 12px; border-top: 0.5px solid var(--color-border-subtle); font-size: 14px; line-height: 1.45; color: var(--color-ink-soft); }
   .sc-matrix-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; aspect-ratio: 1 / 1; border: 0.5px solid var(--color-border-strong); border-radius: 8px; overflow: hidden; position: relative; background: var(--color-paper); }
   .sc-quadrant { padding: 12px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: background 150ms ease; position: relative; border: 0.5px solid var(--color-border-faint); }
   .sc-quadrant:hover, .sc-quadrant.is-active { background: var(--color-accent-tint); }
   .sc-quadrant.is-buyer { background: var(--color-accent-tint); }
   .sc-quadrant .q-num { font-family: var(--font-mono); font-size: 10px; color: var(--color-ink-mute); letter-spacing: 0.06em; }
   .sc-quadrant .q-name { font-size: 12px; font-weight: 500; color: var(--color-ink); line-height: 1.3; }
-  .sc-buyer-dot { position: absolute; width: 14px; height: 14px; background: var(--color-accent); border: 3px solid var(--color-paper); border-radius: 50%; transform: translate(-50%, 50%); z-index: 2; pointer-events: none; left: 76%; bottom: 48%; }
+  .sc-buyer-dot { position: absolute; width: 14px; height: 14px; background: var(--color-accent); border: 3px solid var(--color-paper); border-radius: 50%; transform: translate(-50%, 50%); z-index: 2; pointer-events: none; left: 50%; bottom: 50%; }
   .sc-buyer-dot::after { content: ""; position: absolute; inset: -7px; border: 1px dashed var(--color-accent); border-radius: 50%; opacity: 0.4; }
   .sc-quadrant-callout strong { color: var(--color-ink); font-weight: 500; }
 
