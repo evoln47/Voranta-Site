@@ -79,6 +79,40 @@ test('POV floored at high total -> Operator, not Authority; gap is Point of View
   assert.equal(r.gap.dimension, 'pointOfView');
 });
 
+// Independence of the rebuilt cluster: after the re-spec, Trust at Capture and
+// Signal to Sales measure different real-world things (the buyer's perceived
+// value at capture vs. the rep-facing hand-off system). A respondent must be
+// able to score high on one and low on the other. These two cases lock that the
+// scoring engine resolves lumpy cluster profiles to the correct lowest-dimension
+// gap, which is only meaningful if the dimensions are genuinely separable.
+test('high Trust, floored Signal -> gap is Signal to Sales', () => {
+  // pov = 2, conv = 2, trust = 4, signal = 0 -> signal strictly lowest
+  const r = scoreAnswers(from({ pov1: 1, pov2: 1, conv1: 1, conv2: 1, trust1: 2, trust2: 2, signal1: 0, signal2: 0 }));
+  assert.equal(r.dimensionScores.trustAtCapture, 4);
+  assert.equal(r.dimensionScores.signalToSales, 0);
+  assert.equal(r.gap.dimension, 'signalToSales');
+});
+
+test('high Signal, floored Trust -> gap is Trust at Capture', () => {
+  // pov = 2, conv = 2, trust = 0, signal = 4 -> trust strictly lowest
+  const r = scoreAnswers(from({ pov1: 1, pov2: 1, conv1: 1, conv2: 1, trust1: 0, trust2: 0, signal1: 2, signal2: 2 }));
+  assert.equal(r.dimensionScores.signalToSales, 4);
+  assert.equal(r.dimensionScores.trustAtCapture, 0);
+  assert.equal(r.gap.dimension, 'trustAtCapture');
+});
+
+// Lumpy cluster reaching the >=8 high threshold without uniform strength:
+// conv 4 + trust 4 + signal 0 = cluster 8 with POV low -> Operator, and the gap
+// correctly surfaces the floored Signal dimension. Confirms the cluster>=8 cut
+// still reads correctly now that the cluster is three independent constructs.
+test('lumpy cluster at threshold (conv+trust high, signal floored) -> Operator, gap Signal to Sales', () => {
+  // pov = 2, conv = 4, trust = 4, signal = 0 -> cluster 8 (high), POV low
+  const r = scoreAnswers(from({ pov1: 1, pov2: 1, conv1: 2, conv2: 2, trust1: 2, trust2: 2, signal1: 0, signal2: 0 }));
+  assert.equal(r.dimensionScores.conversionSurface + r.dimensionScores.trustAtCapture + r.dimensionScores.signalToSales, 8);
+  assert.equal(r.archetype.key, 'operator');
+  assert.equal(r.gap.dimension, 'signalToSales');
+});
+
 // Malignant corner 2: POV maxed, cluster floored -> total score lands low (~25),
 // but archetype must NOT be Renter (whose narrative claims someone else's lens)
 // when POV is maxed. Dimension-defined map yields Publisher, and the gap is a
