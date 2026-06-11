@@ -647,6 +647,7 @@
 .dri-capture-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .dri-capture-copy h3 { margin: 8px 0 0; }
 .dri-capture-form { display: flex; gap: 10px; flex-wrap: wrap; }
+.dri-capture-form[hidden] { display: none; } /* the display:flex above otherwise overrides the [hidden] attribute set on success */
 .dri-capture-form input[type="email"] { padding: 12px 16px; font-family: var(--font-sans); font-size: 15px; color: var(--color-ink); background: var(--color-paper); border: 1px solid var(--color-border-strong); border-radius: 6px; min-width: 240px; }
 .dri-capture-form input[type="email"]:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; border-color: var(--color-accent); }
 .dri-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
