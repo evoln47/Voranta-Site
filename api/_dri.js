@@ -25,16 +25,16 @@ const QUESTIONS = {
 // [key, label, gap blurb] in the order ties break for the #1 gap.
 const DIMENSIONS = [
   ['pointOfView', 'Point of View', 'You are renting the lens buyers research against. A named framework the market associates with you makes that lens yours.'],
-  ['conversionSurface', 'Conversion Surface', 'You earn attention, but your primary call to action leaks it. A lower-friction path and real conversion measurement turn earned attention into identifiable pipeline.'],
-  ['trustAtCapture', 'Trust at Capture', 'Your capture taxes trust instead of earning it. When the buyer gets something they value the moment they raise their hand, the exchange pays for itself.'],
-  ['signalToSales', 'Signal to Sales', 'Your reps walk in cold. When the hand-off routes a prioritized, account-specific brief to the right rep in time to prep, the first call starts on the gap, not on discovery.'],
+  ['conversionSurface', 'Conversion Surface', 'You earn attention, but your primary call to action leaks it. A lower-friction, relevant path and real conversion measurement turn earned attention into identifiable pipeline.'],
+  ['trustAtCapture', 'Trust at Capture', 'Your capture taxes trust instead of earning it. When the buyer receives something tailored to their situation the moment they raise their hand, the exchange pays for itself.'],
+  ['signalToSales', 'Signal to Sales', 'Your reps walk in cold. A hand-off that routes a prioritized, account-specific brief to the right rep in time to prep means the first call starts on the gap, not on discovery.'],
 ];
 
 const ARCHETYPES = {
-  renter: { key: 'renter', label: 'The Renter', blurb: "Your buyer's research runs on someone else's framework, and the attention you do earn leaks before it becomes pipeline." },
+  renter: { key: 'renter', label: 'The Renter', blurb: "Your buyer's research runs on someone else's framework. The attention you do earn leaks before it becomes pipeline." },
   publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You earn the read, not the lead. Strong point of view, but the conversion path, the value at capture, or the hand-off to sales is letting it slip.' },
-  operator: { key: 'operator', label: 'The Operator', blurb: 'You convert attention and brief your reps well, but you compete on the same lens as everyone else. No framework of your own.' },
-  authority: { key: 'authority', label: 'The Authority', blurb: 'You own a framework buyers research against, your capture earns the lead, and your hand-off briefs sales. Lock it to your category before a competitor builds the same advantage.' },
+  operator: { key: 'operator', label: 'The Operator', blurb: 'You convert attention and brief your reps well. But you compete on the same lens as everyone else. No framework of your own.' },
+  authority: { key: 'authority', label: 'The Authority', blurb: 'You own a framework buyers research against, your capture earns the lead, and your hand-off briefs sales. Lock this to your category before a competitor builds the same advantage.' },
 };
 
 // Re-derive the full result from answers. Mirrors assessment/scoring.mjs.
