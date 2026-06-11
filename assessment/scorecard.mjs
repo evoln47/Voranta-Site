@@ -4,28 +4,28 @@ export function renderScorecard(result, els) {
   els.archetypeName.textContent = result.archetype.label;
   els.archetypeBlurb.textContent = result.archetype.blurb;
 
-  // Provisional framing labels (conversion-copywriter owns final wording).
+  // Final framing labels (conversion-copywriter finalized wording).
   // focus.tier 'deficit' = a gap to close; 'edge' = the next lever to extend.
   // focus is null only when all four dimensions are exactly equal (evenTier set).
   const f = result.focus;
   if (f) {
-    els.gapName.textContent = f.tier === 'edge' ? 'Your next lever' : 'Your #1 gap';
+    els.gapName.textContent = f.tier === 'edge' ? 'Your strongest next move' : "Where you're leaking";
     els.gapLabel.textContent = f.label;
     els.gapBlurb.textContent = f.blurb;
   } else if (result.evenTier === 'high') {
-    els.gapName.textContent = 'Strong and even';
+    els.gapName.textContent = 'Strong across every dimension';
     els.gapLabel.textContent = '';
-    els.gapBlurb.textContent = 'No single dimension lags. Press this advantage before a competitor builds the same one.';
+    els.gapBlurb.textContent = 'All four dimensions score in the high band. That is a real position. The call is about extending the lead before a competitor reverse-engineers it.';
   } else {
-    els.gapName.textContent = 'Even across the board';
+    els.gapName.textContent = 'A systemic opportunity';
     els.gapLabel.textContent = '';
-    els.gapBlurb.textContent = 'No single weak link, which means the opportunity is systemic. The whole build can move together.';
+    els.gapBlurb.textContent = 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
   }
 
   if (els.cta) {
     els.cta.textContent = f
-      ? (f.tier === 'edge' ? 'Book a call to extend your lead' : 'Book a call to close the gap')
-      : 'Book a call to talk through your result';
+      ? (f.tier === 'edge' ? 'Book a call to extend your lead' : 'Book a call to scope the fix')
+      : 'Book a call to map next steps';
   }
 
   els.bars.innerHTML = dimensions.map((dim) => {
@@ -33,7 +33,7 @@ export function renderScorecard(result, els) {
     const pct = (raw / 4) * 100;
     const band = raw <= 1 ? 'low' : raw === 2 ? 'mid' : 'high';
     const isFocus = f && dim.key === f.dimension;
-    const focusTag = isFocus ? (f.tier === 'edge' ? ' &middot; next lever' : ' &middot; your gap') : '';
+    const focusTag = isFocus ? (f.tier === 'edge' ? ' &middot; next move' : ' &middot; your gap') : '';
     return `
       <div class="dri-bar${isFocus ? ' is-gap' : ''}">
         <div class="dri-bar-head">
