@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { scoreAnswers } from '../assessment/scoring.mjs';
-import { dimensions as FRAMEWORK_DIMS } from '../assessment/framework.mjs';
+import { dimensions as FRAMEWORK_DIMS, archetypes as FRAMEWORK_ARCHETYPES } from '../assessment/framework.mjs';
 
 // Provisional band-adaptive blurbs by dimension, for the content-level R1' check.
 const GAP_BLURB = Object.fromEntries(FRAMEWORK_DIMS.map((d) => [d.key, d.gap]));
@@ -204,25 +204,86 @@ function answersFor(profile) {
   return out;
 }
 
-// Each archetype's claimed-strong dimensions, faithful to the blurb prose:
-//   - Authority blurb claims POV ("you own a framework") plus an AGGREGATE
-//     "demand engine is broadly strong" (cluster-level, not per-dimension), so
-//     only pointOfView is an absolute per-dimension strength claim.
-//   - Publisher blurb claims POV ("strong point of view") and explicitly hedges
-//     the cluster ("the conversion path, the value at capture, or the hand-off
-//     ... is letting it slip").
-//   - Operator blurb claims an AGGREGATE engine ("runs well across capture and
-//     hand-off"), no single per-dimension absolute claim.
-//   - Renter blurb claims no strength.
+// Each archetype's claimed-strong dimensions, faithful to the blurb prose. A
+// dimension belongs here ONLY if the blurb asserts that specific dimension is
+// strong. The 2x2 gate guarantees POV >= 3 for Authority and Publisher, so those
+// two may name Point of View. It guarantees cluster >= 8 (an aggregate) for
+// Authority and Operator, but NOT that any single cluster dimension is strong:
+// Operator is reachable with signalToSales = 0 and Authority with
+// conversionSurface = 0. An aggregate "broadly strong demand engine" claim names
+// no single dimension, so it adds nothing here.
+//   - Authority: claims POV ("you own the lens") + an AGGREGATE engine ("the rest
+//     of your demand engine is broadly strong"). Only pointOfView is per-dimension.
+//   - Publisher: claims POV + hedges the cluster as a possible weakness ("the
+//     conversion path, the value at capture, or the hand-off ... is not closing
+//     the gap"). Only pointOfView is a strength claim.
+//   - Operator: claims an AGGREGATE engine ("a broadly strong demand engine"), no
+//     single per-dimension strength claim.
+//   - Renter: claims no strength.
 // R2 requires that a DEFICIT-framed focus dimension never be among an archetype's
 // claimed-strong set. An EDGE-framed focus (high-band lowest) is an opportunity,
 // not a strength denial, so it is exempt and cannot create a contradiction.
+//
+// NOTE: this encoding is hand-maintained and only ever READ by R2, never derived
+// from the blurb text, so it can silently drift out of sync with a copy rewrite
+// (exactly how the over-claiming Operator/Authority blurbs slipped past R2 once).
+// The static cluster-silent guard below (test 'archetype blurbs are cluster-
+// silent') is the real regression teeth: it reads the live blurb strings and
+// fails the instant an over-claim is reintroduced.
 const CLAIMED_STRONG = {
   authority: ['pointOfView'],
   publisher: ['pointOfView'],
   operator: [],
   renter: [],
 };
+
+// Static text guard. The 2x2 gate guarantees an aggregate cluster (>= 8) but
+// never any single cluster dimension, so Operator, Authority, and Renter must be
+// CLUSTER-SILENT: their blurbs may not contain vocabulary that asserts a specific
+// cluster dimension (Conversion Surface, Trust at Capture, or Signal to Sales)
+// works. This is a stronger, cheaper invariant than "no strength language" for
+// these three, and it is what gives the regression real teeth: it reads the live
+// blurb text, so it fails the moment an over-claim is reintroduced.
+//
+// Publisher is EXEMPT: its blurb deliberately names the cluster ("conversion
+// path, value at capture, hand-off") in a WEAKNESS frame, which the methodology
+// blesses. A bare-substring guard cannot tell strength from weakness, so we scope
+// the guard to the three cluster-silent archetypes only.
+//
+// The trigger list must have teeth against the OLD over-claiming copy: old
+// Operator "converts and hands off leads with context" and old Authority "engine
+// converts that attention into pipeline" are both caught by 'convert' and
+// 'hand'. POV vocabulary (lens, framework, point of view) is intentionally NOT a
+// trigger: Authority is allowed to claim POV.
+const CLUSTER_SILENT = ['renter', 'operator', 'authority'];
+const CLUSTER_VOCAB = [
+  'convert',   // Conversion Surface: "converts", "conversion"
+  'capture',   // Trust at Capture
+  'hand-off', 'hands off', 'handoff', 'hand off', // Signal to Sales hand-off
+  'signal',    // Signal to Sales
+  'route', 'routing', // Signal to Sales routing
+  'trust',     // Trust at Capture
+];
+
+test('archetype blurbs are cluster-silent (Operator/Authority/Renter name no specific cluster dimension)', () => {
+  for (const key of CLUSTER_SILENT) {
+    const blurb = FRAMEWORK_ARCHETYPES[key].blurb.toLowerCase();
+    for (const term of CLUSTER_VOCAB) {
+      assert.ok(!blurb.includes(term), `${key} blurb contains cluster-dimension vocabulary "${term}" but must be cluster-silent: "${FRAMEWORK_ARCHETYPES[key].blurb}"`);
+    }
+  }
+});
+
+// Guard-has-teeth: the cluster-silent guard MUST reject the OLD over-claiming
+// strings. If this ever passes, the trigger list lost its teeth and the hole is
+// rebuilt. We assert each old string trips at least one trigger.
+test('cluster-silent guard rejects the old over-claiming Operator/Authority copy', () => {
+  const OLD_OPERATOR = 'Your demand engine converts and hands off leads with context. The structural gap is the lens.';
+  const OLD_AUTHORITY = 'You own the lens buyers use to research the problem and your engine converts that attention into pipeline.';
+  const trips = (s) => CLUSTER_VOCAB.some((t) => s.toLowerCase().includes(t));
+  assert.ok(trips(OLD_OPERATOR), 'guard must reject old Operator copy ("converts and hands off")');
+  assert.ok(trips(OLD_AUTHORITY), 'guard must reject old Authority copy ("converts that attention")');
+});
 
 const HIGH = 3; // high-band floor, consistent with scorecard banding (raw >= 3 is "high")
 

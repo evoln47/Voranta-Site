@@ -41,10 +41,10 @@ const DIMENSIONS = [
 ];
 
 const ARCHETYPES = {
-  renter: { key: 'renter', label: 'The Renter', blurb: "Your content reaches buyers who then research the problem using someone else's framework. The lead goes to whoever owns that lens. That is the structural gap, and it is the most fixable one on this assessment." },
+  renter: { key: 'renter', label: 'The Renter', blurb: "Your content reaches buyers who then research the problem using someone else's framework. The lead goes to whoever owns that lens, and right now that is not you. Owning the framework the market researches against is what turns your content into pipeline you can claim. The call is about how you get there." },
   publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You have built a genuine point of view and buyers read it. The leak is what happens next. The conversion path, the value at capture, or the hand-off to sales is not closing the gap between earned attention and identifiable pipeline.' },
-  operator: { key: 'operator', label: 'The Operator', blurb: 'Your demand engine converts and hands off leads with context. The structural gap is the lens. You compete on a framework someone else defined, which means a well-resourced rival can outspend you on the category point of view you are currently renting.' },
-  authority: { key: 'authority', label: 'The Authority', blurb: 'You own the lens buyers use to research the problem and your engine converts that attention into pipeline. That combination is hard to build and easy to copy once it is visible. The question is how quickly you can extend the lead.' },
+  operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong demand engine. What it is missing is the lens. You compete on a framework someone else defined, which means a well-resourced rival can outspend you on the category point of view you are currently renting. The call is about making that lens yours before they do.' },
+  authority: { key: 'authority', label: 'The Authority', blurb: 'You own the lens buyers use to research the problem, and the rest of your demand engine is broadly strong. That combination is hard to build and easy to copy once it is visible. The question is how quickly you can extend the lead before a rival reverse-engineers it.' },
 };
 
 // Re-derive the full result from answers. Mirrors assessment/scoring.mjs.
