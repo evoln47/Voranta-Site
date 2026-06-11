@@ -438,15 +438,26 @@ function setActiveQuadrant(gridEl, calloutEl, archetypeKey) {
   setCalloutText(calloutEl, archetypeKey);
 }
 
+// Quadrant PLACEMENT descriptions. Deliberately DISTINCT from the archetype
+// narrative blurb (which is shown in the score card) so the quadrant callout does
+// not duplicate it. Framed by the two axes (point of view, execution). The two
+// high-execution cells (operator, authority) describe the engine in AGGREGATE and
+// name no specific cluster dimension, so they stay coherent with the focus/gap.
+const QUADRANT_PLACEMENT = {
+  renter: 'Low point of view, low execution. The framework buyers research against belongs to someone else, and the engine to capture and convert that attention is not yet built. Both axes need work. The point of view comes first, because it is what gives the execution engine something worth running.',
+  publisher: 'High point of view, low execution. The market engages the perspective. What is not yet built is the execution that turns that attention into pipeline. The point of view is the asset. The work is on the right axis.',
+  operator: 'High execution, low point of view. The execution engine is broadly built. What it runs on is a framework someone else defined. Moving up the point of view axis is what makes that engine produce returns a competitor cannot replicate by outspending you.',
+  authority: 'High point of view, high execution. The framework the market researches against is yours, and the engine behind it is broadly strong. The structural question is how quickly you extend the position before it becomes visible enough for a well-resourced rival to build against it.',
+};
+
 function setCalloutText(calloutEl, archetypeKey) {
   if (!calloutEl) return;
   const q = QUADRANT_ORDER.find((x) => x.archetype === archetypeKey);
   if (!q) return;
-  // Single source of truth: use archetypes[key].blurb from framework.mjs
-  const desc = (archetypes[archetypeKey] && archetypes[archetypeKey].blurb) || '';
+  const desc = QUADRANT_PLACEMENT[archetypeKey] || '';
   calloutEl.textContent = '';
   const strong = document.createElement('strong');
   strong.textContent = q.name;
   calloutEl.appendChild(strong);
-  calloutEl.appendChild(document.createTextNode(' ' + desc));
+  calloutEl.appendChild(document.createTextNode(' · ' + desc));
 }

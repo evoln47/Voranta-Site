@@ -135,12 +135,66 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
+// Email-only copy constants (not used by scoreAnswers; safe to add without
+// affecting parity). Keyed by result.archetype.key.
+
+const PREHEADER = {
+  renter:    'The framework buyers use to research your category belongs to someone else. Here is what your score means and what to do about it.',
+  publisher: 'You have built a real point of view. The leak is downstream. Here is your full breakdown.',
+  operator:  'Your demand engine is broadly strong. What it is missing is a lens you own. Here is your full breakdown.',
+  authority: 'You hold the position. The question is how fast you can extend it before a rival catches up. Here is your full breakdown.',
+};
+
+// LEAD_IN: one sentence after archetype label, before archetype.blurb.
+// Interpolated at render time with result.score.
+const LEAD_IN = {
+  renter:    (score) => `A score of ${score} places you in the largest group of B2B software marketing teams: reaching buyers who then research the problem on someone else's terms.`,
+  publisher: (score) => `A score of ${score} reflects a real content asset with a gap in what comes after the read.`,
+  operator:  (score) => `A score of ${score} reflects a broadly capable demand engine that competes on borrowed authority.`,
+  authority: (score) => `A score of ${score} reflects a demand engine with a genuine structural advantage over most of your peers.`,
+};
+
+// DIMENSION_FIRST_SENTENCE: keyed by dimension key, gap (low/mid) and edge (high).
+const DIMENSION_FIRST_SENTENCE = {
+  pointOfView:       { gap: 'You are renting the lens buyers research against.',    edge: 'Your point of view is your sharpest commercial asset.' },
+  conversionSurface: { gap: 'You earn attention but the primary action you ask for leaks it.', edge: 'Your conversion surface already works.' },
+  trustAtCapture:    { gap: 'What you ask for and what you give in return are out of balance.', edge: 'Capture already earns trust.' },
+  signalToSales:     { gap: 'Your reps start from scratch on every first call.',    edge: 'Your hand-off already gives reps meaningful context before the first call.' },
+};
+
+// POSITIONING: one paragraph per archetype. evenLow uses renter, evenHigh uses authority.
+// These paragraphs are cluster-silent for renter, operator, and authority per spec.
+const POSITIONING = {
+  renter:    'The Authority position requires two things: a point of view the market names and researches against, and a demand engine that converts and hands off that interest reliably. Your result shows open distance on both axes. That is not an unusual place to be. Most B2B software marketing teams compete on borrowed frameworks and measure pipeline loosely, if at all. What separates teams that close the gap is sequencing: they build the lens before they build the engine, because a well-designed conversion surface amplifies a proprietary framework, while the same surface running on a rented framework just sends buyers back to the framework\'s owner. The call is about where your sequence starts.',
+  publisher: 'You hold the harder of the two axes to build. A proprietary point of view the market associates with your brand cannot be bought quickly or replicated by outspending you. What separates The Publisher from The Authority is not the lens: it is what the lens connects to downstream. The strongest Publisher-to-Authority moves share a pattern: the same framework that earns the read becomes the mechanism that qualifies the hand-raise and briefs the rep. The point of view stops being a content asset and starts being the conversion architecture. The call is about closing that gap.',
+  operator:  'You have built the downstream infrastructure that most teams lack. Your demand engine is working at a level where adding a proprietary framework would compound immediately, because you have the machinery to convert the authority it generates. The risk is not your engine: it is that a well-funded competitor builds the framework first and your engine starts feeding their category. The Operator-to-Authority move is the most direct path in the framework: one axis to close, with the other already in place to amplify it. The call is about what that axis looks like for your category.',
+  authority: 'You hold both axes. That is a structural position most teams in your category do not have and cannot acquire quickly. The pattern among teams that sustain it is aggressive deepening, not coasting: they make the framework harder to reverse-engineer by building proprietary research, named constructs, and published methodology that take years to replicate. The risk is not a rival outperforming you on execution. It is a rival publishing a credible competing framework before you have locked the category\'s vocabulary. The call is about how fast you can make your position structurally irreversible.',
+};
+
+// CTA_FRAMING: sentence before the booking button, keyed on archetype key.
+// evenHigh uses authority, evenLow uses renter (same as POSITIONING key).
+const CTA_FRAMING = {
+  renter:    'Your score shows where the build starts. A 30 minute call with Evan maps the sequence so you are not rebuilding in the wrong order.',
+  publisher: 'The point of view is the hard part, and you have it. A 30 minute call with Evan identifies the specific downstream gap costing you the pipeline your content has already earned.',
+  operator:  'Your demand engine is ready to compound a framework you own. A 30 minute call with Evan scopes what that framework looks like for your category and how fast you can move.',
+  authority: 'You hold the position. A 30 minute call with Evan identifies the specific move that makes it structurally harder to challenge before a rival attempts it.',
+};
+
+// Returns the email subject line for the visitor email.
+// NOTE: api/lead.js:115 still builds the subject inline with the old format.
+// That line must be updated to call buildVisitorSubject(result) for this subject
+// to ship. That one-line wiring change is in api/lead.js, outside the edit scope
+// for this task.
+function buildVisitorSubject(result) {
+  return `Your Demand Research Index: ${result.score}/100. You are ${result.archetype.label}.`;
+}
+
 // Section head labels for the focus block.
 // tier 'deficit' = a gap to close; tier 'edge' = the next lever to extend.
 // evenTier labels are inline in buildVisitorText/buildVisitorHtml.
 function focusLabel(focus) {
   if (!focus) return 'Your focus';
-  return focus.tier === 'edge' ? 'Your strongest next move' : "Where you're leaking";
+  return focus.tier === 'edge' ? 'Your strongest next move' : 'Where you are leaking';
 }
 
 function buildLeadText(email, result) {
@@ -162,33 +216,69 @@ function buildLeadText(email, result) {
 function buildVisitorText(result) {
   const ds = result.dimensionScores;
   const f = result.focus;
-  const tagFor = (key) => {
-    if (!f || f.dimension !== key) return '';
-    return f.tier === 'edge' ? '   (next move)' : '   (your gap)';
-  };
-  const focusBlock = f
-    ? [`${focusLabel(f)}: ${f.label}`, f.blurb]
-    : result.evenTier === 'high'
-      ? ['Strong across every dimension', 'All four dimensions score in the high band. That is a real position. The call is about extending the lead before a competitor reverse-engineers it.']
-      : ['A systemic opportunity', 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.'];
-  const cta = f && f.tier === 'edge'
-    ? `Book a call to extend your lead: ${BOOKING_URL}`
-    : f
-      ? `Book a call to scope the fix: ${BOOKING_URL}`
-      : `Book a call to map next steps: ${BOOKING_URL}`;
+  const archetypeKey = result.archetype.key;
+
+  // Section 2: eyebrow + score
+  // Section 3: archetype label, lead-in, blurb
+  // Section 4: dimension breakdown rows
+  const dimRows = DIMENSIONS.map(([key, label]) => {
+    const raw = ds[key];
+    const b = band(raw);
+    const firstSentence = b === 'high'
+      ? DIMENSION_FIRST_SENTENCE[key].edge
+      : DIMENSION_FIRST_SENTENCE[key].gap;
+    return `  ${label}: ${raw} / 4  [${b}]  ${firstSentence}`;
+  });
+
+  // Section 5: PRIORITY focus callout
+  let priorityLabel;
+  let priorityBody;
+  if (f) {
+    priorityLabel = f.tier === 'deficit' ? 'Priority: where you are leaking' : 'Priority: your strongest next move';
+    priorityBody = f.blurb;
+  } else if (result.evenTier === 'high') {
+    priorityLabel = 'Strong across every dimension';
+    priorityBody = 'All four dimensions score in the high band. That is a real position. The call is about extending the lead before a competitor reverse-engineers it.';
+  } else {
+    priorityLabel = 'A systemic opportunity';
+    priorityBody = 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
+  }
+
+  // Section 6: positioning paragraph (evenLow -> renter, evenHigh -> authority)
+  const positioningKey = !f && result.evenTier === 'high' ? 'authority' : !f ? 'renter' : archetypeKey;
+  const positioning = POSITIONING[positioningKey];
+
+  // Section 7: CTA
+  const ctaKey = !f && result.evenTier === 'high' ? 'authority' : !f ? 'renter' : archetypeKey;
+  const ctaFraming = CTA_FRAMING[ctaKey];
+  let buttonLabel;
+  if (f && f.tier === 'edge') buttonLabel = 'Book a call to extend your lead';
+  else if (f) buttonLabel = 'Book a call to scope the fix';
+  else if (result.evenTier === 'high') buttonLabel = 'Book a call to extend your lead';
+  else buttonLabel = 'Book a call to map next steps';
+  const ctaLine = `${buttonLabel}: ${BOOKING_URL}`;
+
   return [
-    'Your Demand Research Index',
+    'DEMAND RESEARCH INDEX',
+    `${result.score} / 100`,
     '',
-    `Score: ${result.score}/100`,
-    `Archetype: ${result.archetype.label}`,
+    result.archetype.label,
+    LEAD_IN[archetypeKey](result.score),
     result.archetype.blurb,
     '',
-    'Where you stand:',
-    ...DIMENSIONS.map(([key, label]) => `  ${label.padEnd(20)} ${band(ds[key])}${tagFor(key)}`),
+    'WHERE YOU STAND',
+    ...dimRows,
     '',
-    ...focusBlock,
+    '--- PRIORITY ---',
+    priorityLabel,
+    priorityBody,
+    '---',
     '',
-    cta,
+    'WHERE YOU STAND IN THE FRAMEWORK',
+    positioning,
+    '',
+    ctaFraming,
+    ctaLine,
     '',
     'You took the Demand Research Index at voranta.co. Reply to this email and it reaches Evan directly.',
   ].join('\n');
@@ -197,58 +287,108 @@ function buildVisitorText(result) {
 function buildVisitorHtml(result) {
   const ds = result.dimensionScores;
   const f = result.focus;
-  const rows = DIMENSIONS.map(([key, label]) => {
-    const tag = f && key === f.dimension
-      ? ` <span style="color:#0891B2;font-weight:600;">${f.tier === 'edge' ? 'next move' : 'your gap'}</span>`
-      : '';
+  const archetypeKey = result.archetype.key;
+
+  // Section 4: four dimension rows with raw/4, band, and the first-sentence read.
+  const dimRows = DIMENSIONS.map(([key, label]) => {
+    const raw = ds[key];
+    const b = band(raw);
+    const firstSentence = b === 'high'
+      ? DIMENSION_FIRST_SENTENCE[key].edge
+      : DIMENSION_FIRST_SENTENCE[key].gap;
     return `
-              <tr><td style="padding:6px 0;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-                  <td style="font-size:15px;color:#0A0908;">${escapeHtml(label)}</td>
-                  <td align="right" style="font-size:14px;font-weight:600;color:#57564F;">${band(ds[key])}${tag}</td>
-                </tr></table>
+              <tr><td style="padding:10px 0;border-bottom:1px solid #E6EAE6;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="font-size:15px;font-weight:600;color:#0A0908;">${escapeHtml(label)}</td>
+                    <td align="right" style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#57564F;white-space:nowrap;">${escapeHtml(raw)} / 4&nbsp;&nbsp;${escapeHtml(b)}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" style="padding-top:4px;font-size:14px;line-height:1.5;color:#3A3A38;">${escapeHtml(firstSentence)}</td>
+                  </tr>
+                </table>
               </td></tr>`;
   }).join('');
+
+  // Section 5: PRIORITY callout
+  let priorityLabel;
+  let priorityBody;
+  if (f) {
+    priorityLabel = f.tier === 'deficit' ? 'Priority: where you are leaking' : 'Priority: your strongest next move';
+    priorityBody = f.blurb;
+  } else if (result.evenTier === 'high') {
+    priorityLabel = 'Strong across every dimension';
+    priorityBody = 'All four dimensions score in the high band. That is a real position. The call is about extending the lead before a competitor reverse-engineers it.';
+  } else {
+    priorityLabel = 'A systemic opportunity';
+    priorityBody = 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
+  }
+
+  // Section 6: positioning paragraph (evenLow -> renter, evenHigh -> authority)
+  const positioningKey = !f && result.evenTier === 'high' ? 'authority' : !f ? 'renter' : archetypeKey;
+  const positioning = POSITIONING[positioningKey];
+
+  // Section 7: CTA
+  const ctaKey = !f && result.evenTier === 'high' ? 'authority' : !f ? 'renter' : archetypeKey;
+  const ctaFraming = CTA_FRAMING[ctaKey];
+  let buttonLabel;
+  if (f && f.tier === 'edge') buttonLabel = 'Book a call to extend your lead';
+  else if (f) buttonLabel = 'Book a call to scope the fix';
+  else if (result.evenTier === 'high') buttonLabel = 'Book a call to extend your lead';
+  else buttonLabel = 'Book a call to map next steps';
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#ECF1ED;">
+  <!-- Section 1: hidden preheader -->
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;color:#ECF1ED;line-height:1px;">${escapeHtml(PREHEADER[archetypeKey])}</div>
+
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ECF1ED;">
     <tr><td align="center" style="padding:32px 16px;">
       <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0A0908;">
+
+        <!-- Section 2: eyebrow + score -->
         <tr><td style="padding-bottom:10px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#0891B2;font-weight:600;">Demand Research Index</td></tr>
         <tr><td style="padding-bottom:6px;">
           <span style="font-size:56px;font-weight:600;line-height:1;">${escapeHtml(result.score)}</span>
           <span style="font-size:20px;color:#57564F;"> / 100</span>
         </td></tr>
+
+        <!-- Section 3: archetype label + lead-in + blurb -->
         <tr><td style="padding:10px 0 4px;font-size:20px;font-weight:600;">${escapeHtml(result.archetype.label)}</td></tr>
+        <tr><td style="padding-bottom:6px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(LEAD_IN[archetypeKey](result.score))}</td></tr>
         <tr><td style="padding-bottom:24px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(result.archetype.blurb)}</td></tr>
 
+        <!-- Section 4: dimension breakdown -->
         <tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#57564F;font-weight:600;">Where you stand</td></tr>
-        ${rows}
+        ${dimRows}
 
-        ${(() => {
-          const headLabel = f
-            ? `${focusLabel(f)}: ${escapeHtml(f.label)}`
-            : result.evenTier === 'high' ? 'Strong across every dimension' : 'A systemic opportunity';
-          const body = f
-            ? escapeHtml(f.blurb)
-            : result.evenTier === 'high'
-              ? 'All four dimensions score in the high band. That is a real position. The call is about extending the lead before a competitor reverse-engineers it.'
-              : 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
-          return `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">${headLabel}</td></tr>
-        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">${body}</td></tr>`;
-        })()}
+        <!-- Section 5: PRIORITY focus callout -->
+        <tr><td style="padding:20px 0 0;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="border-left:3px solid #0891B2;background:#F0F4F1;padding:16px;">
+              <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;margin-bottom:8px;">${escapeHtml(priorityLabel)}</div>
+              <div style="font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(priorityBody)}</div>
+            </td></tr>
+          </table>
+        </td></tr>
 
+        <!-- Section 6: positioning paragraph -->
+        <tr><td style="padding:24px 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#57564F;font-weight:600;border-top:1px solid #D2D8D3;margin-top:20px;">Where you stand in the framework</td></tr>
+        <tr><td style="padding-bottom:24px;font-size:15px;line-height:1.6;color:#3A3A38;">${escapeHtml(positioning)}</td></tr>
+
+        <!-- Section 7: CTA block -->
+        <tr><td style="padding-bottom:16px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(ctaFraming)}</td></tr>
         <tr><td style="padding-bottom:30px;">
           <table role="presentation" cellpadding="0" cellspacing="0"><tr>
             <td style="background:#0891B2;border-radius:8px;">
-              <a href="${BOOKING_URL}" style="display:inline-block;padding:13px 24px;color:#ECF1ED;font-size:15px;font-weight:600;text-decoration:none;">${f && f.tier === 'edge' ? 'Book a call to extend your lead' : f ? 'Book a call to scope the fix' : 'Book a call to map next steps'}</a>
+              <a href="${BOOKING_URL}" style="display:inline-block;padding:13px 24px;color:#ECF1ED;font-size:15px;font-weight:600;text-decoration:none;">${escapeHtml(buttonLabel)}</a>
             </td>
           </tr></table>
         </td></tr>
 
+        <!-- Section 8: footer -->
         <tr><td style="border-top:1px solid #D2D8D3;padding-top:16px;font-size:13px;line-height:1.55;color:#57564F;">You took the Demand Research Index at voranta.co. Reply to this email and it reaches Evan directly.</td></tr>
       </table>
     </td></tr>
@@ -257,4 +397,4 @@ function buildVisitorHtml(result) {
 </html>`;
 }
 
-module.exports = { scoreAnswers, buildLeadText, buildVisitorText, buildVisitorHtml };
+module.exports = { scoreAnswers, buildLeadText, buildVisitorText, buildVisitorHtml, buildVisitorSubject };

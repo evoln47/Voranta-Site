@@ -13,7 +13,7 @@
 // stays small. (Inlining the large embedded HTML kept Vercel's zero-config from
 // detecting this file as a function.)
 
-const { scoreAnswers, buildLeadText, buildVisitorText, buildVisitorHtml } = require('./_dri.js');
+const { scoreAnswers, buildLeadText, buildVisitorText, buildVisitorHtml, buildVisitorSubject } = require('./_dri.js');
 
 const FROM = process.env.LEAD_FROM || 'Voranta <noreply@voranta.co>';
 const TO = process.env.LEAD_TO || 'evan@voranta.co';
@@ -112,7 +112,7 @@ module.exports = async (req, res) => {
     from: VISITOR_FROM,
     to: [email],
     reply_to: TO,
-    subject: `Your Demand Research Index: ${result.score}/100, ${result.archetype.label}`,
+    subject: buildVisitorSubject(result),
     html: buildVisitorHtml(result),
     text: buildVisitorText(result),
     headers: { 'List-Unsubscribe': `<mailto:${TO}?subject=unsubscribe>` },
