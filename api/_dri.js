@@ -124,7 +124,7 @@ function buildLeadText(email, result) {
     `Email: ${email}`,
     `Score: ${result.score}/100`,
     `Archetype: ${result.archetype.label}`,
-    `#1 gap: ${result.gap ? result.gap.label : 'none (balanced profile)'}`,
+    `#1 gap: ${result.gap ? result.gap.label : 'none (no #1 gap)'}`,
     '',
     'Dimension scores (0-4):',
     ...DIMENSIONS.map(([key, label]) => `  ${label}: ${ds[key]}`),
@@ -148,7 +148,7 @@ function buildVisitorText(result) {
     '',
     ...(result.gap
       ? [`Your #1 gap: ${result.gap.label}`, result.gap.blurb]
-      : ['No single gap', 'No single dimension lags the others. Your profile is balanced, with no one weak point to lead with.']),
+      : ['No #1 gap', 'No single dimension stands out as the one to prioritize first.']),
     '',
     result.gap ? `Book a call to close the gap: ${BOOKING_URL}` : `Book a call to talk through your result: ${BOOKING_URL}`,
     '',
@@ -192,8 +192,8 @@ function buildVisitorHtml(result) {
         ${result.gap
           ? `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">Your #1 gap: ${escapeHtml(result.gap.label)}</td></tr>
         <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(result.gap.blurb)}</td></tr>`
-          : `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">No single gap</td></tr>
-        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">No single dimension lags the others. Your profile is balanced, with no one weak point to lead with.</td></tr>`}
+          : `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">No #1 gap</td></tr>
+        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">No single dimension stands out as the one to prioritize first.</td></tr>`}
 
         <tr><td style="padding-bottom:30px;">
           <table role="presentation" cellpadding="0" cellspacing="0"><tr>

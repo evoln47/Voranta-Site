@@ -9,9 +9,9 @@ export function renderScorecard(result, els) {
     els.gapLabel.textContent = result.gap.label;
     els.gapBlurb.textContent = result.gap.blurb;
   } else {
-    els.gapName.textContent = 'No single gap';
+    els.gapName.textContent = 'No #1 gap';
     els.gapLabel.textContent = '';
-    els.gapBlurb.textContent = 'Your four dimensions score the same. No single one leads or lags.';
+    els.gapBlurb.textContent = 'No single dimension stands out as the one to prioritize first.';
   }
 
   if (els.cta) {
