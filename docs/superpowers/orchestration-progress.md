@@ -80,9 +80,19 @@ Key infra facts:
 - [x] B2,B3,B13,B17 + JSON-LD fixes | 620b80f | seo-engineer — SEO gate verified mechanically (all essentials present, JSON-LD valid, zero meta em-dashes)
 
 ALL 19 blocking items resolved. Entering stability review.
+- [x] cheap a11y/craft cleanup (focus on capture, aria-live, price-label weight, grid scope) | d266660 | frontend-engineer
+- [x] B20 tied-dimension gap contradiction -> gap nullable + balanced render (scoring+email) | 891ae1d | framework-architect + frontend-engineer (10/10 tests)
+- [x] B21 on-page CTA wired to gap state (no more "close the gap" on balanced) | 05e278a | frontend-engineer
+- [x] B22 score-neutral balanced copy synced to scorecard + email | 05e278a | conversion-copywriter (words) + frontend + api-engineer
 
-## Residual / discovered (non-blocking)
-- All-maxed respondent (every dim=4, score 100 -> Authority) still shows "Point of View" as the gap because pickGap() resolves ties to the first array dimension. Edge case (requires a literally perfect score); not a broken-state gate failure. Candidate: suppress gap row when the gap dimension == max, OR address in parked re-spec. Recorded non-blocking.
+FINAL: Acceptance Bar met. Branch pushed. Preview: https://voranta-site-git-agent-orchestrated-build-voranta.vercel.app
+
+## /api/lead verification status (honest limit)
+- COULD NOT verify the capture->email path unattended. The preview deployment is behind Vercel deployment protection (GET and POST to /api/lead both return HTTP 401, the platform auth gate, before reaching the function). So a 404-vs-working distinction is not observable without an authenticated/bypass request, and Resend email cannot be sent unattended anyway.
+- Reassurance: this run changed only api/_dri.js (imported bulk) plus its email copy; api/lead.js (thin entrypoint) and vercel.json were NOT touched, so zero-config function detection is unchanged from the last good production deploy. Human should test capture on the preview (authenticated) or after merge.
+
+## Residual / discovered
+- [PROMOTED TO BLOCKING B20] Gap/archetype contradiction on tied dimensions. Verified empirically: when all four dimensions tie high (e.g. all=3 -> Authority score 75; all=4 -> Authority score 100), pickGap() resolves the tie to Point of View and shows "you are renting the lens", contradicting the Authority "you own a framework" narrative on BOTH the results screen AND the visitor email. Same must-fix class as B1; reachable below a perfect score by any uniformly-confident answerer. Initial non-blocking dismissal ("requires a perfect score") was WRONG. Fix: gap = null when no dimension is genuinely lowest (gap dim score == max dim score); render results + email gracefully with no gap. Synced scoring.mjs + api/_dri.js + tests.
 - Code-comment em-dashes in aipq.html (script comments) + styles.css (CSS comments) — not user-facing copy, but CLAUDE.md says "anywhere"; frontend to tidy opportunistically during its pass. All USER-FACING em-dashes are the meta tags (B2).
 
 ## Parked for human (require approval)
