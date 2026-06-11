@@ -24,7 +24,11 @@ Plan: design-first (framework-architect designs mechanism + outcome map + measur
 2. Add a visual component to the DRI RESULTS like the AIPQ radar chart + 2x2 quadrant. [v1 built; redesigning to AIPQ-quality per review]
 3. Make the EMAIL results breakdown more in-depth and valuable, tailored to the specific results. [next]
 
-## APPROVED (human): 5-question weighted framework rebuild (REPLACES the 12-question /100 model)
+## DONE + PUSHED: 5-question weighted framework rebuild (commits 6e3efaf..7ff01ed)
+Shipped end-to-end: 5 weighted dimensions (incl Buyer Research Sensing), one 6-point question each, weighted DRI, Upstream/Downstream archetypes, pentagon radar, re-cut quadrant + archetype-presentation fix (one description + one-line caption + low/high endpoint labels), email adapted (5 rows, design preserved), copy finalized (plain, no axis, no "the call is about", cluster-silent, parity), counts fixed (five questions, ~1 minute), pentagon vertically centered + callout 14px. 20/20 across 7776 profiles.
+MINOR / OPTIONAL FOLLOW-UPS (non-blocking): aipq.html sample scorecard has the SAME old quadrant double-description (line ~254) - apply the one-line-caption fix there too. Quadrant keyboard ArrowLeft/Right behave identically (minor a11y). Dead .sc-matrix-caption CSS rule. CTA-placement marketing labels ("See how it works", "Take the 1-minute assessment") are functional but could get a conversion-copywriter framing pass.
+
+## (historical, approved+built) 5-question weighted framework rebuild spec
 Decisions locked: 5th dimension = Buyer Research Sensing; weighting = funnel-causal. FULL SPEC (framework-architect proposal, approved):
 - FIVE dimensions, ONE question each (5 questions total): pointOfView, buyerResearchSensing (NEW: do you systematically learn what buyers research + feed it back to sharpen POV), conversionSurface, trustAtCapture, signalToSales. Independence checked across all 10 pairs (Sensing vs Signal is the closest - keep Sensing market/strategy-facing, Signal account/rep-facing).
 - SCALE: 6-point behaviorally-anchored, forced-choice (no neutral), option values 0/20/40/60/80/100. Dimension /100 = the chosen option value directly (one item). No vanity/leading top option (no "we run an assessment").
