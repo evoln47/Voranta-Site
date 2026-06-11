@@ -93,7 +93,7 @@ export function renderScorecard(result, els) {
     } else if (result.evenTier === 'high') {
       if (els.radarCalloutName) els.radarCalloutName.textContent = 'Strong across every dimension';
       if (els.radarCalloutScore) els.radarCalloutScore.textContent = '';
-      if (els.radarCalloutReading) els.radarCalloutReading.textContent = 'All four dimensions score in the high band. That is a real position. The call is about extending the lead before a competitor reverse-engineers it.';
+      if (els.radarCalloutReading) els.radarCalloutReading.textContent = 'All five dimensions score in the high band. That is a real position. The call is about extending the lead before a competitor reverse-engineers it.';
     } else {
       if (els.radarCalloutName) els.radarCalloutName.textContent = 'A systemic opportunity';
       if (els.radarCalloutScore) els.radarCalloutScore.textContent = '';

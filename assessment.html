@@ -113,10 +113,10 @@
 
           <!-- Card 2: Radar with focus callout -->
           <div class="sc-card">
-            <div class="sc-card-head"><h3>Four-dimension diagnostic</h3></div>
+            <div class="sc-card-head"><h3>Five-dimension diagnostic</h3></div>
             <div class="sc-radar-wrap">
               <!-- role="group" so screen readers can traverse child buttons; aria-label describes purpose -->
-              <svg class="sc-radar-svg" id="dri-radar-svg" viewBox="0 0 470 400" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Radar chart: four demand dimensions. Activate a point to explore each score.">
+              <svg class="sc-radar-svg" id="dri-radar-svg" viewBox="0 0 470 400" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Radar chart: five demand dimensions. Activate a point to explore each score.">
                 <polygon class="sc-radar-ring" points="" id="dri-ring-0"></polygon>
                 <polygon class="sc-radar-ring" points="" id="dri-ring-1"></polygon>
                 <polygon class="sc-radar-ring" points="" id="dri-ring-2"></polygon>
@@ -127,7 +127,7 @@
                 <g id="dri-axis-labels"></g>
               </svg>
             </div>
-            <!-- sr-only dimension list: screen-reader fallback for the four scores -->
+            <!-- sr-only dimension list: screen-reader fallback for the five scores -->
             <ul class="sr-only" id="dri-dimension-list" aria-label="Dimension scores"></ul>
             <!-- Callout: updated on click/Enter/Space only (no hover spam) -->
             <div class="sc-pillar-callout" aria-live="polite" aria-atomic="true">
@@ -144,12 +144,12 @@
             <div class="sc-card-head"><h3>Archetype placement</h3></div>
             <div class="sc-radar-wrap">
               <div class="sc-matrix-wrap">
-                <div class="sc-y-axis-label">Point of View &rarr;</div>
+                <div class="sc-y-axis-label"><span>low strategy</span><span>strong strategy</span></div>
                 <div class="sc-matrix-grid" id="dri-matrix-grid" role="group" aria-label="2x2 archetype quadrant. Activate a cell to read the archetype description.">
                   <!-- Quadrant cells injected by scorecard-viz.mjs -->
                 </div>
                 <div></div>
-                <div class="sc-x-axis-label">Execution Engine &rarr;</div>
+                <div class="sc-x-axis-label"><span>low execution</span><span>strong execution</span></div>
               </div>
             </div>
             <!-- Callout: updated on click/Enter/Space only -->

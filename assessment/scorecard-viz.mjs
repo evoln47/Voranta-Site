@@ -8,12 +8,14 @@
 import { dimensions, archetypes } from './framework.mjs';
 
 // Dimension display config: order, label lines, short reading blurb.
-// Lines are the two-word splits used as SVG axis labels (mono uppercase).
+// Lines are the word splits used as SVG axis labels (mono uppercase).
+// Five dimensions in funnel order: pov -> sensing -> conv -> trust -> signal.
 const RADAR_DIMS = [
-  { key: 'pointOfView',       label: 'Point of View',      lines: ['POINT', 'OF VIEW'] },
-  { key: 'conversionSurface', label: 'Conversion Surface', lines: ['CONVERSION', 'SURFACE'] },
-  { key: 'trustAtCapture',    label: 'Trust at Capture',   lines: ['TRUST AT', 'CAPTURE'] },
-  { key: 'signalToSales',     label: 'Signal to Sales',    lines: ['SIGNAL', 'TO SALES'] },
+  { key: 'pointOfView',            label: 'Point of View',            lines: ['POINT', 'OF VIEW'] },
+  { key: 'buyerResearchSensing',   label: 'Buyer Research Sensing',   lines: ['BUYER', 'RESEARCH', 'SENSING'] },
+  { key: 'conversionSurface',      label: 'Conversion Surface',       lines: ['CONVERSION', 'SURFACE'] },
+  { key: 'trustAtCapture',         label: 'Trust at Capture',         lines: ['TRUST AT', 'CAPTURE'] },
+  { key: 'signalToSales',          label: 'Signal to Sales',          lines: ['SIGNAL', 'TO SALES'] },
 ];
 
 // Quadrant cell order in the 2x2 grid (HTML row-major: top-left, top-right,
@@ -36,7 +38,7 @@ const QUADRANT_ORDER = [
  */
 export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, onLiveActivate) {
   const cx = 230, cy = 195, maxR = 145;
-  const n = RADAR_DIMS.length; // 4
+  const n = RADAR_DIMS.length; // 5
   // Angles: start at top (-PI/2) going clockwise
   const angles = RADAR_DIMS.map((_, i) => (-Math.PI / 2) + (i * 2 * Math.PI / n));
 
@@ -379,15 +381,17 @@ export function renderQuadrant(gridEl, calloutEl, result) {
   });
 
   // Buyer dot - piecewise-linear mapping so the dot accurately reflects quadrant boundaries.
-  // Axes use fraction thresholds: povFrac = pov/100 with divider at 0.75;
-  // execMean = mean(conv, trust, signal each /100) with divider at 2/3.
-  // leftPct: execution axis (0 = left/exec-low, 100 = right/exec-high), divider at 2/3.
-  // bottomPct: POV axis (0 = bottom/pov-low, 100 = top/pov-high), divider at 0.75.
+  // New 5-dimension axes:
+  //   vertical   = Upstream mean = (pointOfView + buyerResearchSensing) / 2 / 100, divider at 0.70
+  //                (0 = bottom/strategy-low, 100 = top/strategy-high)
+  //   horizontal = Downstream mean = (conversionSurface + trustAtCapture + signalToSales) / 3 / 100, divider at 2/3
+  //                (0 = left/execution-low, 100 = right/execution-high)
+  // Exact-threshold values are nudged into the high half so the dot matches the archetype cell.
   const MIN_PCT = 8, MAX_PCT = 92, THRESHOLD_NUDGE = 3;
-  const EXEC_DIV = 2 / 3;  // ~0.6667
-  const POV_DIV = 0.75;
+  const EXEC_DIV = 2 / 3;      // downstream threshold: ~0.6667
+  const UPSTREAM_DIV = 0.70;   // upstream threshold
 
-  const povFrac = dimensionScores.pointOfView / 100;
+  const upMean = (dimensionScores.pointOfView + dimensionScores.buyerResearchSensing) / 200;
   const execMean = (dimensionScores.conversionSurface + dimensionScores.trustAtCapture + dimensionScores.signalToSales) / 300;
 
   let leftPct, bottomPct;
@@ -396,10 +400,10 @@ export function renderQuadrant(gridEl, calloutEl, result) {
   } else {
     leftPct = execMean === EXEC_DIV ? 50 + THRESHOLD_NUDGE : 50 + ((execMean - EXEC_DIV) / (1 - EXEC_DIV)) * 50;
   }
-  if (povFrac < POV_DIV) {
-    bottomPct = (povFrac / POV_DIV) * 50;
+  if (upMean < UPSTREAM_DIV) {
+    bottomPct = (upMean / UPSTREAM_DIV) * 50;
   } else {
-    bottomPct = povFrac === POV_DIV ? 50 + THRESHOLD_NUDGE : 50 + ((povFrac - POV_DIV) / (1 - POV_DIV)) * 50;
+    bottomPct = upMean === UPSTREAM_DIV ? 50 + THRESHOLD_NUDGE : 50 + ((upMean - UPSTREAM_DIV) / (1 - UPSTREAM_DIV)) * 50;
   }
   leftPct = Math.max(MIN_PCT, Math.min(MAX_PCT, leftPct));
   bottomPct = Math.max(MIN_PCT, Math.min(MAX_PCT, bottomPct));
@@ -443,16 +447,14 @@ function setActiveQuadrant(gridEl, calloutEl, archetypeKey) {
   setCalloutText(calloutEl, archetypeKey);
 }
 
-// Quadrant PLACEMENT descriptions. Deliberately DISTINCT from the archetype
-// narrative blurb (which is shown in the score card) so the quadrant callout does
-// not duplicate it. The two high-execution cells (operator, authority) describe
-// the funnel in AGGREGATE and name no specific cluster dimension, so they stay
-// coherent with the focus/gap.
+// Quadrant placement captions. One line each, 10-14 words. The full narrative
+// description lives only on Card 1 (the dark score card). Provisional wording;
+// conversion-copywriter refines.
 const QUADRANT_PLACEMENT = {
-  renter: 'Point of view is low and the funnel behind it is not yet built. The framework buyers research against belongs to someone else. The build starts with the point of view, because a proprietary framework is what gives the funnel something worth running on.',
-  publisher: 'Strong point of view, funnel not yet built out. Buyers engage the perspective. The work is connecting that engagement to identifiable pipeline through a conversion path, a capture exchange, and a sales hand-off that all pull in the same direction.',
-  operator: 'Strong funnel, point of view is the gap. The machinery to act on interest is broadly in place. What it runs on is a framework someone else defined. Building a proprietary category point of view is what makes that funnel produce returns a competitor cannot replicate by outspending you.',
-  authority: 'Strong point of view and a broadly strong funnel. The framework the market researches against is yours. The structural question is how quickly you extend the position before it becomes visible enough for a well-resourced rival to build against it.',
+  renter:    'Low strategy, low execution. The full build starts here.',
+  publisher: 'Strong strategy, execution is the gap to close.',
+  operator:  'Strong execution, strategy is the gap to close.',
+  authority: 'Strong strategy and strong execution. Extend the position.',
 };
 
 function setCalloutText(calloutEl, archetypeKey) {
