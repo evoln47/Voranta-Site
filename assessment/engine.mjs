@@ -8,7 +8,9 @@ export function createQuiz({ mountEl, progressFill, progressLabel, onComplete })
     const q = questions[index];
     const qId = `dri-q-${index}`;
     progressLabel.textContent = `Question ${index + 1} of ${questions.length}`;
-    progressFill.style.width = `${((index + 1) / questions.length) * 100}%`;
+    // Fill reflects questions COMPLETED, not reached, so the bar never reads 100%
+    // before the final answer is submitted. advance() sets 100% on completion.
+    progressFill.style.width = `${(index / questions.length) * 100}%`;
 
     const selectedIndex = answers[index] !== undefined ? answers[index].choiceIndex : null;
 

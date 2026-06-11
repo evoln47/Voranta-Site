@@ -162,6 +162,8 @@
   .cta-section p { color: rgba(244,247,244,0.75); font-size: 1.0625rem; max-width: 600px; }
   .cta-section .btn-ghost { color: var(--color-paper-light); border-color: rgba(244,247,244,0.3); background: transparent; }
   .cta-section .btn-ghost:hover { background: var(--color-paper-light); color: var(--color-ink); border-color: var(--color-paper-light); }
+  .cta-section .cta-note { margin-top: 16px; font-size: 14px; opacity: 0.75; }
+  .cta-section .cta-actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
 
   /* Footer */
   footer { padding: 48px 24px 32px; }
@@ -686,6 +688,12 @@
    Empty-state AIPQ radar outline as a flex item in
    .framework-teaser-row. Sized at ~200px, centred in its column.
    ============================================================ */
+.framework-teaser-row { display: flex; align-items: center; gap: 64px; flex-wrap: wrap; }
+.framework-teaser-copy { max-width: 560px; }
+/* Reuse the section-head pattern (eyebrow, rule, subhead spacing + the cyan rule);
+   drop its 56px bottom margin so the copy stays vertically centred against the radar. */
+.framework-teaser-copy .section-head { margin-bottom: 0; }
+.framework-teaser-cta { display: flex; flex-direction: column; align-items: center; gap: 24px; }
 .framework-teaser-radar {
   flex-shrink: 0;
   width: 200px;
