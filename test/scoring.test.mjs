@@ -2,6 +2,11 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { scoreAnswers } from '../assessment/scoring.mjs';
+import { dimensions as FRAMEWORK_DIMS } from '../assessment/framework.mjs';
+
+// Provisional band-adaptive blurbs by dimension, for the content-level R1' check.
+const GAP_BLURB = Object.fromEntries(FRAMEWORK_DIMS.map((d) => [d.key, d.gap]));
+const EDGE_BLURB = Object.fromEntries(FRAMEWORK_DIMS.map((d) => [d.key, d.edge]));
 
 const require = createRequire(import.meta.url);
 const dri = require('../api/_dri.js'); // server-side mirror; must stay in exact sync
@@ -10,12 +15,13 @@ const IDS = ['pov1', 'pov2', 'conv1', 'conv2', 'trust1', 'trust2', 'signal1', 's
 const all = (choiceIndex) => IDS.map((id) => ({ questionId: id, choiceIndex }));
 const from = (map) => IDS.map((id) => ({ questionId: id, choiceIndex: map[id] }));
 
-test('all lowest answers -> Renter, score 0, gap null (all dimensions tied)', () => {
+test('all lowest answers -> Renter, score 0, no focus, evenTier low (all dimensions equal)', () => {
   const r = scoreAnswers(all(0));
   assert.equal(r.points, 0);
   assert.equal(r.score, 0);
   assert.equal(r.archetype.key, 'renter');
-  assert.equal(r.gap, null);
+  assert.equal(r.focus, null);
+  assert.equal(r.evenTier, 'low'); // even-low: honest, never "strong and even"
 });
 
 test('all highest answers -> Authority, score 100', () => {
@@ -25,64 +31,85 @@ test('all highest answers -> Authority, score 100', () => {
   assert.equal(r.archetype.key, 'authority');
 });
 
-// All dimensions tied -> no genuine lowest -> gap is null. Previously this
-// resolved to the first array dimension (Point of View) and falsely told an
-// all-high Authority taker they were "renting the lens" they actually own.
-test('all dimensions tied high -> Authority, gap is null (no false gap)', () => {
-  const r = scoreAnswers(all(2)); // every dimension = 4, tied
+// All dimensions equal -> no single lowest -> focus is null (the ONLY no-focus
+// state). evenTier reports the band so copy stays honest: all-high is "strong and
+// even", all-low/mid is "even, opportunity is systemic". An all-high Authority is
+// never told they are "renting the lens" they actually own.
+test('all dimensions equal high -> Authority, no focus, evenTier high', () => {
+  const r = scoreAnswers(all(2)); // every dimension = 4, equal
   assert.equal(r.archetype.key, 'authority');
   assert.equal(r.score, 100);
-  assert.equal(r.gap, null);
+  assert.equal(r.focus, null);
+  assert.equal(r.evenTier, 'high');
 });
 
-test('all dimensions tied mid -> gap is null', () => {
-  const r = scoreAnswers(all(1)); // every dimension = 2, tied
-  assert.equal(r.gap, null);
+test('all dimensions equal mid -> no focus, evenTier low', () => {
+  const r = scoreAnswers(all(1)); // every dimension = 2, equal -> band mid, < HIGH
+  assert.equal(r.focus, null);
+  assert.equal(r.evenTier, 'low');
 });
 
-// A genuine single-lowest dimension still returns the correct non-null gap.
-test('single lowest dimension -> non-null gap on that dimension', () => {
+// A genuine single-lowest dimension returns a non-null focus on that dimension.
+test('single lowest dimension -> non-null focus on that dimension', () => {
   // pov = 4, conv = 4, trust = 4, signal = 2 -> signal is strictly lowest
   const r = scoreAnswers(from({ pov1: 2, pov2: 2, conv1: 2, conv2: 2, trust1: 2, trust2: 2, signal1: 1, signal2: 1 }));
-  assert.notEqual(r.gap, null);
-  assert.equal(r.gap.dimension, 'signalToSales');
+  assert.notEqual(r.focus, null);
+  assert.equal(r.focus.dimension, 'signalToSales');
+  assert.equal(r.focus.tier, 'deficit'); // signal = 2 (mid) < HIGH
 });
 
-test('mid band, POV strong -> Publisher, gap Conversion Surface', () => {
+// Tie-break: when several dimensions share the lowest score, the EARLIEST
+// funnel-stage dimension (DIMENSIONS array order) is surfaced.
+test('lowest-score tie -> focus on earliest funnel stage (tie-break)', () => {
+  // pov = 1, conv = 1, trust = 4, signal = 4 -> pov and conv tie lowest; pov wins
+  const r = scoreAnswers(from({ pov1: 1, pov2: 0, conv1: 1, conv2: 0, trust1: 2, trust2: 2, signal1: 2, signal2: 2 }));
+  assert.equal(r.focus.dimension, 'pointOfView');
+  assert.equal(r.focus.tier, 'deficit');
+});
+
+test('mid band, POV strong -> Publisher, focus Conversion Surface (deficit)', () => {
   const r = scoreAnswers(from({ pov1: 2, pov2: 2, conv1: 1, conv2: 1, trust1: 1, trust2: 1, signal1: 1, signal2: 1 }));
   assert.equal(r.score, 63);
   assert.equal(r.archetype.key, 'publisher');
-  assert.equal(r.gap.dimension, 'conversionSurface');
+  assert.equal(r.focus.dimension, 'conversionSurface');
+  assert.equal(r.focus.tier, 'deficit');
 });
 
-test('mid band, Conversion strong -> Operator, gap Point of View', () => {
+test('mid band, Conversion strong -> Operator, focus Point of View (deficit)', () => {
   const r = scoreAnswers(from({ pov1: 1, pov2: 1, conv1: 2, conv2: 2, trust1: 1, trust2: 1, signal1: 1, signal2: 1 }));
   assert.equal(r.score, 63);
   assert.equal(r.archetype.key, 'operator');
-  assert.equal(r.gap.dimension, 'pointOfView');
+  assert.equal(r.focus.dimension, 'pointOfView');
+  assert.equal(r.focus.tier, 'deficit');
 });
 
-// R1: when the lowest dimension is already in the HIGH band (>= 3) there is no
-// gap. pov = 3, others = 4 is a strong-everywhere profile; flagging POV (a high
-// dimension) as "your gap" next to an Authority result is incoherent, so gap is
-// null. (Old behavior asserted gap.dimension === 'pointOfView'; that encoded the
-// contradiction this fix closes.)
-test('lowest dimension in high band -> no gap (R1)', () => {
-  // pov = 3, others = 4 -> points 15, score 94 -> Authority, gap null
+// R1' (was R1): when the lowest dimension is already in the HIGH band (>= 3) the
+// focus is no longer SUPPRESSED. It is still surfaced, but framed as an EDGE (the
+// next lever to extend), never a deficit. pov = 3, others = 4 is a strong-
+// everywhere Authority; framing POV as an edge does not contradict the archetype.
+// OLD behavior: gap === null (suppressed). NEW behavior: focus on pointOfView with
+// tier 'edge'. This evolution is what makes the no-focus state rare.
+test('lowest dimension in high band -> focus surfaced as edge (R1prime)', () => {
+  // pov = 3, others = 4 -> points 15, score 94 -> Authority
   const r = scoreAnswers(from({ pov1: 2, pov2: 1, conv1: 2, conv2: 2, trust1: 2, trust2: 2, signal1: 2, signal2: 2 }));
   assert.equal(r.score, 94);
   assert.equal(r.archetype.key, 'authority');
-  assert.equal(r.gap, null);
+  assert.notEqual(r.focus, null);
+  assert.equal(r.focus.dimension, 'pointOfView');
+  assert.equal(r.focus.tier, 'edge'); // high-band lowest -> edge, never deficit
+  // Content-level coherence: the edge blurb, not the "renting the lens" deficit prose.
+  assert.equal(r.focus.blurb, EDGE_BLURB.pointOfView);
+  assert.notEqual(r.focus.blurb, GAP_BLURB.pointOfView);
 });
 
-// Strictly-lowest coverage retained for a sub-high lowest dimension: when the
-// weakest dimension is below the high band it is still surfaced as the gap.
-test('strictly lowest sub-high dimension -> non-null gap on that dimension', () => {
+// Strictly-lowest coverage for a sub-high lowest dimension: surfaced as a deficit.
+test('strictly lowest sub-high dimension -> deficit focus on that dimension', () => {
   // pov = 4, conv = 4, trust = 4, signal = 2 -> signal strictly lowest, mid band
   const r = scoreAnswers(from({ pov1: 2, pov2: 2, conv1: 2, conv2: 2, trust1: 2, trust2: 2, signal1: 1, signal2: 1 }));
   assert.equal(r.dimensionScores.signalToSales, 2);
-  assert.notEqual(r.gap, null);
-  assert.equal(r.gap.dimension, 'signalToSales');
+  assert.notEqual(r.focus, null);
+  assert.equal(r.focus.dimension, 'signalToSales');
+  assert.equal(r.focus.tier, 'deficit');
 });
 
 // Malignant corner 1: POV floored, cluster high -> total score lands high (~69),
@@ -95,7 +122,8 @@ test('POV floored at high total -> Operator, not Authority; gap is Point of View
   assert.equal(r.dimensionScores.pointOfView, 0);
   assert.equal(r.archetype.key, 'operator');
   assert.notEqual(r.archetype.key, 'authority');
-  assert.equal(r.gap.dimension, 'pointOfView');
+  assert.equal(r.focus.dimension, 'pointOfView');
+  assert.equal(r.focus.tier, 'deficit'); // POV = 0
 });
 
 // Independence of the rebuilt cluster: after the re-spec, Trust at Capture and
@@ -109,7 +137,7 @@ test('high Trust, floored Signal -> gap is Signal to Sales', () => {
   const r = scoreAnswers(from({ pov1: 1, pov2: 1, conv1: 1, conv2: 1, trust1: 2, trust2: 2, signal1: 0, signal2: 0 }));
   assert.equal(r.dimensionScores.trustAtCapture, 4);
   assert.equal(r.dimensionScores.signalToSales, 0);
-  assert.equal(r.gap.dimension, 'signalToSales');
+  assert.equal(r.focus.dimension, 'signalToSales');
 });
 
 test('high Signal, floored Trust -> gap is Trust at Capture', () => {
@@ -117,7 +145,7 @@ test('high Signal, floored Trust -> gap is Trust at Capture', () => {
   const r = scoreAnswers(from({ pov1: 1, pov2: 1, conv1: 1, conv2: 1, trust1: 0, trust2: 0, signal1: 2, signal2: 2 }));
   assert.equal(r.dimensionScores.signalToSales, 4);
   assert.equal(r.dimensionScores.trustAtCapture, 0);
-  assert.equal(r.gap.dimension, 'trustAtCapture');
+  assert.equal(r.focus.dimension, 'trustAtCapture');
 });
 
 // Lumpy cluster reaching the >=8 high threshold without uniform strength:
@@ -129,7 +157,7 @@ test('lumpy cluster at threshold (conv+trust high, signal floored) -> Operator, 
   const r = scoreAnswers(from({ pov1: 1, pov2: 1, conv1: 2, conv2: 2, trust1: 2, trust2: 2, signal1: 0, signal2: 0 }));
   assert.equal(r.dimensionScores.conversionSurface + r.dimensionScores.trustAtCapture + r.dimensionScores.signalToSales, 8);
   assert.equal(r.archetype.key, 'operator');
-  assert.equal(r.gap.dimension, 'signalToSales');
+  assert.equal(r.focus.dimension, 'signalToSales');
 });
 
 // Malignant corner 2: POV maxed, cluster floored -> total score lands low (~25),
@@ -143,7 +171,7 @@ test('POV maxed at low total -> Publisher, not Renter; gap is not Point of View'
   assert.equal(r.dimensionScores.pointOfView, 4);
   assert.equal(r.archetype.key, 'publisher');
   assert.notEqual(r.archetype.key, 'renter');
-  assert.notEqual(r.gap.dimension, 'pointOfView');
+  assert.notEqual(r.focus.dimension, 'pointOfView');
 });
 
 // ---------------------------------------------------------------------------
@@ -186,7 +214,9 @@ function answersFor(profile) {
 //   - Operator blurb claims an AGGREGATE engine ("runs well across capture and
 //     hand-off"), no single per-dimension absolute claim.
 //   - Renter blurb claims no strength.
-// R2 requires the gap dimension never be among an archetype's claimed-strong set.
+// R2 requires that a DEFICIT-framed focus dimension never be among an archetype's
+// claimed-strong set. An EDGE-framed focus (high-band lowest) is an opportunity,
+// not a strength denial, so it is exempt and cannot create a contradiction.
 const CLAIMED_STRONG = {
   authority: ['pointOfView'],
   publisher: ['pointOfView'],
@@ -196,8 +226,11 @@ const CLAIMED_STRONG = {
 
 const HIGH = 3; // high-band floor, consistent with scorecard banding (raw >= 3 is "high")
 
-test('625 profiles: R1 (no high-band gap), R2 (gap not a claimed-strong dim), and exact server parity', () => {
+test('625 profiles: R1prime (high-band focus is edge not deficit), R2 (no deficit focus on a claimed-strong dim), server parity, and no-focus rate', () => {
   let count = 0;
+  let noFocus = 0; // the all-equal state
+  let edgeFocus = 0;
+  let deficitFocus = 0;
   let r1Violations = 0;
   let r2Violations = 0;
   let parityViolations = 0;
@@ -214,37 +247,73 @@ test('625 profiles: R1 (no high-band gap), R2 (gap not a claimed-strong dim), an
           // Dimension scores must equal the intended profile (sanity on the split).
           for (const key of DIM_KEYS) assert.equal(r.dimensionScores[key], profile[key]);
 
-          // R1: a high-band dimension is never the gap.
-          if (r.gap) {
-            const gapScore = r.dimensionScores[r.gap.dimension];
-            if (gapScore >= HIGH) { r1Violations++; }
-            assert.ok(gapScore < HIGH, `R1: gap on high-band dim ${r.gap.dimension}=${gapScore} for ${JSON.stringify(profile)}`);
+          const vals = DIM_KEYS.map((k) => profile[k]);
+          const allEqual = Math.min(...vals) === Math.max(...vals);
 
-            // R2: the gap dimension is not one the archetype's blurb claims strong.
-            const claimed = CLAIMED_STRONG[r.archetype.key];
-            if (claimed.includes(r.gap.dimension)) { r2Violations++; }
-            assert.ok(!claimed.includes(r.gap.dimension), `R2: ${r.archetype.key} claims ${r.gap.dimension} strong but it is the gap for ${JSON.stringify(profile)}`);
+          if (r.focus === null) {
+            // The ONLY no-focus state is all four dimensions exactly equal, and it
+            // must still convert: evenTier reports the band honestly.
+            noFocus++;
+            assert.ok(allEqual, `no-focus on non-equal profile ${JSON.stringify(profile)}`);
+            assert.equal(r.evenTier, Math.min(...vals) >= HIGH ? 'high' : 'low', `evenTier wrong for ${JSON.stringify(profile)}`);
+          } else {
+            // A focus is always surfaced unless all-equal.
+            assert.ok(!allEqual, `focus surfaced on all-equal profile ${JSON.stringify(profile)}`);
+            assert.equal(r.evenTier, null);
+            const focusScore = r.dimensionScores[r.focus.dimension];
+
+            // R1': a high-band lowest dimension is framed as an EDGE, never a deficit.
+            const expectedTier = focusScore >= HIGH ? 'edge' : 'deficit';
+            if (r.focus.tier !== expectedTier) r1Violations++;
+            assert.equal(r.focus.tier, expectedTier, `R1': tier wrong for ${r.focus.dimension}=${focusScore} on ${JSON.stringify(profile)}`);
+
+            // R1' at the CONTENT level: an edge focus must carry the opportunity
+            // (edge) blurb, NEVER the deficit (gap) prose. Without this, a (3,4,4,4)
+            // Authority would read "you own a framework" and "you are renting the
+            // lens" at once. The tier string alone does not catch that.
+            const expectedBlurb = r.focus.tier === 'edge' ? EDGE_BLURB[r.focus.dimension] : GAP_BLURB[r.focus.dimension];
+            if (r.focus.blurb !== expectedBlurb) r1Violations++;
+            assert.equal(r.focus.blurb, expectedBlurb, `R1' content: ${r.focus.tier} focus on ${r.focus.dimension} has wrong blurb for ${JSON.stringify(profile)}`);
+            if (r.focus.tier === 'edge') assert.notEqual(r.focus.blurb, GAP_BLURB[r.focus.dimension], `edge focus must not use deficit prose for ${JSON.stringify(profile)}`);
+
+            if (r.focus.tier === 'edge') edgeFocus++; else deficitFocus++;
+
+            // R2 (coherence): no archetype may claim strength on a DEFICIT-framed
+            // focus. An EDGE-framed focus is an opportunity, not a strength denial,
+            // so it is exempt. This is the surviving coherence rule.
+            if (r.focus.tier === 'deficit') {
+              const claimed = CLAIMED_STRONG[r.archetype.key];
+              if (claimed.includes(r.focus.dimension)) r2Violations++;
+              assert.ok(!claimed.includes(r.focus.dimension), `R2: ${r.archetype.key} claims ${r.focus.dimension} strong but it is a deficit focus for ${JSON.stringify(profile)}`);
+            }
           }
 
-          // Exact sync with the api/_dri.js server mirror: score, archetype, gap,
-          // and the blurb strings must be byte-identical.
+          // Exact sync with the api/_dri.js server mirror: score, archetype, focus,
+          // evenTier, and the blurb strings must be byte-identical.
           const s = dri.scoreAnswers(answers);
           assert.notEqual(s, null, `server returned null for ${JSON.stringify(profile)}`);
           const equal =
             s.score === r.score &&
             s.archetype.key === r.archetype.key &&
             s.archetype.blurb === r.archetype.blurb &&
-            ((s.gap === null && r.gap === null) ||
-              (s.gap && r.gap &&
-                s.gap.dimension === r.gap.dimension &&
-                s.gap.label === r.gap.label &&
-                s.gap.blurb === r.gap.blurb));
+            s.evenTier === r.evenTier &&
+            ((s.focus === null && r.focus === null) ||
+              (s.focus && r.focus &&
+                s.focus.dimension === r.focus.dimension &&
+                s.focus.label === r.focus.label &&
+                s.focus.tier === r.focus.tier &&
+                s.focus.blurb === r.focus.blurb));
           if (!equal) { parityViolations++; }
           assert.ok(equal, `parity mismatch for ${JSON.stringify(profile)}`);
         }
 
   assert.equal(count, 625, 'must enumerate exactly 625 profiles');
-  assert.equal(r1Violations, 0, 'R1 must hold for all 625 profiles');
+  assert.equal(r1Violations, 0, "R1' must hold for all 625 profiles");
   assert.equal(r2Violations, 0, 'R2 must hold for all 625 profiles');
   assert.equal(parityViolations, 0, 'server mirror must match for all 625 profiles');
+
+  // The no-focus state is exactly the 5 all-equal profiles: (0,0,0,0) (1,1,1,1)
+  // (2,2,2,2) (3,3,3,3) (4,4,4,4). 5/625 = 0.80%.
+  assert.equal(noFocus, 5, 'no-focus must be exactly the 5 all-equal profiles');
+  console.log(`  no-focus rate: ${noFocus}/625 = ${(100 * noFocus / 625).toFixed(2)}% | edge focus: ${edgeFocus} | deficit focus: ${deficitFocus}`);
 });

@@ -5,11 +5,26 @@ export const meta = {
   short: 'DRI',
 };
 
+// Each dimension carries two band-adaptive blurbs (provisional copy; final
+// wording comes from conversion-copywriter, construct and point values fixed):
+//   gap  - shown when this dimension is the focus AND in the low/mid band: a
+//          deficit to close.
+//   edge - shown when this dimension is the focus AND already in the high band:
+//          a relative strength to extend, the taker's next lever. NOT a deficit,
+//          so it never contradicts a strong archetype.
 export const dimensions = [
-  { key: 'pointOfView', label: 'Point of View', gap: 'You are renting the lens buyers research against. A named framework the market associates with you makes that lens yours.' },
-  { key: 'conversionSurface', label: 'Conversion Surface', gap: 'You earn attention, but your primary call to action leaks it. A lower-friction, relevant path and real conversion measurement turn earned attention into identifiable pipeline.' },
-  { key: 'trustAtCapture', label: 'Trust at Capture', gap: 'Your capture taxes trust instead of earning it. When the buyer receives something tailored to their situation the moment they raise their hand, the exchange pays for itself.' },
-  { key: 'signalToSales', label: 'Signal to Sales', gap: 'Your reps walk in cold. A hand-off that routes a prioritized, account-specific brief to the right rep in time to prep means the first call starts on the gap, not on discovery.' },
+  { key: 'pointOfView', label: 'Point of View',
+    gap: 'You are renting the lens buyers research against. A named framework the market associates with you makes that lens yours.',
+    edge: 'Your point of view is strong, and it is your sharpest lever. Naming and structuring it into a framework buyers research against turns a strength into a category position competitors cannot copy.' },
+  { key: 'conversionSurface', label: 'Conversion Surface',
+    gap: 'You earn attention, but your primary call to action leaks it. A lower-friction, relevant path and real conversion measurement turn earned attention into identifiable pipeline.',
+    edge: 'Your conversion surface already works. The next lever is precision: tightening the path and the measurement so every point of earned attention is accounted for as identifiable pipeline.' },
+  { key: 'trustAtCapture', label: 'Trust at Capture',
+    gap: 'Your capture taxes trust instead of earning it. When the buyer receives something tailored to their situation the moment they raise their hand, the exchange pays for itself.',
+    edge: 'Capture already earns trust rather than taxing it. The next lever is to make the moment of exchange so tailored that raising a hand feels like the start of the engagement, not a toll.' },
+  { key: 'signalToSales', label: 'Signal to Sales',
+    gap: 'Your reps walk in cold. A hand-off that routes a prioritized, account-specific brief to the right rep in time to prep means the first call starts on the gap, not on discovery.',
+    edge: 'Your hand-off already arms reps with context. The next lever is sharpening the brief and the routing so the first call opens on the account-specific gap every time, not just most of the time.' },
 ];
 
 export const questions = [
