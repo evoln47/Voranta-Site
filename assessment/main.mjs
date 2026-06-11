@@ -23,6 +23,7 @@ const quiz = createQuiz({
       score: document.getElementById('dri-score'),
       archetypeName: document.getElementById('dri-archetype-name'),
       archetypeBlurb: document.getElementById('dri-archetype-blurb'),
+      gapName: document.getElementById('dri-gap-name'),
       gapLabel: document.getElementById('dri-gap-label'),
       gapBlurb: document.getElementById('dri-gap-blurb'),
       bars: document.getElementById('dri-bars'),

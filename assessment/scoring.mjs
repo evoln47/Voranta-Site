@@ -51,7 +51,19 @@ function pickArchetype(score, dimensionScores) {
   return { key: a.key, label: a.label, blurb: a.blurb };
 }
 
+// A gap only exists when one dimension is genuinely the weakest. When every
+// dimension ties (lowest value === highest value) there is no real gap, so we
+// return null rather than falsely flagging the first array dimension (Point of
+// View). Returning a gap there would contradict an all-high Authority result
+// ("you own a framework buyers research against" vs. "you are renting the lens").
+// Return shape: { dimension, label, blurb } for a genuine gap, or null for a
+// balanced/tied profile. Consumers MUST handle null.
 function pickGap(dimensionScores) {
+  const values = dimensions.map((dim) => dimensionScores[dim.key]);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  if (min === max) return null; // all dimensions tied: no genuine lowest
+
   let lowest = null;
   for (const dim of dimensions) {
     const value = dimensionScores[dim.key];

@@ -6,12 +6,12 @@ const IDS = ['pov1', 'pov2', 'conv1', 'conv2', 'trust1', 'trust2', 'signal1', 's
 const all = (choiceIndex) => IDS.map((id) => ({ questionId: id, choiceIndex }));
 const from = (map) => IDS.map((id) => ({ questionId: id, choiceIndex: map[id] }));
 
-test('all lowest answers -> Renter, score 0, gap Point of View', () => {
+test('all lowest answers -> Renter, score 0, gap null (all dimensions tied)', () => {
   const r = scoreAnswers(all(0));
   assert.equal(r.points, 0);
   assert.equal(r.score, 0);
   assert.equal(r.archetype.key, 'renter');
-  assert.equal(r.gap.dimension, 'pointOfView');
+  assert.equal(r.gap, null);
 });
 
 test('all highest answers -> Authority, score 100', () => {
@@ -19,6 +19,29 @@ test('all highest answers -> Authority, score 100', () => {
   assert.equal(r.points, 16);
   assert.equal(r.score, 100);
   assert.equal(r.archetype.key, 'authority');
+});
+
+// All dimensions tied -> no genuine lowest -> gap is null. Previously this
+// resolved to the first array dimension (Point of View) and falsely told an
+// all-high Authority taker they were "renting the lens" they actually own.
+test('all dimensions tied high -> Authority, gap is null (no false gap)', () => {
+  const r = scoreAnswers(all(2)); // every dimension = 4, tied
+  assert.equal(r.archetype.key, 'authority');
+  assert.equal(r.score, 100);
+  assert.equal(r.gap, null);
+});
+
+test('all dimensions tied mid -> gap is null', () => {
+  const r = scoreAnswers(all(1)); // every dimension = 2, tied
+  assert.equal(r.gap, null);
+});
+
+// A genuine single-lowest dimension still returns the correct non-null gap.
+test('single lowest dimension -> non-null gap on that dimension', () => {
+  // pov = 4, conv = 4, trust = 4, signal = 2 -> signal is strictly lowest
+  const r = scoreAnswers(from({ pov1: 2, pov2: 2, conv1: 2, conv2: 2, trust1: 2, trust2: 2, signal1: 1, signal2: 1 }));
+  assert.notEqual(r.gap, null);
+  assert.equal(r.gap.dimension, 'signalToSales');
 });
 
 test('mid band, POV strong -> Publisher, gap Conversion Surface', () => {

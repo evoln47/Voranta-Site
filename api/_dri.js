@@ -76,9 +76,20 @@ function scoreAnswers(answers) {
   if (povHigh) archetype = clusterHigh ? ARCHETYPES.authority : ARCHETYPES.publisher;
   else archetype = clusterHigh ? ARCHETYPES.operator : ARCHETYPES.renter;
 
+  // A gap only exists when one dimension is genuinely the weakest. When every
+  // dimension ties (lowest === highest) there is no real gap, so gap is null
+  // rather than the first array dimension (Point of View). Mirrors
+  // assessment/scoring.mjs pickGap() exactly. Keep in sync. Return shape:
+  // gap is { dimension, label, blurb } for a genuine gap, or null when tied.
+  const dimValues = DIMENSIONS.map(([key]) => dimensionScores[key]);
+  const dimMin = Math.min(...dimValues);
+  const dimMax = Math.max(...dimValues);
   let gap = null;
-  for (const [key, label, blurb] of DIMENSIONS) {
-    if (gap === null || dimensionScores[key] < gap.value) gap = { dimension: key, label, blurb, value: dimensionScores[key] };
+  if (dimMin !== dimMax) {
+    for (const [key, label, blurb] of DIMENSIONS) {
+      if (gap === null || dimensionScores[key] < gap.value) gap = { dimension: key, label, blurb, value: dimensionScores[key] };
+    }
+    gap = { dimension: gap.dimension, label: gap.label, blurb: gap.blurb };
   }
 
   return {
@@ -86,7 +97,7 @@ function scoreAnswers(answers) {
     points,
     dimensionScores,
     archetype: { key: archetype.key, label: archetype.label, blurb: archetype.blurb },
-    gap: { dimension: gap.dimension, label: gap.label, blurb: gap.blurb },
+    gap,
   };
 }
 
@@ -112,7 +123,7 @@ function buildLeadText(email, result) {
     `Email: ${email}`,
     `Score: ${result.score}/100`,
     `Archetype: ${result.archetype.label}`,
-    `#1 gap: ${result.gap.label}`,
+    `#1 gap: ${result.gap ? result.gap.label : 'none (balanced profile)'}`,
     '',
     'Dimension scores (0-4):',
     ...DIMENSIONS.map(([key, label]) => `  ${label}: ${ds[key]}`),
@@ -130,14 +141,15 @@ function buildVisitorText(result) {
     '',
     'Where you stand:',
     ...DIMENSIONS.map(([key, label]) => {
-      const tag = result.gap.dimension === key ? '   (your #1 gap)' : '';
+      const tag = result.gap && result.gap.dimension === key ? '   (your #1 gap)' : '';
       return `  ${label.padEnd(20)} ${band(ds[key])}${tag}`;
     }),
     '',
-    `Your #1 gap: ${result.gap.label}`,
-    result.gap.blurb,
+    ...(result.gap
+      ? [`Your #1 gap: ${result.gap.label}`, result.gap.blurb]
+      : ['Your funnel scores evenly across all four dimensions, no single gap stands out.']),
     '',
-    `Book a call to close the gap: ${BOOKING_URL}`,
+    result.gap ? `Book a call to close the gap: ${BOOKING_URL}` : `Book a call: ${BOOKING_URL}`,
     '',
     'You took the Demand Research Index at voranta.co. Reply to this email and it reaches Evan directly.',
   ].join('\n');
@@ -146,7 +158,7 @@ function buildVisitorText(result) {
 function buildVisitorHtml(result) {
   const ds = result.dimensionScores;
   const rows = DIMENSIONS.map(([key, label]) => {
-    const tag = key === result.gap.dimension
+    const tag = result.gap && key === result.gap.dimension
       ? ' <span style="color:#0891B2;font-weight:600;">your gap</span>'
       : '';
     return `
@@ -176,13 +188,16 @@ function buildVisitorHtml(result) {
         <tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#57564F;font-weight:600;">Where you stand</td></tr>
         ${rows}
 
-        <tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">Your #1 gap: ${escapeHtml(result.gap.label)}</td></tr>
-        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(result.gap.blurb)}</td></tr>
+        ${result.gap
+          ? `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">Your #1 gap: ${escapeHtml(result.gap.label)}</td></tr>
+        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(result.gap.blurb)}</td></tr>`
+          : `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">A balanced profile</td></tr>
+        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">Your funnel scores evenly across all four dimensions, no single gap stands out.</td></tr>`}
 
         <tr><td style="padding-bottom:30px;">
           <table role="presentation" cellpadding="0" cellspacing="0"><tr>
             <td style="background:#0891B2;border-radius:8px;">
-              <a href="${BOOKING_URL}" style="display:inline-block;padding:13px 24px;color:#ECF1ED;font-size:15px;font-weight:600;text-decoration:none;">Book a call to close the gap</a>
+              <a href="${BOOKING_URL}" style="display:inline-block;padding:13px 24px;color:#ECF1ED;font-size:15px;font-weight:600;text-decoration:none;">${result.gap ? 'Book a call to close the gap' : 'Book a call'}</a>
             </td>
           </tr></table>
         </td></tr>
