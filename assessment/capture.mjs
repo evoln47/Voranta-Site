@@ -25,7 +25,8 @@ export function wireCapture(form, msgEl, getResult) {
         body: JSON.stringify({ email, website, ...getResult() }),
       });
       if (!res.ok) throw new Error(`bad status ${res.status}`);
-      showMsg(msgEl, 'Sent. Check your inbox for the full breakdown.', true);
+      // Placeholder copy: conversion-copywriter to refine.
+      showMsg(msgEl, 'Check your inbox for the full breakdown. When you are ready to act on it, book a call with Evan above.', true);
       form.hidden = true;
       msgEl.focus();
     } catch (err) {

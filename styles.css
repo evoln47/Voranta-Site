@@ -620,21 +620,23 @@
 /* Preserve h3 visual size when promoted to h2 for heading-order reasons */
 .h3-size { font-size: 1.5rem; font-weight: 500; }
 
-/* Results layout */
-.dri-results-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 16px; margin-bottom: 16px; align-items: stretch; }
+/* Results layout: unified 3-card scorecard row matching AIPQ quality bar */
+/* .scorecard-grid column template (1fr 1.4fr 1.1fr) is the shared base.
+   The DRI version uses the same columns with a slightly tighter center card. */
+.dri-scorecard-grid { grid-template-columns: 1fr 1.5fr 1fr; }
 .dri-score-card .sc-score-value { margin-top: 12px; }
+/* Override the global margin-top:auto on sc-divider for the DRI score card.
+   In AIPQ the divider separates archetype from likelihood rows below it (auto = push down).
+   In DRI the divider separates score from archetype block and there is nothing below archetype,
+   so auto would pull archetype to the card bottom creating an awkward gap. */
+.dri-score-card .sc-divider { margin-top: 20px; }
 
-/* Dimension bars */
-.dri-bars { display: flex; flex-direction: column; gap: 18px; margin-bottom: 8px; }
-.dri-bar-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-.dri-bar-name { font-size: 14px; font-weight: 500; color: var(--color-ink); }
-.dri-bar-band { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-ink-mute); }
-.dri-bar.is-gap .dri-bar-band { color: var(--color-accent-dark); font-weight: 600; }
-.dri-bar-track { height: 8px; background: var(--color-border-subtle); border-radius: 999px; overflow: hidden; }
-.dri-bar-fill { display: block; height: 100%; width: 0; background: var(--color-ink-faint); border-radius: 999px; transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1); }
-.dri-bar.is-gap .dri-bar-fill { background: var(--color-accent); }
-/* B28 CSS fix: removed margin-top:22px so margin-top:auto from .sc-pillar-callout anchors the callout to the card bottom */
-.dri-gap { }
+/* Primary CTA block: prominent placement directly below scorecard */
+.dri-cta-block { margin-top: 16px; padding: 28px 32px; background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.dri-cta-frame { font-size: 1.0625rem; line-height: 1.5; color: var(--color-ink-soft); margin: 0; max-width: 520px; }
+
+/* Quadrant: distinct focus-visible ring that is not confused with is-buyer/is-active tint */
+.sc-quadrant:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
 
 /* Capture */
 .dri-capture { margin-top: 16px; padding: 28px; border: 0.5px solid var(--color-border-subtle); border-radius: 16px; background: var(--color-paper-light); }
@@ -647,10 +649,6 @@
 .dri-capture-msg { margin: 16px 0 0; font-size: 14px; }
 .dri-capture-msg.is-ok { color: var(--color-accent-dark); }
 .dri-capture-msg.is-error { color: var(--color-ink-soft); }
-.dri-results-cta { margin-top: 20px; }
-
-/* DRI viz row: radar + quadrant side by side */
-.dri-viz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; align-items: stretch; }
 
 /* Radar focus state - keyboard parity with hover/is-active */
 #dri-radar-svg .sc-radar-point:focus-visible { outline: none; fill: var(--color-accent); r: 13; }
@@ -662,13 +660,14 @@
 
 @media (max-width: 880px) {
   .assessment { padding: 48px 20px 72px; }
-  .dri-results-grid { grid-template-columns: 1fr; }
-  .dri-viz-grid { grid-template-columns: 1fr; }
+  .dri-scorecard-grid { grid-template-columns: 1fr; }
   .dri-q-text { font-size: 1.25rem; }
   .dri-capture-inner { flex-direction: column; align-items: stretch; }
   .dri-capture-form { flex-direction: column; }
   .dri-capture-form input[type="email"] { min-width: 0; width: 100%; }
   .dri-capture-form .btn { width: 100%; justify-content: center; }
+  .dri-cta-block { flex-direction: column; align-items: stretch; }
+  .dri-cta-block .btn { width: 100%; justify-content: center; }
   .inline-cta { flex-direction: column; align-items: flex-start; }
   .inline-cta .btn { width: 100%; justify-content: center; }
   .dri-nav { flex-direction: row; }

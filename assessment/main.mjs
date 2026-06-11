@@ -23,10 +23,6 @@ const quiz = createQuiz({
       score: document.getElementById('dri-score'),
       archetypeName: document.getElementById('dri-archetype-name'),
       archetypeBlurb: document.getElementById('dri-archetype-blurb'),
-      gapName: document.getElementById('dri-gap-name'),
-      gapLabel: document.getElementById('dri-gap-label'),
-      gapBlurb: document.getElementById('dri-gap-blurb'),
-      bars: document.getElementById('dri-bars'),
       cta: document.getElementById('dri-results-cta'),
       radarSvg: document.getElementById('dri-radar-svg'),
       radarCalloutName: document.getElementById('dri-radar-pc-name'),
@@ -34,6 +30,7 @@ const quiz = createQuiz({
       radarCalloutReading: document.getElementById('dri-radar-pc-reading'),
       quadrantGrid: document.getElementById('dri-matrix-grid'),
       quadrantCallout: document.getElementById('dri-quadrant-callout'),
+      dimensionList: document.getElementById('dri-dimension-list'),
     });
     show('results');
     app.scrollIntoView({ behavior: 'smooth', block: 'start' });
