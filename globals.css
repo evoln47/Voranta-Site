@@ -547,6 +547,29 @@
   /* ----- Section spacing ----- */
   .section { padding: var(--spacing-24) 0; }
   .section-sm { padding: var(--spacing-16) 0; }
+
+  /* ----- Image treatment tokens (§5.1-5.2) ----- */
+
+  /* §5.1 — single locked filter to cool-desaturate warmer source photography.
+     Define once here as a token; static pages also carry this in styles.css. */
+  .img-brand-tone { filter: saturate(0.45) brightness(1.02) contrast(1.05); }
+
+  /* §5.2 — circular-crop exception for founder/author headshots only (max 200px wide).
+     Must NOT be applied to product, illustrative, or any non-portrait image.
+     The ::after hairline uses border-radius: 50% to match the circular crop. */
+  .img-avatar {
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-avatar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 0.5px solid rgba(10, 9, 8, 0.1);
+    border-radius: 50%;
+    pointer-events: none;
+  }
 }
 
 /* -------------------------------------------------------------------------

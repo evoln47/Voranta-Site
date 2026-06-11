@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-Marketing site for voranta.co. Currently a single-page static HTML site (`index.html`) with no build step. Auto-deploys to Vercel on every push to `main` (~30 seconds).
+Marketing site for voranta.co. A multi-page static HTML site with no build step: `index.html`, `about.html`, `aipq.html`, `assessment.html`, and `style-guide.html`. All pages share a single live stylesheet, `styles.css`. Auto-deploys to Vercel on every push to `main` (~30 seconds).
 
 ## Editing
 
-Edit `index.html` directly. There is no dev server, build tool, or package manager for the current site — open the file in a browser to preview changes.
+Edit the relevant `.html` page directly, and put styles in `styles.css` (the stylesheet every page links). There is no dev server, build tool, or package manager for the current site, so open the file in a browser to preview changes. Note: `globals.css` is the design-token source of truth but is NOT linked by the live pages (it is a future-Next.js artifact, see below); live rules must live in `styles.css`.
 
 ## Design system
 
@@ -45,10 +45,18 @@ The locked Voranta design system is defined authoritatively in `globals.css` (Ta
 
 - No em-dashes anywhere — use commas or periods instead
 
+## Imagery system
+
+Photography and illustration follow the approved system spec at `docs/superpowers/specs/2026-06-11-imagery-system-design.md`. Photography = trust moments (real-world, human, physical artifacts); illustration = making abstract mechanisms visible. Both use the one locked image frame (12px radius + `0.5px` inset hairline `::after`, never a shadow). Approved token classes: `.img-brand-tone` (cool-desaturate filter) and `.img-avatar` (the only `border-radius: 50%` exception, headshots ≤200px only).
+
+**No-AI-slop guardrail (subject matter):** never use stock people-at-laptops, handshakes, team-at-whiteboard, glowing-orb/network-mesh, "AI brain", lens-flare hero shots, recognizable stock-library templates, or any AI-generated imagery. The brand is research-led; AI-generated visuals contradict that signal.
+
+**Illustration palette:** inline SVG only (no external `.svg` via `<img>`). Greyscale ramp + cyan accent, with cyan on exactly ONE element per diagram. Monoline 1–1.5px strokes, flat/geometric, no fills except `--color-accent-tint`/`--color-paper-light`, no shadows/glows. Extend the existing data-viz vocabulary (AIPQ radar, dot-grid, 2x2 matrix), never generic SaaS/isometric/blob art.
+
 ## CSS conventions
 
 - Section-specific layout overrides use `#section-id .class` selectors (see `#product .diff-grid`, `#methodology .diff-grid`) — never modify the base rule
-- New CSS appends to the single `<style>` block in `index.html`; mobile overrides go inside the existing `@media (max-width: 880px)` block
+- New CSS appends to `styles.css` (the shared live stylesheet); mobile overrides go inside the existing `@media (max-width: 880px)` block. Design tokens that need a Next.js-parity definition are mirrored into `globals.css`, but the `styles.css` copy is what renders live
 
 ## Section structure
 

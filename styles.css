@@ -290,6 +290,7 @@
     .gap-numstat-lines { margin-top: 14px; padding-top: 14px; }
     #product .diff-grid { grid-template-columns: 1fr; }
     #methodology .diff-grid { grid-template-columns: 1fr; }
+    .product-card-illus { max-width: 160px; height: auto; margin: 0 auto 8px; }
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
     h2 { font-size: 1.75rem; }
@@ -299,6 +300,9 @@
     .hero { padding-top: 48px; padding-bottom: 48px; }
     .hero-inner { grid-template-columns: 1fr; gap: 0; }
     .hero-visual { display: none; }
+    /* Diagram modifier: show the AIPQ radar on mobile; index hero photo stays hidden */
+    .hero-visual--diagram { display: flex; justify-content: center; margin-top: 32px; }
+    .hero-visual--diagram .aipq-hero-radar { max-width: 200px; padding-top: 0; }
     .hero .subhead { font-size: 1.0625rem; }
     .hero .cta-row { flex-direction: column; align-items: stretch; }
     .hero .meta-line { margin-top: 36px; gap: 20px; }
@@ -539,7 +543,14 @@
     .founding-hero-left { gap: 16px; }
     .founding-headline { font-size: 2rem; }
     .framework-teaser-row { flex-direction: column; align-items: flex-start; }
+    /* P4: at 880px, CTA column (radar + button) stacks below copy; radar at 160px; button full-width */
+    .framework-teaser-row > div:last-child { width: 100%; align-items: stretch; }
     .framework-teaser-row .btn { width: 100%; justify-content: center; }
+    .framework-teaser-radar { width: 160px; height: 160px; align-self: center; }
+    .framework-teaser-radar svg { width: 160px; height: 160px; }
+    /* P5: founding scorecard illustration stacks above benefits, already handled
+       by flex-direction: column on .founding-hero-right */
+    .founding-scorecard-illus { max-width: 200px; margin-bottom: 20px; }
   }
 
 /* ===== Assessment (Demand Research Index) ===== */
@@ -635,6 +646,94 @@
   .inline-cta .btn { width: 100%; justify-content: center; }
   .dri-nav { flex-direction: row; }
   .dri-nav .dri-next { flex: 1; justify-content: center; }
+}
+
+/* Image treatment tokens (§5.1–5.2 — duplicated from globals.css so static pages can apply the
+   classes; globals.css is a Next.js artifact and is not served to static HTML pages) */
+.img-brand-tone { filter: saturate(0.45) brightness(1.02) contrast(1.05); }
+
+/* §5.2 — circular crop exception for founder/author headshots only (≤200px wide) */
+.img-avatar {
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+.img-avatar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 0.5px solid rgba(10, 9, 8, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ============================================================
+   PRODUCT CARD ILLUSTRATIONS (P1)
+   Inline SVG illustrations at top of each product card.
+   ~180x100px, monoline, grey-ramp strokes, cyan on one element.
+   ============================================================ */
+.product-card-illus {
+  width: 100%;
+  height: 120px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ============================================================
+   FRAMEWORK TEASER RADAR (P4)
+   Empty-state AIPQ radar outline as a flex item in
+   .framework-teaser-row. Sized at ~200px, centred in its column.
+   ============================================================ */
+.framework-teaser-radar {
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+}
+.framework-teaser-radar svg {
+  width: 200px;
+  height: 200px;
+  display: block;
+}
+
+/* ============================================================
+   FOUNDING SPONSOR SCORECARD ILLUSTRATION (P5)
+   Inline SVG scorecard/report-cover in .founding-hero-right,
+   above the benefits list. ~280px wide.
+   ============================================================ */
+.founding-scorecard-illus {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  display: block;
+  margin-bottom: 24px;
+}
+#sponsors .founding-hero-right {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* ============================================================
+   AIPQ HERO VISUAL (P3)
+   Empty-state radar in the AIPQ hero .hero-visual column.
+   ============================================================ */
+.aipq-hero-radar {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  padding-top: 24px;
+}
+
+/* §Fix4 — diagram modifier: removes photo-frame treatment from the AIPQ hero radar.
+   Base .hero-visual rule stays intact (used by index.html hero photo). */
+.hero-visual--diagram {
+  border-radius: 0;
+  overflow: visible;
+}
+.hero-visual--diagram::after {
+  display: none;
 }
 
 /* Accessibility utilities */
