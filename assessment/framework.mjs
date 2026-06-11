@@ -58,6 +58,6 @@ export const questions = [
 export const archetypes = {
   renter: { key: 'renter', label: 'The Renter', blurb: "Your buyer's research runs on someone else's framework. The attention you do earn leaks before it becomes pipeline." },
   publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You earn the read, not the lead. Strong point of view, but the conversion path, the value at capture, or the hand-off to sales is letting it slip.' },
-  operator: { key: 'operator', label: 'The Operator', blurb: 'You convert attention and brief your reps well. But you compete on the same lens as everyone else. No framework of your own.' },
-  authority: { key: 'authority', label: 'The Authority', blurb: 'You own a framework buyers research against, your capture earns the lead, and your hand-off briefs sales. Lock this to your category before a competitor builds the same advantage.' },
+  operator: { key: 'operator', label: 'The Operator', blurb: 'Your demand engine is broadly strong, but you compete on the same lens as everyone else. No framework of your own.' },
+  authority: { key: 'authority', label: 'The Authority', blurb: 'You own a framework buyers research against, and your demand engine is broadly strong behind it. Lock this to your category before a competitor builds the same advantage.' },
 };

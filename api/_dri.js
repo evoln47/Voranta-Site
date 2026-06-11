@@ -33,8 +33,8 @@ const DIMENSIONS = [
 const ARCHETYPES = {
   renter: { key: 'renter', label: 'The Renter', blurb: "Your buyer's research runs on someone else's framework. The attention you do earn leaks before it becomes pipeline." },
   publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You earn the read, not the lead. Strong point of view, but the conversion path, the value at capture, or the hand-off to sales is letting it slip.' },
-  operator: { key: 'operator', label: 'The Operator', blurb: 'You convert attention and brief your reps well. But you compete on the same lens as everyone else. No framework of your own.' },
-  authority: { key: 'authority', label: 'The Authority', blurb: 'You own a framework buyers research against, your capture earns the lead, and your hand-off briefs sales. Lock this to your category before a competitor builds the same advantage.' },
+  operator: { key: 'operator', label: 'The Operator', blurb: 'Your demand engine is broadly strong, but you compete on the same lens as everyone else. No framework of your own.' },
+  authority: { key: 'authority', label: 'The Authority', blurb: 'You own a framework buyers research against, and your demand engine is broadly strong behind it. Lock this to your category before a competitor builds the same advantage.' },
 };
 
 // Re-derive the full result from answers. Mirrors assessment/scoring.mjs.
@@ -76,16 +76,17 @@ function scoreAnswers(answers) {
   if (povHigh) archetype = clusterHigh ? ARCHETYPES.authority : ARCHETYPES.publisher;
   else archetype = clusterHigh ? ARCHETYPES.operator : ARCHETYPES.renter;
 
-  // A gap only exists when one dimension is genuinely the weakest. When every
-  // dimension ties (lowest === highest) there is no real gap, so gap is null
-  // rather than the first array dimension (Point of View). Mirrors
+  // A gap is the single genuine weak point. Two cases produce no gap: all
+  // dimensions tie (min === max), or the lowest dimension is already in the HIGH
+  // band (min >= 3, consistent with band() below where >= 3 is "high"), since a
+  // strong dimension may never be labeled "your gap". Mirrors
   // assessment/scoring.mjs pickGap() exactly. Keep in sync. Return shape:
-  // gap is { dimension, label, blurb } for a genuine gap, or null when tied.
+  // gap is { dimension, label, blurb } for a genuine gap, or null otherwise.
   const dimValues = DIMENSIONS.map(([key]) => dimensionScores[key]);
   const dimMin = Math.min(...dimValues);
   const dimMax = Math.max(...dimValues);
   let gap = null;
-  if (dimMin !== dimMax) {
+  if (dimMin !== dimMax && dimMin < 3) {
     for (const [key, label, blurb] of DIMENSIONS) {
       if (gap === null || dimensionScores[key] < gap.value) gap = { dimension: key, label, blurb, value: dimensionScores[key] };
     }
@@ -147,7 +148,7 @@ function buildVisitorText(result) {
     '',
     ...(result.gap
       ? [`Your #1 gap: ${result.gap.label}`, result.gap.blurb]
-      : ['No single gap', 'Your four dimensions score the same. No single one leads or lags.']),
+      : ['No single gap', 'No single dimension lags the others. Your profile is balanced, with no one weak point to lead with.']),
     '',
     result.gap ? `Book a call to close the gap: ${BOOKING_URL}` : `Book a call to talk through your result: ${BOOKING_URL}`,
     '',
@@ -192,7 +193,7 @@ function buildVisitorHtml(result) {
           ? `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">Your #1 gap: ${escapeHtml(result.gap.label)}</td></tr>
         <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(result.gap.blurb)}</td></tr>`
           : `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">No single gap</td></tr>
-        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">Your four dimensions score the same. No single one leads or lags.</td></tr>`}
+        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">No single dimension lags the others. Your profile is balanced, with no one weak point to lead with.</td></tr>`}
 
         <tr><td style="padding-bottom:30px;">
           <table role="presentation" cellpadding="0" cellspacing="0"><tr>

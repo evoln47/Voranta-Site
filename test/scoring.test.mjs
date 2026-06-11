@@ -1,6 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 import { scoreAnswers } from '../assessment/scoring.mjs';
+
+const require = createRequire(import.meta.url);
+const dri = require('../api/_dri.js'); // server-side mirror; must stay in exact sync
 
 const IDS = ['pov1', 'pov2', 'conv1', 'conv2', 'trust1', 'trust2', 'signal1', 'signal2'];
 const all = (choiceIndex) => IDS.map((id) => ({ questionId: id, choiceIndex }));
@@ -58,12 +62,27 @@ test('mid band, Conversion strong -> Operator, gap Point of View', () => {
   assert.equal(r.gap.dimension, 'pointOfView');
 });
 
-test('gap is the strictly lowest dimension regardless of archetype', () => {
-  // pov = 3, others = 4 -> points 15, score 94 -> Authority, gap pointOfView
+// R1: when the lowest dimension is already in the HIGH band (>= 3) there is no
+// gap. pov = 3, others = 4 is a strong-everywhere profile; flagging POV (a high
+// dimension) as "your gap" next to an Authority result is incoherent, so gap is
+// null. (Old behavior asserted gap.dimension === 'pointOfView'; that encoded the
+// contradiction this fix closes.)
+test('lowest dimension in high band -> no gap (R1)', () => {
+  // pov = 3, others = 4 -> points 15, score 94 -> Authority, gap null
   const r = scoreAnswers(from({ pov1: 2, pov2: 1, conv1: 2, conv2: 2, trust1: 2, trust2: 2, signal1: 2, signal2: 2 }));
   assert.equal(r.score, 94);
   assert.equal(r.archetype.key, 'authority');
-  assert.equal(r.gap.dimension, 'pointOfView');
+  assert.equal(r.gap, null);
+});
+
+// Strictly-lowest coverage retained for a sub-high lowest dimension: when the
+// weakest dimension is below the high band it is still surfaced as the gap.
+test('strictly lowest sub-high dimension -> non-null gap on that dimension', () => {
+  // pov = 4, conv = 4, trust = 4, signal = 2 -> signal strictly lowest, mid band
+  const r = scoreAnswers(from({ pov1: 2, pov2: 2, conv1: 2, conv2: 2, trust1: 2, trust2: 2, signal1: 1, signal2: 1 }));
+  assert.equal(r.dimensionScores.signalToSales, 2);
+  assert.notEqual(r.gap, null);
+  assert.equal(r.gap.dimension, 'signalToSales');
 });
 
 // Malignant corner 1: POV floored, cluster high -> total score lands high (~69),
@@ -125,4 +144,107 @@ test('POV maxed at low total -> Publisher, not Renter; gap is not Point of View'
   assert.equal(r.archetype.key, 'publisher');
   assert.notEqual(r.archetype.key, 'renter');
   assert.notEqual(r.gap.dimension, 'pointOfView');
+});
+
+// ---------------------------------------------------------------------------
+// EXHAUSTIVE enumeration of all 625 reachable dimension-score profiles.
+// Each of the four dimensions (pointOfView, conversionSurface, trustAtCapture,
+// signalToSales) is two questions whose choiceIndex equals points in {0,1,2},
+// so a per-dimension target of 0-4 is reached by splitting it into two halves.
+// 5^4 = 625 profiles. We assert the two acceptance rules and exact parity with
+// the server mirror across every one of them.
+// ---------------------------------------------------------------------------
+
+const DIM_KEYS = ['pointOfView', 'conversionSurface', 'trustAtCapture', 'signalToSales'];
+const DIM_QS = {
+  pointOfView: ['pov1', 'pov2'],
+  conversionSurface: ['conv1', 'conv2'],
+  trustAtCapture: ['trust1', 'trust2'],
+  signalToSales: ['signal1', 'signal2'],
+};
+// Split a 0-4 target into two valid 0-2 halves (choiceIndex == points).
+const split = (t) => { const a = Math.min(t, 2); return [a, t - a]; };
+
+// answers for a target profile { pointOfView, conversionSurface, ... } each 0-4
+function answersFor(profile) {
+  const out = [];
+  for (const key of DIM_KEYS) {
+    const [a, b] = split(profile[key]);
+    const [q1, q2] = DIM_QS[key];
+    out.push({ questionId: q1, choiceIndex: a }, { questionId: q2, choiceIndex: b });
+  }
+  return out;
+}
+
+// Each archetype's claimed-strong dimensions, faithful to the blurb prose:
+//   - Authority blurb claims POV ("you own a framework") plus an AGGREGATE
+//     "demand engine is broadly strong" (cluster-level, not per-dimension), so
+//     only pointOfView is an absolute per-dimension strength claim.
+//   - Publisher blurb claims POV ("strong point of view") and explicitly hedges
+//     the cluster ("the conversion path, the value at capture, or the hand-off
+//     ... is letting it slip").
+//   - Operator blurb claims an AGGREGATE engine ("runs well across capture and
+//     hand-off"), no single per-dimension absolute claim.
+//   - Renter blurb claims no strength.
+// R2 requires the gap dimension never be among an archetype's claimed-strong set.
+const CLAIMED_STRONG = {
+  authority: ['pointOfView'],
+  publisher: ['pointOfView'],
+  operator: [],
+  renter: [],
+};
+
+const HIGH = 3; // high-band floor, consistent with scorecard banding (raw >= 3 is "high")
+
+test('625 profiles: R1 (no high-band gap), R2 (gap not a claimed-strong dim), and exact server parity', () => {
+  let count = 0;
+  let r1Violations = 0;
+  let r2Violations = 0;
+  let parityViolations = 0;
+
+  for (let pov = 0; pov <= 4; pov++)
+    for (let conv = 0; conv <= 4; conv++)
+      for (let trust = 0; trust <= 4; trust++)
+        for (let signal = 0; signal <= 4; signal++) {
+          count++;
+          const profile = { pointOfView: pov, conversionSurface: conv, trustAtCapture: trust, signalToSales: signal };
+          const answers = answersFor(profile);
+          const r = scoreAnswers(answers);
+
+          // Dimension scores must equal the intended profile (sanity on the split).
+          for (const key of DIM_KEYS) assert.equal(r.dimensionScores[key], profile[key]);
+
+          // R1: a high-band dimension is never the gap.
+          if (r.gap) {
+            const gapScore = r.dimensionScores[r.gap.dimension];
+            if (gapScore >= HIGH) { r1Violations++; }
+            assert.ok(gapScore < HIGH, `R1: gap on high-band dim ${r.gap.dimension}=${gapScore} for ${JSON.stringify(profile)}`);
+
+            // R2: the gap dimension is not one the archetype's blurb claims strong.
+            const claimed = CLAIMED_STRONG[r.archetype.key];
+            if (claimed.includes(r.gap.dimension)) { r2Violations++; }
+            assert.ok(!claimed.includes(r.gap.dimension), `R2: ${r.archetype.key} claims ${r.gap.dimension} strong but it is the gap for ${JSON.stringify(profile)}`);
+          }
+
+          // Exact sync with the api/_dri.js server mirror: score, archetype, gap,
+          // and the blurb strings must be byte-identical.
+          const s = dri.scoreAnswers(answers);
+          assert.notEqual(s, null, `server returned null for ${JSON.stringify(profile)}`);
+          const equal =
+            s.score === r.score &&
+            s.archetype.key === r.archetype.key &&
+            s.archetype.blurb === r.archetype.blurb &&
+            ((s.gap === null && r.gap === null) ||
+              (s.gap && r.gap &&
+                s.gap.dimension === r.gap.dimension &&
+                s.gap.label === r.gap.label &&
+                s.gap.blurb === r.gap.blurb));
+          if (!equal) { parityViolations++; }
+          assert.ok(equal, `parity mismatch for ${JSON.stringify(profile)}`);
+        }
+
+  assert.equal(count, 625, 'must enumerate exactly 625 profiles');
+  assert.equal(r1Violations, 0, 'R1 must hold for all 625 profiles');
+  assert.equal(r2Violations, 0, 'R2 must hold for all 625 profiles');
+  assert.equal(parityViolations, 0, 'server mirror must match for all 625 profiles');
 });

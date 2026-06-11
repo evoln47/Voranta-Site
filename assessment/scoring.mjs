@@ -51,18 +51,21 @@ function pickArchetype(score, dimensionScores) {
   return { key: a.key, label: a.label, blurb: a.blurb };
 }
 
-// A gap only exists when one dimension is genuinely the weakest. When every
-// dimension ties (lowest value === highest value) there is no real gap, so we
-// return null rather than falsely flagging the first array dimension (Point of
-// View). Returning a gap there would contradict an all-high Authority result
-// ("you own a framework buyers research against" vs. "you are renting the lens").
-// Return shape: { dimension, label, blurb } for a genuine gap, or null for a
-// balanced/tied profile. Consumers MUST handle null.
+// A gap is the single genuine weak point. Two cases produce no gap:
+//   (1) all dimensions tie (min === max): no dimension lags the others.
+//   (2) the lowest dimension is already in the HIGH band (min >= 3): a strong
+//       dimension may never be labeled "your gap". The high-band floor is >= 3,
+//       consistent with the scorecard banding (raw >= 3 is "high"). This prevents
+//       e.g. pointOfView = 3, others = 4 from flagging a strong POV as the gap
+//       and contradicting the Authority result. Case (1) is not subsumed by
+//       case (2): all-tied-mid (2,2,2,2) and all-tied-low (0,0,0,0) still need it.
+// Return shape: { dimension, label, blurb } for a genuine gap, or null when there
+// is no single lagging dimension. Consumers MUST handle null.
 function pickGap(dimensionScores) {
   const values = dimensions.map((dim) => dimensionScores[dim.key]);
   const min = Math.min(...values);
   const max = Math.max(...values);
-  if (min === max) return null; // all dimensions tied: no genuine lowest
+  if (min === max || min >= 3) return null; // tied, or lowest is already high-band
 
   let lowest = null;
   for (const dim of dimensions) {
