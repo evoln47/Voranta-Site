@@ -11,16 +11,30 @@
 
 const BOOKING_URL = 'https://calendly.com/evoln47/30min';
 
+// 3 questions per dimension, options 0/1/2 points. Mirrors framework.mjs.
 const QUESTIONS = {
   pov1: { dimension: 'pointOfView', points: [0, 1, 2] },
   pov2: { dimension: 'pointOfView', points: [0, 1, 2] },
+  pov3: { dimension: 'pointOfView', points: [0, 1, 2] },
   conv1: { dimension: 'conversionSurface', points: [0, 1, 2] },
   conv2: { dimension: 'conversionSurface', points: [0, 1, 2] },
+  conv3: { dimension: 'conversionSurface', points: [0, 1, 2] },
   trust1: { dimension: 'trustAtCapture', points: [0, 1, 2] },
   trust2: { dimension: 'trustAtCapture', points: [0, 1, 2] },
+  trust3: { dimension: 'trustAtCapture', points: [0, 1, 2] },
   signal1: { dimension: 'signalToSales', points: [0, 1, 2] },
   signal2: { dimension: 'signalToSales', points: [0, 1, 2] },
+  signal3: { dimension: 'signalToSales', points: [0, 1, 2] },
 };
+
+// maxPerDim = 3 questions * 2 = 6. Per-dimension raw runs 0..6.
+const MAX_PER_DIM = 6;
+// Fraction thresholds mirror assessment/scoring.mjs. The EXEC epsilon is
+// load-bearing: the all-strong exec cluster mean lands a hair below 2/3 in
+// floating point and must still classify high.
+const POV_HIGH_FRAC = 0.75;
+const EXEC_HIGH_FRAC = 2 / 3 - 1e-9;
+const HIGH_BAND_100 = 75; // /100 band cut: high = >= 75.
 
 // [key, label, gap blurb, edge blurb] in the demand-funnel order ties break by.
 // gap = deficit framing (low/mid focus); edge = opportunity framing (high focus).
@@ -49,9 +63,18 @@ const ARCHETYPES = {
 
 // Re-derive the full result from answers. Mirrors assessment/scoring.mjs.
 // Returns null if the submission is not a complete, valid set of answers.
+//
+// RESULT SHAPE (mirrors assessment/scoring.mjs scoreAnswers):
+//   score            DRI 0-100, round(mean(dimFrac)*100), rounded ONCE from
+//                    full-precision fractions (the four displayed dimension /100s
+//                    do not always average to this; that is intended).
+//   dimensionScores  { <dimKey>: <0-100> } per-dimension /100 for display/email.
+//   dimensionRaw     { <dimKey>: <0-6> } raw points per dimension.
+//   points           total raw points across all 12 questions (0..24).
+//   archetype, focus, evenTier as before.
 function scoreAnswers(answers) {
   if (!Array.isArray(answers)) return null;
-  const dimensionScores = { pointOfView: 0, conversionSurface: 0, trustAtCapture: 0, signalToSales: 0 };
+  const dimensionRaw = { pointOfView: 0, conversionSurface: 0, trustAtCapture: 0, signalToSales: 0 };
   let points = 0;
 
   for (const id of Object.keys(QUESTIONS)) {
@@ -62,39 +85,57 @@ function scoreAnswers(answers) {
     if (!Number.isInteger(idx) || idx < 0 || idx >= q.points.length) return null;
     const p = q.points[idx];
     points += p;
-    dimensionScores[q.dimension] += p;
+    dimensionRaw[q.dimension] += p;
   }
 
-  const score = Math.round((points / 16) * 100);
+  // Full-precision fractions per dimension, then /100 display scores.
+  const dimFrac = {
+    pointOfView: dimensionRaw.pointOfView / MAX_PER_DIM,
+    conversionSurface: dimensionRaw.conversionSurface / MAX_PER_DIM,
+    trustAtCapture: dimensionRaw.trustAtCapture / MAX_PER_DIM,
+    signalToSales: dimensionRaw.signalToSales / MAX_PER_DIM,
+  };
+  const dimensionScores = {
+    pointOfView: Math.round(dimFrac.pointOfView * 100),
+    conversionSurface: Math.round(dimFrac.conversionSurface * 100),
+    trustAtCapture: Math.round(dimFrac.trustAtCapture * 100),
+    signalToSales: Math.round(dimFrac.signalToSales * 100),
+  };
+
+  // DRI /100: mean of the four full-precision fractions, rounded ONCE. Same
+  // operation order as assessment/scoring.mjs so float parity holds at .5 edges.
+  const meanFrac = (dimFrac.pointOfView + dimFrac.conversionSurface + dimFrac.trustAtCapture + dimFrac.signalToSales) / 4;
+  const score = Math.round(meanFrac * 100);
 
   // Archetype is DIMENSION-DEFINED, not score-defined, so it can never contradict
-  // the #1 gap (the lowest dimension). A clean 2x2 over two axes:
-  //   - Point of View (one dimension, 0-4): high = >= 3.
-  //   - The conversion/trust/signal cluster (three dimensions, 0-12): high = >= 8
-  //     (two-thirds of the range, a clearly strong cluster).
+  // the #1 gap (the lowest dimension). A clean 2x2 over two FRACTION axes:
+  //   - Point of View: high = povFrac >= 0.75.
+  //   - The conversion/trust/signal EXECUTION cluster: high = mean of the three
+  //     fractions >= 2/3 (with the float epsilon).
   // This satisfies the required gates: Authority requires POV high (a POV floor)
   // and Renter requires POV low (a POV ceiling). Mirrors assessment/scoring.mjs
   // pickArchetype() exactly. Keep in sync.
   //
-  //                  cluster low (<8)   cluster high (>=8)
-  //   POV high (>=3)   Publisher          Authority
-  //   POV low  (<3)    Renter             Operator
-  const povHigh = dimensionScores.pointOfView >= 3;
-  const cluster = dimensionScores.conversionSurface + dimensionScores.trustAtCapture + dimensionScores.signalToSales;
-  const clusterHigh = cluster >= 8;
+  //                  exec low (<2/3)    exec high (>=2/3)
+  //   POV high (>=.75)  Publisher          Authority
+  //   POV low  (<.75)   Renter             Operator
+  const povHigh = dimFrac.pointOfView >= POV_HIGH_FRAC;
+  const execMean = (dimFrac.conversionSurface + dimFrac.trustAtCapture + dimFrac.signalToSales) / 3;
+  const execHigh = execMean >= EXEC_HIGH_FRAC;
   let archetype;
-  if (povHigh) archetype = clusterHigh ? ARCHETYPES.authority : ARCHETYPES.publisher;
-  else archetype = clusterHigh ? ARCHETYPES.operator : ARCHETYPES.renter;
+  if (povHigh) archetype = execHigh ? ARCHETYPES.authority : ARCHETYPES.publisher;
+  else archetype = execHigh ? ARCHETYPES.operator : ARCHETYPES.renter;
 
   // FOCUS is the single dimension to act on next, ALWAYS surfaced unless all four
   // dimensions are exactly equal. Lowest wins; ties break by DIMENSIONS order (the
   // demand-funnel sequence). tier is set by the focus dimension's own band using
-  // the same HIGH = 3 cut as band() below: < 3 -> 'deficit' (gap to close),
-  // >= 3 -> 'edge' (next lever to extend). A high-band lowest is an edge, never a
+  // the same HIGH = 75 cut as band() below: < 75 -> 'deficit' (gap to close),
+  // >= 75 -> 'edge' (next lever to extend). A high-band lowest is an edge, never a
   // deficit, so it never contradicts a strong archetype. null only when all four
   // are equal (the sole no-focus state); evenTier then reports high vs low so the
   // copy stays honest. Mirrors assessment/scoring.mjs pickFocus()/evenTier()
   // exactly. Keep in sync. focus is { dimension, label, tier, blurb } or null.
+  // dimensionScores here are /100, so the comparisons run on the /100 scale.
   const dimValues = DIMENSIONS.map(([key]) => dimensionScores[key]);
   const dimMin = Math.min(...dimValues);
   const dimMax = Math.max(...dimValues);
@@ -104,26 +145,29 @@ function scoreAnswers(answers) {
     for (const [key, label, gapBlurb, edgeBlurb] of DIMENSIONS) {
       if (focus === null || dimensionScores[key] < focus.value) focus = { dimension: key, label, gapBlurb, edgeBlurb, value: dimensionScores[key] };
     }
-    const tier = focus.value >= 3 ? 'edge' : 'deficit';
+    const tier = focus.value >= HIGH_BAND_100 ? 'edge' : 'deficit';
     const blurb = tier === 'edge' ? focus.edgeBlurb : focus.gapBlurb;
     focus = { dimension: focus.dimension, label: focus.label, tier, blurb };
   } else {
-    evenTier = dimMin >= 3 ? 'high' : 'low';
+    evenTier = dimMin >= HIGH_BAND_100 ? 'high' : 'low';
   }
 
   return {
     score,
     points,
     dimensionScores,
+    dimensionRaw,
     archetype: { key: archetype.key, label: archetype.label, blurb: archetype.blurb },
     focus,
     evenTier,
   };
 }
 
+// Band on the /100 scale: low < 50, mid 50..<75, high >= 75. dimensionScores
+// now holds /100 values, so this feeds the edge-vs-gap first-sentence pick.
 function band(value) {
-  if (value <= 1) return 'low';
-  if (value === 2) return 'mid';
+  if (value < 50) return 'low';
+  if (value < 75) return 'mid';
   return 'high';
 }
 
@@ -208,7 +252,7 @@ function buildLeadText(email, result) {
     `Archetype: ${result.archetype.label}`,
     `Focus: ${f ? `${f.label} (${f.tier})` : `none, all dimensions even (${result.evenTier})`}`,
     '',
-    'Dimension scores (0-4):',
+    'Dimension scores (/100):',
     ...DIMENSIONS.map(([key, label]) => `  ${label}: ${ds[key]}`),
   ].join('\n');
 }
@@ -227,7 +271,7 @@ function buildVisitorText(result) {
     const firstSentence = b === 'high'
       ? DIMENSION_FIRST_SENTENCE[key].edge
       : DIMENSION_FIRST_SENTENCE[key].gap;
-    return `  ${label}: ${raw} / 4  [${b}]  ${firstSentence}`;
+    return `  ${label}: ${raw} / 100  [${b}]  ${firstSentence}`;
   });
 
   // Section 5: PRIORITY focus callout
@@ -289,7 +333,7 @@ function buildVisitorHtml(result) {
   const f = result.focus;
   const archetypeKey = result.archetype.key;
 
-  // Section 4: four dimension rows with raw/4, band, and the first-sentence read.
+  // Section 4: four dimension rows with the /100 score, band, and first-sentence read.
   const dimRows = DIMENSIONS.map(([key, label]) => {
     const raw = ds[key];
     const b = band(raw);
@@ -301,7 +345,7 @@ function buildVisitorHtml(result) {
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="font-size:15px;font-weight:600;color:#0A0908;">${escapeHtml(label)}</td>
-                    <td align="right" style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#57564F;white-space:nowrap;">${escapeHtml(raw)} / 4&nbsp;&nbsp;${escapeHtml(b)}</td>
+                    <td align="right" style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#57564F;white-space:nowrap;">${escapeHtml(raw)} / 100&nbsp;&nbsp;${escapeHtml(b)}</td>
                   </tr>
                   <tr>
                     <td colspan="2" style="padding-top:4px;font-size:14px;line-height:1.5;color:#3A3A38;">${escapeHtml(firstSentence)}</td>

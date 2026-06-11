@@ -38,6 +38,15 @@ export const questions = [
     { label: 'We have strong thought leadership but no named, structured framework', points: 1 },
     { label: 'Yes. A named framework with a defined methodology buyers can apply', points: 2 },
   ] },
+  // pov3: durability / proprietariness of the point of view. Distinct from pov1
+  // (whose lens buyers use) and pov2 (do you have a named methodology). 2 keys
+  // off a moat a competitor cannot quickly replicate; 1 a borrowable opinion;
+  // 0 repackaged best practices.
+  { id: 'pov3', dimension: 'pointOfView', text: 'How hard would it be for a well-resourced competitor to replicate your point of view?', options: [
+    { label: 'Not hard. It is essentially repackaged best practices anyone could publish', points: 0 },
+    { label: 'They could copy the opinion. It is strong, but it is a stance, not something only we could say', points: 1 },
+    { label: 'Hard. It is backed by proprietary data or named constructs they cannot quickly reproduce', points: 2 },
+  ] },
   { id: 'conv1', dimension: 'conversionSurface', text: 'What does the main call to action on your best-performing content ask a reader to do?', options: [
     { label: 'Submit a long gated form or commit to a high-friction ask like book a demo, before receiving any value', points: 0 },
     { label: 'Take a light, generic action such as subscribe or contact us, unconnected to what they just read', points: 1 },
@@ -47,6 +56,15 @@ export const questions = [
     { label: 'We cannot measure or attribute it with any confidence', points: 0 },
     { label: 'We can estimate it roughly, but the numbers are soft', points: 1 },
     { label: 'We track a clear, defensible conversion rate we can report on', points: 2 },
+  ] },
+  // conv3: relevance-matching of the next step. Distinct from conv1 (what the
+  // CTA asks) and conv2 (can you measure conversion). 2 keys off a next step
+  // that adapts to what the buyer just engaged with; 1 one generic CTA
+  // sitewide; 0 the same hard ask everywhere.
+  { id: 'conv3', dimension: 'conversionSurface', text: 'How well does the next step you offer match what the buyer just engaged with?', options: [
+    { label: 'It does not. The same hard ask appears everywhere regardless of context', points: 0 },
+    { label: 'There is one generic call to action used across the whole site', points: 1 },
+    { label: 'The next step adapts to the specific content or problem the buyer just engaged with', points: 2 },
   ] },
   { id: 'trust1', dimension: 'trustAtCapture', text: 'At the moment a buyer hands over their information, what do they actually receive in return?', options: [
     { label: 'Access to a generic asset, or only the promise of a follow-up', points: 0 },
@@ -58,6 +76,15 @@ export const questions = [
     { label: 'A fair, unremarkable exchange', points: 1 },
     { label: 'Worth it on its own terms. They would have wanted what they got even without the follow-up', points: 2 },
   ] },
+  // trust3: immediacy of value at capture. Distinct from trust1/trust2. 2 keys
+  // off value delivered in the moment of exchange (the interactive diagnosis),
+  // not promised later; 1 useful but delayed; 0 a promise of follow-up. This
+  // keeps the interactive-assessment artifact anchored to Trust at Capture only.
+  { id: 'trust3', dimension: 'trustAtCapture', text: 'When does a buyer actually receive the value you offer in exchange for their information?', options: [
+    { label: 'Later, if at all. What they get is a promise that someone will follow up', points: 0 },
+    { label: 'Soon after, but not right away. The useful thing arrives on a delay', points: 1 },
+    { label: 'In the moment of exchange. They get an interactive diagnosis immediately, not a promise', points: 2 },
+  ] },
   { id: 'signal1', dimension: 'signalToSales', text: "Before a rep's first conversation with a new lead, how much account-specific context do they actually have?", options: [
     { label: 'A name and an email. The rep discovers everything else live on the call', points: 0 },
     { label: 'Firmographics and which asset was downloaded, but nothing about where this account stands', points: 1 },
@@ -67,6 +94,15 @@ export const questions = [
     { label: 'They land in one queue or inbox. Reps pick by gut or recency', points: 0 },
     { label: 'Some scoring or rules exist, but routing and priority are inconsistent', points: 1 },
     { label: 'Every lead is prioritized on the same criteria and routed to the right rep automatically', points: 2 },
+  ] },
+  // signal3: timeliness / freshness of the brief. Distinct from signal1 (how
+  // much context) and signal2 (prioritization/routing). 2 keys off a brief that
+  // reaches the right rep before the first touch and reflects current account
+  // behavior; 1 context that exists but is stale or arrives late; 0 no brief.
+  { id: 'signal3', dimension: 'signalToSales', text: 'When the brief reaches the rep, how fresh and well-timed is it relative to the first touch?', options: [
+    { label: 'There is no brief. Whatever the rep learns, they learn on the call', points: 0 },
+    { label: 'Context exists, but it is stale or it arrives after the rep has already reached out', points: 1 },
+    { label: 'It reaches the right rep before the first touch and reflects current account behavior', points: 2 },
   ] },
 ];
 
