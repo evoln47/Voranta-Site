@@ -28,6 +28,12 @@ const quiz = createQuiz({
       gapBlurb: document.getElementById('dri-gap-blurb'),
       bars: document.getElementById('dri-bars'),
       cta: document.getElementById('dri-results-cta'),
+      radarSvg: document.getElementById('dri-radar-svg'),
+      radarCalloutName: document.getElementById('dri-radar-pc-name'),
+      radarCalloutScore: document.getElementById('dri-radar-pc-score'),
+      radarCalloutReading: document.getElementById('dri-radar-pc-reading'),
+      quadrantGrid: document.getElementById('dri-matrix-grid'),
+      quadrantCallout: document.getElementById('dri-quadrant-callout'),
     });
     show('results');
     app.scrollIntoView({ behavior: 'smooth', block: 'start' });

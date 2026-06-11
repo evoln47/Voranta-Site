@@ -1,4 +1,7 @@
 import { dimensions } from './framework.mjs';
+import { renderRadar, setActiveDimension, renderQuadrant } from './scorecard-viz.mjs';
+
+const CALENDLY_BASE = 'https://calendly.com/evoln47/30min';
 
 export function renderScorecard(result, els) {
   els.archetypeName.textContent = result.archetype.label;
@@ -22,10 +25,29 @@ export function renderScorecard(result, els) {
     els.gapBlurb.textContent = 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
   }
 
+  // B28: CTA text - primary Calendly button text based on result state
   if (els.cta) {
-    els.cta.textContent = f
-      ? (f.tier === 'edge' ? 'Book a call to extend your lead' : 'Book a call to scope the fix')
-      : 'Book a call to map next steps';
+    let ctaText;
+    if (f) {
+      ctaText = f.tier === 'edge' ? 'Book a call to extend your lead' : 'Book a call to scope the fix';
+    } else if (result.evenTier === 'high') {
+      ctaText = 'Book a call to extend your lead';
+    } else {
+      ctaText = 'Book a call to map next steps';
+    }
+    els.cta.textContent = ctaText;
+
+    // B26: Append UTM params encoding result context to Calendly URL
+    const focusDim = f ? f.dimension : 'even';
+    const focusTier = f ? f.tier : (result.evenTier || 'low');
+    const utmContent = `${encodeURIComponent(focusDim)}-${encodeURIComponent(focusTier)}`;
+    const href =
+      CALENDLY_BASE +
+      '?utm_source=dri-assessment' +
+      `&utm_campaign=${encodeURIComponent(result.archetype.key)}` +
+      `&utm_content=${utmContent}` +
+      `&score=${encodeURIComponent(result.score)}`;
+    els.cta.href = href;
   }
 
   els.bars.innerHTML = dimensions.map((dim) => {
@@ -50,6 +72,40 @@ export function renderScorecard(result, els) {
   });
 
   animateScore(els.score, result.score);
+
+  // Radar chart
+  if (els.radarSvg) {
+    renderRadar(
+      els.radarSvg,
+      result.dimensionScores,
+      result.focus,
+      (dimKey) => setActiveDimension(
+        els.radarSvg,
+        dimKey,
+        result.dimensionScores,
+        result,
+        els.radarCalloutName,
+        els.radarCalloutScore,
+        els.radarCalloutReading
+      )
+    );
+    // Default: highlight the focus dimension, or first dim if no focus
+    const defaultDim = result.focus ? result.focus.dimension : dimensions[0].key;
+    setActiveDimension(
+      els.radarSvg,
+      defaultDim,
+      result.dimensionScores,
+      result,
+      els.radarCalloutName,
+      els.radarCalloutScore,
+      els.radarCalloutReading
+    );
+  }
+
+  // Quadrant
+  if (els.quadrantGrid && els.quadrantCallout) {
+    renderQuadrant(els.quadrantGrid, els.quadrantCallout, result);
+  }
 }
 
 function animateScore(el, target) {

@@ -95,6 +95,8 @@
       <!-- RESULTS -->
       <div class="dri-screen" data-screen="results" hidden>
         <h2 class="sr-only" id="dri-results-heading" tabindex="-1">Assessment results</h2>
+
+        <!-- Row 1: Score card + Dimension bars (original two-column layout) -->
         <div class="dri-results-grid">
           <div class="sc-card is-dark dri-score-card">
             <div class="sc-card-head"><h3>Demand Research Index</h3></div>
@@ -118,6 +120,49 @@
           </div>
         </div>
 
+        <!-- Row 2: Radar + Quadrant -->
+        <div class="dri-viz-grid">
+          <!-- Radar card -->
+          <div class="sc-card">
+            <div class="sc-card-head"><h3>Dimension radar</h3></div>
+            <div class="sc-radar-wrap">
+              <svg class="sc-radar-svg" id="dri-radar-svg" viewBox="0 0 440 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Radar chart showing scores across four dimensions. See dimension bars above for accessible data.">
+                <polygon class="sc-radar-ring" points="" id="dri-ring-0"></polygon>
+                <polygon class="sc-radar-ring" points="" id="dri-ring-1"></polygon>
+                <polygon class="sc-radar-ring" points="" id="dri-ring-2"></polygon>
+                <polygon class="sc-radar-ring sc-radar-ring-outer" points="" id="dri-ring-3"></polygon>
+                <g id="dri-axes"></g>
+                <polygon class="sc-radar-fill" id="dri-score-fill" points=""></polygon>
+                <g id="dri-score-points"></g>
+                <g id="dri-axis-labels"></g>
+              </svg>
+            </div>
+            <div class="sc-pillar-callout" aria-live="polite" aria-atomic="true">
+              <div class="pc-head">
+                <span class="pc-name" id="dri-radar-pc-name">Select a dimension</span>
+                <span class="pc-score" id="dri-radar-pc-score"></span>
+              </div>
+              <p class="pc-reading" id="dri-radar-pc-reading"></p>
+            </div>
+          </div>
+
+          <!-- Quadrant card -->
+          <div class="sc-card">
+            <div class="sc-card-head"><h3>Archetype placement</h3></div>
+            <div class="sc-radar-wrap">
+              <div class="sc-matrix-wrap">
+                <div class="sc-y-axis-label">Point of View</div>
+                <div class="sc-matrix-grid" id="dri-matrix-grid" role="group" aria-label="2x2 archetype quadrant">
+                  <!-- Quadrant cells injected by scorecard-viz.mjs -->
+                </div>
+                <div></div>
+                <div class="sc-x-axis-label">Execution Engine</div>
+              </div>
+            </div>
+            <div class="sc-quadrant-callout" id="dri-quadrant-callout" aria-live="polite" aria-atomic="true"></div>
+          </div>
+        </div>
+
         <!-- CAPTURE -->
         <div class="dri-capture">
           <div class="dri-capture-inner">
@@ -128,12 +173,12 @@
             <form class="dri-capture-form" id="dri-capture-form" novalidate>
               <input type="text" name="website" class="dri-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
               <input type="email" id="dri-email" name="email" placeholder="you@company.com" required aria-label="Your work email">
-              <button type="submit" class="btn btn-lg" id="dri-capture-submit">Email me the breakdown</button>
+              <button type="submit" class="btn btn-ghost btn-lg" id="dri-capture-submit">Email me the breakdown</button>
             </form>
           </div>
           <p class="dri-capture-msg" id="dri-capture-msg" role="alert" tabindex="-1" hidden></p>
           <div class="dri-results-cta">
-            <a id="dri-results-cta" href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">Book a call</a>
+            <a id="dri-results-cta" href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg">Book a call</a>
           </div>
         </div>
       </div>
