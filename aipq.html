@@ -231,7 +231,7 @@
         <div class="sc-card-head"><h3>Archetype placement</h3></div>
         <div class="sc-radar-wrap">
           <div class="sc-matrix-wrap">
-            <div class="sc-y-axis-label">Operational Fit →</div>
+            <div class="sc-y-axis-label"><span>low fit</span><span>high fit</span></div>
             <div class="sc-matrix-grid" id="sc-matrix-grid">
               <div class="sc-quadrant" data-archetype="operational-gap" style="border-right: 0.5px solid var(--color-border-subtle); border-bottom: 0.5px solid var(--color-border-subtle);">
                 <span class="q-num">02</span><span class="q-name">Operational Gap</span>
@@ -248,11 +248,11 @@
               <div class="sc-buyer-dot"></div>
             </div>
             <div></div>
-            <div class="sc-x-axis-label">Technical Readiness →</div>
+            <div class="sc-x-axis-label"><span>low readiness</span><span>high readiness</span></div>
           </div>
         </div>
 <div class="sc-quadrant-callout" id="sc-quadrant-callout">
-          <strong>Stranded Capability</strong> · Technical readiness is high but operational conditions block production. The pilot will land. The rollout will stall unless exception handling and adoption mechanics are addressed first.
+          <strong>Stranded Capability</strong> · Technical readiness is high; operational conditions block the rollout.
         </div>
       </div>
 
@@ -388,10 +388,10 @@
     ];
 
     var archetypes = {
-      "production-ready": { name: "Production-Ready", desc: "Technical capability is in place and operational conditions support production. The strongest pilot-to-production conversion rate in the cohort." },
-      "operational-gap":  { name: "Operational Gap",  desc: "Operational conditions are favorable but technical readiness lags. The pilot may not pass. Address data and workflow stability before further investment." },
-      "stranded":         { name: "Stranded Capability", desc: "Technical readiness is high but operational conditions block production. The pilot will land. The rollout will stall unless exception handling and adoption mechanics are addressed first." },
-      "foundational":     { name: "Foundational",     desc: "Neither side is ready. This isn't a deployment problem yet; it's a foundation problem. Don't pilot until at least one axis is above the median." }
+      "production-ready": { name: "Production-Ready", desc: "Technical readiness and operational fit are both in place; strongest path to production." },
+      "operational-gap":  { name: "Operational Gap",  desc: "Operational conditions are favorable but technical readiness lags; address data and workflow stability first." },
+      "stranded":         { name: "Stranded Capability", desc: "Technical readiness is high; operational conditions block the rollout." },
+      "foundational":     { name: "Foundational",     desc: "Neither readiness nor fit is established; build the foundation before piloting." }
     };
 
     var radarSvg = document.getElementById("sc-score-fill");
