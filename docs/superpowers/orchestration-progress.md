@@ -24,6 +24,9 @@ Plan: design-first (framework-architect designs mechanism + outcome map + measur
 2. Add a visual component to the DRI RESULTS like the AIPQ radar chart + 2x2 quadrant. [v1 built; redesigning to AIPQ-quality per review]
 3. Make the EMAIL results breakdown more in-depth and valuable, tailored to the specific results. [next]
 
+## QUEUED (human, high priority): assessment result copy READABILITY pass
+Owner feedback: the assessment result copy feels abstract and hard to follow. Improve readability + comprehension; make it concrete and plain. HARD BANS: (a) "axis" framing / "this axis needs the most work" (no axis jargon to the reader); (b) the "the call is about / the call will be about" formula (drop it; vary + concretize the reason to talk). Keep substance, the north-star (drive the booking), and ALL coherence constraints (cluster-silent: Operator/Authority must not claim a specific cluster dimension works; R2; no over-claims). Scope (all assessment result copy): framework.mjs archetype blurbs + the 8 dimension gap/edge blurbs; scorecard-viz.mjs QUADRANT_PLACEMENT (heavy "axis" language - rewrite); api/_dri.js LEAD_IN / POSITIONING / CTA_FRAMING (many "the call is about"); assessment.html CTA frame + intro. MAINTAIN framework.mjs <-> api/_dri.js blurb PARITY (the 2401 test enforces byte-identical) and run the cluster-silent guard + parity after. Do AFTER the in-flight display-swap (scorecard-viz.mjs) + question-polish (framework.mjs) agents land + commit, to avoid clobber.
+
 ## DROPPED (human, do not pursue): Gmail Promotions-tab deliverability
 The richer email lands in Gmail Promotions. Owner chose to DROP this for now - do NOT do the transactional/deliverability pass. (Reference if revived: presentation signals + List-Unsubscribe + domain auth SPF/DKIM/DMARC.) Note: the capture button "Sending..." bug was the FORM not hiding (css [hidden] override), email sent fine - FIXED in styles.css 0bf043d + capture.mjs timeout 808f2e5.
 
