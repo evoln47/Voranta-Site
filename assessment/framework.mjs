@@ -14,17 +14,17 @@ export const meta = {
 //          so it never contradicts a strong archetype.
 export const dimensions = [
   { key: 'pointOfView', label: 'Point of View',
-    gap: 'You are renting the lens buyers research against. Every piece of content you publish builds authority for a framework someone else named. A proprietary, opinionated framework the market associates with your brand makes that lens yours and turns competitors\' positioning pressure into evidence for your category.',
-    edge: 'Your point of view is your sharpest commercial asset. Buyers are already finding and using it. The next lever is structuring it into a named, opinionated framework the market associates with your brand. That move converts a content strength into a category position competitors cannot replicate by outspending you.' },
+    gap: 'Buyers research the problem using a framework someone else named. Every piece of content you publish builds authority for that framework, not yours. A proprietary, opinionated framework the market associates with your brand changes that. It turns your competitors\' positioning pressure into evidence for a category point of view only you can claim.',
+    edge: 'Your point of view is already reaching buyers and shaping how they think about the problem. The next step is formalizing it into a named, structured framework the market associates with your brand. That move lifts a content strength into a category position a competitor cannot replicate by outspending you.' },
   { key: 'conversionSurface', label: 'Conversion Surface',
-    gap: 'You earn attention but the primary action you ask for leaks it. Buyers who would have converted step off the path before you can identify them. A lower-friction, specifically relevant next step tied to real conversion measurement closes that gap and turns earned attention into attributable pipeline.',
-    edge: 'Your conversion surface already works. Buyers who engage are converting to identifiable contacts at a measurable rate. The next lever is precision: sharper paths and tighter measurement so every point of earned attention becomes attributable pipeline, not just most of it.' },
+    gap: 'You earn attention, but the action you ask for leaks it. Buyers who were ready to engage step off the path before you can identify them. A lower-friction, relevant next step tied to clear measurement closes that leak and turns earned attention into attributable pipeline.',
+    edge: 'Your conversion surface is working. Buyers who engage are becoming identifiable contacts at a measurable rate. The next step is precision: tighter paths and sharper measurement so every point of earned attention becomes attributable pipeline, not just most of it.' },
   { key: 'trustAtCapture', label: 'Trust at Capture',
-    gap: 'What you ask for and what you give in return are out of balance. Buyers tolerate the exchange rather than value it. When the first thing a buyer receives is a diagnosis tailored to their specific situation, the act of raising a hand becomes the beginning of the engagement rather than the price of admission.',
-    edge: 'Capture already earns trust. Buyers get real value at the moment of exchange and the hand-raise pays for itself. The next lever is specificity: making what buyers receive so precisely calibrated to their situation that the first interaction positions every subsequent touchpoint as a continuation, not a follow-up.' },
+    gap: 'What you ask for and what you give back are out of balance. Buyers tolerate the exchange rather than value it. When the first thing a buyer receives is a diagnosis specific to their situation, giving you their information stops feeling like a toll and starts being worth it on its own terms.',
+    edge: 'The exchange at capture already earns its keep. Buyers get real value the moment they engage and the hand-raise pays for itself. The next step is specificity: making what buyers receive so precisely matched to their situation that the first interaction sets up every conversation that follows.' },
   { key: 'signalToSales', label: 'Signal to Sales',
-    gap: 'Your reps start from scratch on every first call. A hand-off that delivers a prioritized, account-specific brief to the right rep before they dial means the first call opens on the actual gap in the account, not on introductory discovery.',
-    edge: 'Your hand-off already gives reps meaningful context before the first call. The next lever is sharpening the brief and the routing so every rep opens every call on the account-specific gap, not just when the system fires cleanly.' },
+    gap: 'Your reps start from scratch on every first call. Delivering a prioritized, account-specific brief to the right rep before they dial means the first conversation opens on the actual gap in that account, not on introductory discovery.',
+    edge: 'Reps already have meaningful context before the first call. The next step is sharpening the brief and the routing so every rep opens every conversation on the account-specific gap, not just when the system fires cleanly.' },
 ];
 
 export const questions = [
@@ -107,8 +107,8 @@ export const questions = [
 ];
 
 export const archetypes = {
-  renter: { key: 'renter', label: 'The Renter', blurb: "Your content reaches buyers who then research the problem using someone else's framework. The lead goes to whoever owns that lens, and right now that is not you. Owning the framework the market researches against is what turns your content into pipeline you can claim." },
-  publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You have built a genuine point of view and buyers read it. The leak is what happens next. The conversion path, the value at capture, or the hand-off to sales is not closing the gap between earned attention and identifiable pipeline.' },
-  operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong demand engine. What it is missing is the lens. You compete on a framework someone else defined, which means a well-resourced rival can outspend you on the category point of view you are currently renting.' },
-  authority: { key: 'authority', label: 'The Authority', blurb: 'You own the lens buyers use to research the problem, and the rest of your demand engine is broadly strong. That combination is hard to build and easy to copy once it is visible. The question is how quickly you can extend the lead before a rival reverse-engineers it.' },
+  renter: { key: 'renter', label: 'The Renter', blurb: "Buyers read your content, then research the problem using someone else's framework. That framework sets the vocabulary, shapes the shortlist, and earns the referral. Until you own the framework buyers research against, your content spend builds authority for whoever does." },
+  publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You have built a genuine point of view and buyers engage with it. The gap is downstream. The conversion path, the value at capture, or the hand-off to sales is not closing the distance between earned attention and identifiable pipeline.' },
+  operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong funnel. The structural gap is the point of view. You compete on a framework someone else defined and named, which means a well-resourced rival can claim the category point of view you are currently borrowing.' },
+  authority: { key: 'authority', label: 'The Authority', blurb: 'You own the framework buyers research against, and the rest of your funnel is broadly strong. That combination is hard to build and harder to sustain. The question is how quickly you can deepen the position before a well-resourced rival makes it worth challenging.' },
 };

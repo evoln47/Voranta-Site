@@ -41,24 +41,24 @@ const HIGH_BAND_100 = 75; // /100 band cut: high = >= 75.
 // Mirrors assessment/framework.mjs dimensions[] exactly. Keep in sync.
 const DIMENSIONS = [
   ['pointOfView', 'Point of View',
-    "You are renting the lens buyers research against. Every piece of content you publish builds authority for a framework someone else named. A proprietary, opinionated framework the market associates with your brand makes that lens yours and turns competitors' positioning pressure into evidence for your category.",
-    'Your point of view is your sharpest commercial asset. Buyers are already finding and using it. The next lever is structuring it into a named, opinionated framework the market associates with your brand. That move converts a content strength into a category position competitors cannot replicate by outspending you.'],
+    "Buyers research the problem using a framework someone else named. Every piece of content you publish builds authority for that framework, not yours. A proprietary, opinionated framework the market associates with your brand changes that. It turns your competitors' positioning pressure into evidence for a category point of view only you can claim.",
+    'Your point of view is already reaching buyers and shaping how they think about the problem. The next step is formalizing it into a named, structured framework the market associates with your brand. That move lifts a content strength into a category position a competitor cannot replicate by outspending you.'],
   ['conversionSurface', 'Conversion Surface',
-    'You earn attention but the primary action you ask for leaks it. Buyers who would have converted step off the path before you can identify them. A lower-friction, specifically relevant next step tied to real conversion measurement closes that gap and turns earned attention into attributable pipeline.',
-    'Your conversion surface already works. Buyers who engage are converting to identifiable contacts at a measurable rate. The next lever is precision: sharper paths and tighter measurement so every point of earned attention becomes attributable pipeline, not just most of it.'],
+    'You earn attention, but the action you ask for leaks it. Buyers who were ready to engage step off the path before you can identify them. A lower-friction, relevant next step tied to clear measurement closes that leak and turns earned attention into attributable pipeline.',
+    'Your conversion surface is working. Buyers who engage are becoming identifiable contacts at a measurable rate. The next step is precision: tighter paths and sharper measurement so every point of earned attention becomes attributable pipeline, not just most of it.'],
   ['trustAtCapture', 'Trust at Capture',
-    'What you ask for and what you give in return are out of balance. Buyers tolerate the exchange rather than value it. When the first thing a buyer receives is a diagnosis tailored to their specific situation, the act of raising a hand becomes the beginning of the engagement rather than the price of admission.',
-    'Capture already earns trust. Buyers get real value at the moment of exchange and the hand-raise pays for itself. The next lever is specificity: making what buyers receive so precisely calibrated to their situation that the first interaction positions every subsequent touchpoint as a continuation, not a follow-up.'],
+    'What you ask for and what you give back are out of balance. Buyers tolerate the exchange rather than value it. When the first thing a buyer receives is a diagnosis specific to their situation, giving you their information stops feeling like a toll and starts being worth it on its own terms.',
+    'The exchange at capture already earns its keep. Buyers get real value the moment they engage and the hand-raise pays for itself. The next step is specificity: making what buyers receive so precisely matched to their situation that the first interaction sets up every conversation that follows.'],
   ['signalToSales', 'Signal to Sales',
-    'Your reps start from scratch on every first call. A hand-off that delivers a prioritized, account-specific brief to the right rep before they dial means the first call opens on the actual gap in the account, not on introductory discovery.',
-    'Your hand-off already gives reps meaningful context before the first call. The next lever is sharpening the brief and the routing so every rep opens every call on the account-specific gap, not just when the system fires cleanly.'],
+    'Your reps start from scratch on every first call. Delivering a prioritized, account-specific brief to the right rep before they dial means the first conversation opens on the actual gap in that account, not on introductory discovery.',
+    'Reps already have meaningful context before the first call. The next step is sharpening the brief and the routing so every rep opens every conversation on the account-specific gap, not just when the system fires cleanly.'],
 ];
 
 const ARCHETYPES = {
-  renter: { key: 'renter', label: 'The Renter', blurb: "Your content reaches buyers who then research the problem using someone else's framework. The lead goes to whoever owns that lens, and right now that is not you. Owning the framework the market researches against is what turns your content into pipeline you can claim." },
-  publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You have built a genuine point of view and buyers read it. The leak is what happens next. The conversion path, the value at capture, or the hand-off to sales is not closing the gap between earned attention and identifiable pipeline.' },
-  operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong demand engine. What it is missing is the lens. You compete on a framework someone else defined, which means a well-resourced rival can outspend you on the category point of view you are currently renting.' },
-  authority: { key: 'authority', label: 'The Authority', blurb: 'You own the lens buyers use to research the problem, and the rest of your demand engine is broadly strong. That combination is hard to build and easy to copy once it is visible. The question is how quickly you can extend the lead before a rival reverse-engineers it.' },
+  renter: { key: 'renter', label: 'The Renter', blurb: "Buyers read your content, then research the problem using someone else's framework. That framework sets the vocabulary, shapes the shortlist, and earns the referral. Until you own the framework buyers research against, your content spend builds authority for whoever does." },
+  publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You have built a genuine point of view and buyers engage with it. The gap is downstream. The conversion path, the value at capture, or the hand-off to sales is not closing the distance between earned attention and identifiable pipeline.' },
+  operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong funnel. The structural gap is the point of view. You compete on a framework someone else defined and named, which means a well-resourced rival can claim the category point of view you are currently borrowing.' },
+  authority: { key: 'authority', label: 'The Authority', blurb: 'You own the framework buyers research against, and the rest of your funnel is broadly strong. That combination is hard to build and harder to sustain. The question is how quickly you can deepen the position before a well-resourced rival makes it worth challenging.' },
 };
 
 // Re-derive the full result from answers. Mirrors assessment/scoring.mjs.
@@ -200,28 +200,28 @@ const LEAD_IN = {
 
 // DIMENSION_FIRST_SENTENCE: keyed by dimension key, gap (low/mid) and edge (high).
 const DIMENSION_FIRST_SENTENCE = {
-  pointOfView:       { gap: 'You are renting the lens buyers research against.',    edge: 'Your point of view is your sharpest commercial asset.' },
-  conversionSurface: { gap: 'You earn attention but the primary action you ask for leaks it.', edge: 'Your conversion surface already works.' },
-  trustAtCapture:    { gap: 'What you ask for and what you give in return are out of balance.', edge: 'Capture already earns trust.' },
-  signalToSales:     { gap: 'Your reps start from scratch on every first call.',    edge: 'Your hand-off already gives reps meaningful context before the first call.' },
+  pointOfView:       { gap: 'Buyers research the problem using a framework someone else named.',    edge: 'Your point of view is already reaching buyers and shaping how they think about the problem.' },
+  conversionSurface: { gap: 'You earn attention, but the action you ask for leaks it.', edge: 'Your conversion surface is working.' },
+  trustAtCapture:    { gap: 'What you ask for and what you give back are out of balance.', edge: 'The exchange at capture already earns its keep.' },
+  signalToSales:     { gap: 'Your reps start from scratch on every first call.',    edge: 'Reps already have meaningful context before the first call.' },
 };
 
 // POSITIONING: one paragraph per archetype. evenLow uses renter, evenHigh uses authority.
 // These paragraphs are cluster-silent for renter, operator, and authority per spec.
 const POSITIONING = {
-  renter:    'The Authority position requires two things: a point of view the market names and researches against, and a demand engine that converts and hands off that interest reliably. Your result shows open distance on both axes. That is not an unusual place to be. Most B2B software marketing teams compete on borrowed frameworks and measure pipeline loosely, if at all. What separates teams that close the gap is sequencing: they build the lens before they build the engine, because a well-designed conversion surface amplifies a proprietary framework, while the same surface running on a rented framework just sends buyers back to the framework\'s owner.',
-  publisher: 'You hold the harder of the two axes to build. A proprietary point of view the market associates with your brand cannot be bought quickly or replicated by outspending you. What separates The Publisher from The Authority is not the lens: it is what the lens connects to downstream. The strongest Publisher-to-Authority moves share a pattern: the same framework that earns the read becomes the mechanism that qualifies the hand-raise and briefs the rep. The point of view stops being a content asset and starts being the conversion architecture.',
-  operator:  'You have built the downstream infrastructure that most teams lack. Your demand engine is working at a level where adding a proprietary framework would compound immediately, because you have the machinery to convert the authority it generates. The risk is not your engine: it is that a well-funded competitor builds the framework first and your engine starts feeding their category. The Operator-to-Authority move is the most direct path in the framework: one axis to close, with the other already in place to amplify it.',
-  authority: 'You hold both axes. That is a structural position most teams in your category do not have and cannot acquire quickly. The pattern among teams that sustain it is aggressive deepening, not coasting: they make the framework harder to reverse-engineer by building proprietary research, named constructs, and published methodology that take years to replicate. The risk is not a rival outperforming you on execution. It is a rival publishing a credible competing framework before you have locked the category\'s vocabulary.',
+  renter:    'The Authority position requires two things: a framework the market names and researches against, and a funnel that turns that interest into identifiable, sales-ready pipeline. Your result shows open ground on both. That is not an unusual starting point. Most B2B software marketing teams compete on borrowed frameworks and measure pipeline loosely, if at all. What separates teams that close the gap is sequencing: they build the point of view first, because a proprietary framework gives the funnel something worth running on. The same funnel running on a rented framework sends buyers back to whoever owns it.',
+  publisher: 'You have built the harder thing to build. A proprietary point of view the market associates with your brand cannot be bought quickly or replicated by outspending you. What separates The Publisher from The Authority is not the point of view: it is what connects to the point of view downstream. The strongest Publisher-to-Authority moves share a pattern: the same framework that earns the read becomes the mechanism that qualifies the hand-raise and briefs the rep. The point of view stops being a content asset and starts being the architecture that turns interest into pipeline.',
+  operator:  'You have built the downstream infrastructure most teams lack. Your funnel is working at a level where adding a proprietary framework would compound immediately, because you have the machinery to act on the authority it generates. The risk is not your funnel. It is that a well-funded competitor builds the category framework first and your funnel starts feeding their pipeline. The Operator-to-Authority move is the most direct path: one structural gap to close, with the rest of the build already in place.',
+  authority: 'You own the framework buyers research against and the funnel behind it is broadly strong. That is a structural position most teams in your category do not have and cannot acquire quickly. The pattern among teams that sustain it is aggressive deepening, not coasting: they make the framework harder to reverse-engineer by building proprietary research, named constructs, and published methodology that take years to replicate. The risk is not a rival outperforming you operationally. It is a rival publishing a credible competing framework before you have locked the category\'s vocabulary.',
 };
 
 // CTA_FRAMING: sentence before the booking button, keyed on archetype key.
 // evenHigh uses authority, evenLow uses renter (same as POSITIONING key).
 const CTA_FRAMING = {
-  renter:    'Your score shows where the build starts. A 30 minute call with Voranta maps the sequence so you are not rebuilding in the wrong order.',
-  publisher: 'The point of view is the hard part, and you have it. A 30 minute call with Voranta identifies the specific downstream gap costing you the pipeline your content has already earned.',
-  operator:  'Your demand engine is ready to compound a framework you own. A 30 minute call with Voranta scopes what that framework looks like for your category and how fast you can move.',
-  authority: 'You hold the position. A 30 minute call with Voranta identifies the specific move that makes it structurally harder to challenge before a rival attempts it.',
+  renter:    'Your score shows where the build starts. In 30 minutes, Voranta can map the sequence so you are building in the right order.',
+  publisher: 'The point of view is the hard part, and you have it. A 30-minute call with Voranta pinpoints the specific gap between your content and the pipeline it should be generating.',
+  operator:  'Your funnel is ready to compound a framework you own. A 30-minute call with Voranta scopes what that framework looks like for your category and how quickly you can move.',
+  authority: 'You have the position. A 30-minute call with Voranta identifies the specific move that makes it structurally harder to challenge before a rival decides to try.',
 };
 
 // Returns the email subject line for the visitor email.
@@ -282,10 +282,10 @@ function buildVisitorText(result) {
     priorityBody = f.blurb;
   } else if (result.evenTier === 'high') {
     priorityLabel = 'Strong across every dimension';
-    priorityBody = 'All four dimensions score in the high band. That is a real position. The priority now is to extend the lead before a competitor reverse-engineers it.';
+    priorityBody = 'All four dimensions score in the high band. That is a real structural position. The priority now is to deepen the lead before a competitor decides it is worth building against.';
   } else {
     priorityLabel = 'A systemic opportunity';
-    priorityBody = 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
+    priorityBody = 'No single dimension is pulling the others down, which means there is no one fix to isolate. The opportunity is to build deliberately and in the right order. Voranta can scope that sequence in 30 minutes.';
   }
 
   // Section 6: positioning paragraph (evenLow -> renter, evenHigh -> authority)
@@ -374,10 +374,10 @@ function buildVisitorHtml(result) {
     priorityBody = f.blurb;
   } else if (result.evenTier === 'high') {
     priorityLabel = 'Strong across every dimension';
-    priorityBody = 'All four dimensions score in the high band. That is a real position. The priority now is to extend the lead before a competitor reverse-engineers it.';
+    priorityBody = 'All four dimensions score in the high band. That is a real structural position. The priority now is to deepen the lead before a competitor decides it is worth building against.';
   } else {
     priorityLabel = 'A systemic opportunity';
-    priorityBody = 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
+    priorityBody = 'No single dimension is pulling the others down, which means there is no one fix to isolate. The opportunity is to build deliberately and in the right order. Voranta can scope that sequence in 30 minutes.';
   }
 
   // Section 6: positioning paragraph (evenLow -> renter, evenHigh -> authority)
