@@ -24,6 +24,9 @@ Plan: design-first (framework-architect designs mechanism + outcome map + measur
 2. Add a visual component to the DRI RESULTS like the AIPQ radar chart + 2x2 quadrant. [v1 built; redesigning to AIPQ-quality per review]
 3. Make the EMAIL results breakdown more in-depth and valuable, tailored to the specific results. [next]
 
+## PENDING (do not forget): site-wide "with Evan" name-drop removal
+Human directive: stop saying "book a call with Evan" / random name-drops; use "book a call" or "book a call with Voranta". KEEP the legitimate founder bio on about.html (Evan Volness) - that is intentional, not a random drop. DONE: assessment.html CTA frame ("with Voranta"), capture.mjs success ("Book a call above"). STILL TO DO in api/_dri.js (was mid-edit by the /100 build): CTA_FRAMING lines (~177-180) "A 30 minute call with Evan" -> "with Voranta"; footer (~283, ~392) "reaches Evan directly" -> "reaches us directly". Apply when processing the /100 build output.
+
 ## APPROVED (human, 2026-06-10): /100 per-dimension scoring rebuild
 Decisions: (1) GRANULARITY = 12 questions, 3 per dimension (was 2). (2) WEIGHTING = equal.
 Model (from framework-architect proposal):
