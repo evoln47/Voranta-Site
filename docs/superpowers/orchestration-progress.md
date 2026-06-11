@@ -3,7 +3,40 @@
 - Branch: agent-orchestrated-build
 - Run started: 2026-06-10
 - Last updated: 2026-06-10 (Phase 0 complete, entering audit)
-- Current phase: done (framework rebuild complete + contradiction class closed exhaustively)
+- Current phase: framework evolution v2 (APPROVED 2026-06-10) — make no-focus rare + tailored conversion copy per outcome
+
+## Evolution v2 brief (in progress)
+**NORTH STAR (human, explicit): the assessment is a SALES instrument. Its single job is to make the taker click "Book a call" with Evan and ultimately buy. Every result, strong or weak, must be presented to create a compelling, tailored reason to book the call.** A weak result = "here is exactly what is leaking and how Voranta fixes it, let's talk." A strong result = "you are ahead, lock in / extend the lead before a competitor licenses the same advantage, let's talk." No outcome is a dead end; each is a different on-ramp to the call.
+
+Two user asks: (1) make a genuine "no gap / no focus" outcome VERY RARE; (2) every outcome's results copy drives conversion to the call, tailored exactly to that outcome.
+Mechanism (per advisor): replace R1 gap-SUPPRESSION with band-adaptive FRAMING. Always surface one focus dimension (deterministic tie-break); frame by band: low/mid lowest = deficit "gap to close"; high-band lowest = relative "edge to extend / next lever" (opportunity, NOT deficit). True no-focus only when all four exactly equal (rare). This is an EVOLUTION of the contradiction fix, not a reversal: R2 coherence (no archetype claims strength on a dimension shown as a DEFICIT) stays; the enumeration test updates from "high-band => null gap" to "high-band lowest => framed as edge, never deficit" and now COUNTS + reports the no-focus fraction (target well under ~1%, ideally only all-equal). Structural change (pillar count / question count) optional + secondary, allowed only if it preserves the v1 construct independence + coherence. Balanced/no-focus residual must ALSO convert (tailored), not a flat note.
+Plan: design-first (framework-architect designs mechanism + outcome map + measured no-focus rate) -> verify coherence + rate -> confirm shape with human -> composable tailored copy matrix (copywriter) -> render (frontend+api) -> review -> verify. Keep scope to assessment + result copy; do not reopen site-wide loop.
+
+### v2 status: model + copy done (no-focus 0.80%). Review found regressions being fixed:
+- B24 (must-fix): conversion rewrite reintroduced over-claims. Operator blurb ("converts and hands off leads with context") + Authority ("engine converts attention into pipeline") assert specific cluster dimensions that can be the deficit focus -> contradiction (verified: Operator/signal=0 shows "hands off with context" next to "reps start from scratch"). The 625 enumeration passed only because its claimed-strong encoding still matched the OLD softened blurbs. Rule: archetype blurb may assert strength only on Point of View (Authority/Publisher, guaranteed), may make an AGGREGATE engine claim, but must NOT name a specific cluster dimension as working, nor a singular "the gap/fix" (focus panel owns the specific lever). Fix blurbs + make R2 encoding honest + guard.
+- B25 (high): all-equal-low Renter blurb claims a singular "most fixable gap" conflicting with even-low "no single gap" panel.
+- B26 (high-value, north star): CTA href is a bare Calendly link with no result context (the instrument that sells Signal-to-Sales hands off cold). Encode archetype/score/focus as query params.
+- B27 (north star): "Book a call" is the secondary ghost button under "Email me the breakdown" (filled). For a sales instrument whose #1 goal is the call, make Book-a-call primary. FLAG to human (reversible funnel choice).
+- B28 (low): even-high CTA "map next steps" lacks urgency -> use "extend your lead". CSS: .dri-gap margin-top:22px overrides margin-top:auto so the focus callout does not bottom-anchor; rely on auto + padding-top.
+
+## QUEUED (human):
+1. Make the assessment PAGE visually interesting / a cool experience (AIPQ animated sample scorecard is the style reference). [in progress]
+2. Add a visual component to the DRI RESULTS like the AIPQ radar chart + 2x2 quadrant. [v1 built; redesigning to AIPQ-quality per review]
+3. Make the EMAIL results breakdown more in-depth and valuable, tailored to the specific results. [next]
+
+## STATUS (latest): v2 framework + results visual experience DONE to AIPQ bar. Email enrichment (#3) in progress.
+- Framework v2: no-focus 0.80%, band-adaptive deficit/edge framing, tailored sales copy per outcome, cluster-silent coherence guard, 625-profile enumeration. 18/18 tests.
+- Results redesign: unified AIPQ 3-card row (Score|Radar|Quadrant), retired redundant bars, animated 4-axis radar + 2x2 quadrant (POV x execution), roving-tabindex a11y, decoupled aria-live, sr-only fallback, quadrant focus-visible, QUADRANT copy from guarded source.
+- Craft polish: 1160px results container (radar at AIPQ scale; intro/quiz centered at readable width), dark-card two-zone rhythm, primary Book-a-call block (accent tint + 3px border) outranking secondary email capture, label legibility, CTA result-context UTMs, email-success points back to the call.
+- Reviews: ux confirmed all 4 prior blockers resolved; visual confirmed the 3 craft must-fixes addressed -> AIPQ-grade. Pushed (641da3c).
+- OPEN visual note (human's call, NOT done): a 4-axis radar is geometrically a diamond; a 5th DRI dimension would make it a richer pentagon, but that is a METHODOLOGY change to the just-stabilized framework. Flagged to human, not done unilaterally.
+- Placeholder copy pending copywriter polish: CTA frame line, email-success line, dynamic CTA labels.
+
+## (historical) Results-viz v1 review findings -> consolidated redesign:
+- visual (structural): two-row layout buries showpieces + redundant (bars AND radar show same 4 scores). FIX: single AIPQ 3-card row Score|Radar|Quadrant; RETIRE the separate bars row (radar = the 4-dim display). Enlarge radar (maxR ~160). Keep radar per explicit user request despite 4-axis sparseness; execute it well.
+- ux BLOCKER: email-success is a dead end (no path to booking) -> success copy must nudge to the call. ux BLOCKER: quadrant cells no :focus-visible -> add accent outline. ux HIGH: aria-live fires on focus (SR spam) -> update live region on click/Enter only, visual on hover/focus. ux HIGH: radar role=img conflicts w/ interactive children -> role=group + visually-hidden score list for SR. ux HIGH: primary CTA buried in tab order -> prominent framed Book-a-call after the scorecard.
+- design/coherence: QUADRANT_DESC duplicates archetype copy unguarded -> import archetypes from framework.mjs (single guarded source).
+- medium craft: quadrant axis arrows, score-card divider, card-head names ("Four-dimension diagnostic"/"Archetype placement").
 
 ## Framework rebuild pass (approved)
 Scope (bounded): re-spec the cluster questions so the four dimensions are independently discriminable. PRESERVE structure: 4 dimensions, 2 questions each, 3 options (0/1/2 pts), per-dimension 0-4, MAX_POINTS 16, dimension keys, {questionId,choiceIndex} contract, the dimension-defined archetype mapping + nullable gap. Keep 4 archetypes.
