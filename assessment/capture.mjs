@@ -32,7 +32,7 @@ export function wireCapture(form, msgEl, getResult) {
       // Clear invalid state on success before hiding the form.
       emailInput.removeAttribute('aria-invalid');
       emailInput.removeAttribute('aria-describedby');
-      showMsg(msgEl, 'Your breakdown is on its way. Book a call with Evan above to turn it into a plan.', true);
+      showMsg(msgEl, 'Your breakdown is on its way. Book a call above to turn it into a plan.', true);
       form.hidden = true;
       msgEl.focus();
     } catch (err) {
