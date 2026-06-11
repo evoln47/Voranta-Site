@@ -29,6 +29,8 @@ const quiz = createQuiz({
     });
     show('results');
     app.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const resultsHeading = document.getElementById('dri-results-heading');
+    if (resultsHeading) resultsHeading.focus({ preventScroll: true });
   },
 });
 

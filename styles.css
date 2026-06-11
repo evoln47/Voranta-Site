@@ -611,6 +611,14 @@
 .dri-option:hover { border-color: var(--color-accent); background: var(--color-accent-tint); }
 .dri-option:active { transform: translateY(1px); }
 .dri-option:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.dri-option.is-selected { border-color: var(--color-accent); background: var(--color-accent-tint); color: var(--color-accent-dark); }
+
+/* Quiz navigation row (Back / Continue) */
+.dri-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 28px; max-width: 760px; }
+.dri-next[disabled], .dri-next[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+/* Preserve h3 visual size when promoted to h2 for heading-order reasons */
+.h3-size { font-size: 1.5rem; font-weight: 500; }
 
 /* Results layout */
 .dri-results-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 16px; margin-bottom: 16px; align-items: stretch; }
@@ -655,6 +663,8 @@
   .dri-capture-form .btn { width: 100%; justify-content: center; }
   .inline-cta { flex-direction: column; align-items: flex-start; }
   .inline-cta .btn { width: 100%; justify-content: center; }
+  .dri-nav { flex-direction: row; }
+  .dri-nav .dri-next { flex: 1; justify-content: center; }
 }
 
 /* Accessibility utilities */

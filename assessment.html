@@ -92,7 +92,7 @@
 
       <!-- RESULTS -->
       <div class="dri-screen" data-screen="results" hidden>
-        <h2 class="sr-only">Assessment results</h2>
+        <h2 class="sr-only" id="dri-results-heading" tabindex="-1">Assessment results</h2>
         <div class="dri-results-grid">
           <div class="sc-card is-dark dri-score-card">
             <div class="sc-card-head"><h3>Demand Research Index</h3></div>
@@ -129,7 +129,7 @@
               <button type="submit" class="btn btn-lg" id="dri-capture-submit">Email me the breakdown</button>
             </form>
           </div>
-          <p class="dri-capture-msg" id="dri-capture-msg" hidden></p>
+          <p class="dri-capture-msg" id="dri-capture-msg" role="alert" hidden></p>
           <div class="dri-results-cta">
             <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">Book a call to close the gap</a>
           </div>
