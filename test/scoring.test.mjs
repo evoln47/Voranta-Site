@@ -11,32 +11,47 @@ const EDGE_BLURB = Object.fromEntries(FRAMEWORK_DIMS.map((d) => [d.key, d.edge])
 const require = createRequire(import.meta.url);
 const dri = require('../api/_dri.js'); // server-side mirror; must stay in exact sync
 
-const IDS = ['pov1', 'pov2', 'pov3', 'conv1', 'conv2', 'conv3', 'trust1', 'trust2', 'trust3', 'signal1', 'signal2', 'signal3'];
+// MODEL: one question per dimension, in funnel order. choiceIndex 0..5 selects an
+// option whose value is 0,20,40,60,80,100 and that value IS the dimension /100.
+const IDS = ['pov', 'sensing', 'conv', 'trust', 'signal'];
+const VALUES = [0, 20, 40, 60, 80, 100]; // option value at each choiceIndex
 const all = (choiceIndex) => IDS.map((id) => ({ questionId: id, choiceIndex }));
 const from = (map) => IDS.map((id) => ({ questionId: id, choiceIndex: map[id] }));
 
+// Build an answer set from a target dimension /100 profile (each in VALUES). The
+// choiceIndex is value/20 since the rungs are evenly spaced by 20.
+const idxFor = (value) => VALUES.indexOf(value);
+function answersForProfile(profile) {
+  return [
+    { questionId: 'pov', choiceIndex: idxFor(profile.pointOfView) },
+    { questionId: 'sensing', choiceIndex: idxFor(profile.buyerResearchSensing) },
+    { questionId: 'conv', choiceIndex: idxFor(profile.conversionSurface) },
+    { questionId: 'trust', choiceIndex: idxFor(profile.trustAtCapture) },
+    { questionId: 'signal', choiceIndex: idxFor(profile.signalToSales) },
+  ];
+}
+
 test('all lowest answers -> Renter, score 0, no focus, evenTier low (all dimensions equal)', () => {
   const r = scoreAnswers(all(0));
-  assert.equal(r.points, 0);
   assert.equal(r.score, 0);
   assert.equal(r.archetype.key, 'renter');
   assert.equal(r.focus, null);
   assert.equal(r.evenTier, 'low'); // even-low: honest, never "strong and even"
+  for (const k of ['pointOfView', 'buyerResearchSensing', 'conversionSurface', 'trustAtCapture', 'signalToSales'])
+    assert.equal(r.dimensionScores[k], 0);
 });
 
 test('all highest answers -> Authority, score 100', () => {
-  const r = scoreAnswers(all(2));
-  assert.equal(r.points, 24); // 12 questions * 2
-  assert.equal(r.score, 100);
+  const r = scoreAnswers(all(5));
+  assert.equal(r.score, 100); // weighted sum of all 100s = 100
   assert.equal(r.archetype.key, 'authority');
 });
 
 // All dimensions equal -> no single lowest -> focus is null (the ONLY no-focus
-// state). evenTier reports the band so copy stays honest: all-high is "strong and
-// even", all-low/mid is "even, opportunity is systemic". An all-high Authority is
+// state). evenTier reports the band so copy stays honest. An all-high Authority is
 // never told they are "renting the lens" they actually own.
 test('all dimensions equal high -> Authority, no focus, evenTier high', () => {
-  const r = scoreAnswers(all(2)); // every dimension = 6 raw -> 100, equal
+  const r = scoreAnswers(all(5)); // every dimension = 100, equal
   assert.equal(r.archetype.key, 'authority');
   assert.equal(r.score, 100);
   assert.equal(r.focus, null);
@@ -44,430 +59,426 @@ test('all dimensions equal high -> Authority, no focus, evenTier high', () => {
 });
 
 test('all dimensions equal mid -> no focus, evenTier low', () => {
-  const r = scoreAnswers(all(1)); // every dimension = 3 raw -> 50, equal -> mid, < HIGH
+  const r = scoreAnswers(all(2)); // every dimension = 40, equal -> < HIGH
   assert.equal(r.focus, null);
   assert.equal(r.evenTier, 'low');
 });
 
 // A genuine single-lowest dimension returns a non-null focus on that dimension.
 test('single lowest dimension -> non-null focus on that dimension', () => {
-  // pov = conv = trust = 6 (100), signal = 3 (50) -> signal strictly lowest
-  const r = scoreAnswers(from({ pov1: 2, pov2: 2, pov3: 2, conv1: 2, conv2: 2, conv3: 2, trust1: 2, trust2: 2, trust3: 2, signal1: 1, signal2: 1, signal3: 1 }));
+  // pov=sensing=conv=trust=100, signal=40 -> signal strictly lowest, mid band
+  const r = scoreAnswers(from({ pov: 5, sensing: 5, conv: 5, trust: 5, signal: 2 }));
   assert.notEqual(r.focus, null);
   assert.equal(r.focus.dimension, 'signalToSales');
-  assert.equal(r.focus.tier, 'deficit'); // signal /100 = 50 (mid) < 75
+  assert.equal(r.focus.tier, 'deficit'); // signal /100 = 40 < 75
 });
 
 // Tie-break: when several dimensions share the lowest score, the EARLIEST
-// funnel-stage dimension (DIMENSIONS array order) is surfaced.
+// funnel-stage dimension (dimensions array order) is surfaced.
 test('lowest-score tie -> focus on earliest funnel stage (tie-break)', () => {
-  // pov = 2 (33), conv = 2 (33), trust = 6, signal = 6 -> pov and conv tie lowest; pov wins
-  const r = scoreAnswers(from({ pov1: 1, pov2: 1, pov3: 0, conv1: 1, conv2: 1, conv3: 0, trust1: 2, trust2: 2, trust3: 2, signal1: 2, signal2: 2, signal3: 2 }));
+  // pov=40, sensing=40 tie lowest; pov is earliest -> pov wins.
+  const r = scoreAnswers(from({ pov: 2, sensing: 2, conv: 5, trust: 5, signal: 5 }));
   assert.equal(r.focus.dimension, 'pointOfView');
   assert.equal(r.focus.tier, 'deficit');
 });
 
-test('mid band, POV strong -> Publisher, focus Conversion Surface (deficit)', () => {
-  // pov = 6 (100, high), conv = trust = signal = 3 (50, exec low) -> Publisher.
-  // score = round(mean(1, .5, .5, .5)*100) = round(62.5) = 63.
-  const r = scoreAnswers(from({ pov1: 2, pov2: 2, pov3: 2, conv1: 1, conv2: 1, conv3: 1, trust1: 1, trust2: 1, trust3: 1, signal1: 1, signal2: 1, signal3: 1 }));
-  assert.equal(r.score, 63);
+// buyerResearchSensing tie-break placement: when pov is strong but sensing ties
+// with a downstream dimension at the lowest, sensing (earlier in funnel) wins.
+test('sensing tie with downstream -> focus on Buyer Research Sensing (earlier stage)', () => {
+  // pov=100, sensing=40, conv=40, trust=100, signal=100 -> sensing and conv tie lowest;
+  // sensing is earlier -> sensing wins.
+  const r = scoreAnswers(from({ pov: 5, sensing: 2, conv: 2, trust: 5, signal: 5 }));
+  assert.equal(r.focus.dimension, 'buyerResearchSensing');
+  assert.equal(r.focus.tier, 'deficit');
+});
+
+test('upstream strong, downstream weak -> Publisher, focus a downstream dimension (deficit)', () => {
+  // pov=sensing=80 (upstream mean 0.8 >= 0.70 high), conv=trust=signal=40
+  // (downstream mean 0.4 < 2/3 low) -> Publisher. Lowest is a downstream dim.
+  const r = scoreAnswers(from({ pov: 4, sensing: 4, conv: 2, trust: 2, signal: 2 }));
+  // score = round(0.30*80 + 0.20*80 + 0.20*40 + 0.16*40 + 0.14*40) = round(24+16+8+6.4+5.6)=60
+  assert.equal(r.score, 60);
   assert.equal(r.archetype.key, 'publisher');
-  assert.equal(r.focus.dimension, 'conversionSurface');
+  assert.equal(r.focus.dimension, 'conversionSurface'); // earliest downstream tie among 40s
   assert.equal(r.focus.tier, 'deficit');
 });
 
-test('mid band, Conversion strong -> Operator, focus Point of View (deficit)', () => {
-  // pov = 3 (50, low), conv = trust = signal = 5 (83, exec high) -> Operator.
-  // execMean = mean(.8333,.8333,.8333) = .8333 >= 2/3. POV strictly lowest -> deficit.
-  // score = round(mean(.5,.8333,.8333,.8333)*100) = round(75) = 75.
-  const r = scoreAnswers(from({ pov1: 1, pov2: 1, pov3: 1, conv1: 2, conv2: 2, conv3: 1, trust1: 2, trust2: 2, trust3: 1, signal1: 2, signal2: 2, signal3: 1 }));
-  assert.equal(r.score, 75);
+test('downstream strong, upstream weak -> Operator, focus an upstream dimension (deficit)', () => {
+  // pov=sensing=40 (upstream mean 0.4 < 0.70 low), conv=trust=signal=80
+  // (downstream mean 0.8 >= 2/3 high) -> Operator. Lowest is an upstream dim.
+  const r = scoreAnswers(from({ pov: 2, sensing: 2, conv: 4, trust: 4, signal: 4 }));
+  // score = round(0.30*40 + 0.20*40 + 0.20*80 + 0.16*80 + 0.14*80) = round(12+8+16+12.8+11.2)=60
+  assert.equal(r.score, 60);
   assert.equal(r.archetype.key, 'operator');
-  assert.equal(r.focus.dimension, 'pointOfView');
+  assert.equal(r.focus.dimension, 'pointOfView'); // earliest upstream tie among 40s
   assert.equal(r.focus.tier, 'deficit');
 });
 
-// R1' (was R1): when the lowest dimension is already in the HIGH band (>= 3) the
-// focus is no longer SUPPRESSED. It is still surfaced, but framed as an EDGE (the
-// next lever to extend), never a deficit. pov = 3, others = 4 is a strong-
-// everywhere Authority; framing POV as an edge does not contradict the archetype.
-// OLD behavior: gap === null (suppressed). NEW behavior: focus on pointOfView with
-// tier 'edge'. This evolution is what makes the no-focus state rare.
+// R1' (was R1): when the lowest dimension is already in the HIGH band (>= 75) the
+// focus is framed as an EDGE (next lever to extend), never a deficit.
 test('lowest dimension in high band -> focus surfaced as edge (R1prime)', () => {
-  // pov = 5 (83, high but strictly lowest), others = 6 (100) -> Authority.
-  // score = round(mean(.8333,1,1,1)*100) = round(95.83) = 96.
-  const r = scoreAnswers(from({ pov1: 2, pov2: 2, pov3: 1, conv1: 2, conv2: 2, conv3: 2, trust1: 2, trust2: 2, trust3: 2, signal1: 2, signal2: 2, signal3: 2 }));
-  assert.equal(r.score, 96);
+  // pov=80 (high but strictly lowest), others=100 -> Authority.
+  const r = scoreAnswers(from({ pov: 4, sensing: 5, conv: 5, trust: 5, signal: 5 }));
+  // score = round(0.30*80 + 0.20*100 + 0.20*100 + 0.16*100 + 0.14*100)=round(24+20+20+16+14)=94
+  assert.equal(r.score, 94);
   assert.equal(r.archetype.key, 'authority');
   assert.notEqual(r.focus, null);
   assert.equal(r.focus.dimension, 'pointOfView');
   assert.equal(r.focus.tier, 'edge'); // high-band lowest -> edge, never deficit
-  // Content-level coherence: the edge blurb, not the "renting the lens" deficit prose.
   assert.equal(r.focus.blurb, EDGE_BLURB.pointOfView);
   assert.notEqual(r.focus.blurb, GAP_BLURB.pointOfView);
 });
 
-// Strictly-lowest coverage for a sub-high lowest dimension: surfaced as a deficit.
-test('strictly lowest sub-high dimension -> deficit focus on that dimension', () => {
-  // pov = conv = trust = 6 (100), signal = 3 (50) -> signal strictly lowest, mid band
-  const r = scoreAnswers(from({ pov1: 2, pov2: 2, pov3: 2, conv1: 2, conv2: 2, conv3: 2, trust1: 2, trust2: 2, trust3: 2, signal1: 1, signal2: 1, signal3: 1 }));
-  assert.equal(r.dimensionScores.signalToSales, 50); // /100
-  assert.notEqual(r.focus, null);
-  assert.equal(r.focus.dimension, 'signalToSales');
-  assert.equal(r.focus.tier, 'deficit');
-});
-
-// Malignant corner 1: POV floored, cluster high -> total score lands high (~69),
-// but archetype must NOT be Authority (whose narrative claims a framework buyers
-// research against) when POV is the gap. Dimension-defined map yields Operator.
-test('POV floored at high total -> Operator, not Authority; gap is Point of View', () => {
-  // pov = 0, conv = trust = 6 (100), signal = 4 (67) -> exec high, POV floored.
-  // score = round(mean(0,1,1,.6667)*100) = round(66.67) = 67.
-  const r = scoreAnswers(from({ pov1: 0, pov2: 0, pov3: 0, conv1: 2, conv2: 2, conv3: 2, trust1: 2, trust2: 2, trust3: 2, signal1: 2, signal2: 2, signal3: 0 }));
-  assert.equal(r.score, 67);
+// Malignant corner 1: upstream floored, downstream high -> archetype must be
+// Operator (never Authority), and the gap is an upstream dimension.
+test('upstream floored, downstream high -> Operator, not Authority; gap is upstream', () => {
+  // pov=0, sensing=0, conv=trust=signal=100 -> upstream mean 0, downstream mean 1.
+  const r = scoreAnswers(from({ pov: 0, sensing: 0, conv: 5, trust: 5, signal: 5 }));
+  // score = round(0 + 0 + 20 + 16 + 14) = 50
+  assert.equal(r.score, 50);
   assert.equal(r.dimensionScores.pointOfView, 0);
   assert.equal(r.archetype.key, 'operator');
   assert.notEqual(r.archetype.key, 'authority');
-  assert.equal(r.focus.dimension, 'pointOfView');
-  assert.equal(r.focus.tier, 'deficit'); // POV = 0
+  assert.equal(r.focus.dimension, 'pointOfView'); // earliest of the two floored upstream dims
+  assert.equal(r.focus.tier, 'deficit');
 });
 
-// Independence of the rebuilt cluster: after the re-spec, Trust at Capture and
-// Signal to Sales measure different real-world things (the buyer's perceived
-// value at capture vs. the rep-facing hand-off system). A respondent must be
-// able to score high on one and low on the other. These two cases lock that the
-// scoring engine resolves lumpy cluster profiles to the correct lowest-dimension
-// gap, which is only meaningful if the dimensions are genuinely separable.
-test('high Trust, floored Signal -> gap is Signal to Sales', () => {
-  // pov = conv = 3 (50), trust = 6 (100), signal = 0 -> signal strictly lowest
-  const r = scoreAnswers(from({ pov1: 1, pov2: 1, pov3: 1, conv1: 1, conv2: 1, conv3: 1, trust1: 2, trust2: 2, trust3: 2, signal1: 0, signal2: 0, signal3: 0 }));
-  assert.equal(r.dimensionScores.trustAtCapture, 100);
-  assert.equal(r.dimensionScores.signalToSales, 0);
-  assert.equal(r.focus.dimension, 'signalToSales');
-});
-
-test('high Signal, floored Trust -> gap is Trust at Capture', () => {
-  // pov = conv = 3 (50), trust = 0, signal = 6 (100) -> trust strictly lowest
-  const r = scoreAnswers(from({ pov1: 1, pov2: 1, pov3: 1, conv1: 1, conv2: 1, conv3: 1, trust1: 0, trust2: 0, trust3: 0, signal1: 2, signal2: 2, signal3: 2 }));
-  assert.equal(r.dimensionScores.signalToSales, 100);
-  assert.equal(r.dimensionScores.trustAtCapture, 0);
-  assert.equal(r.focus.dimension, 'trustAtCapture');
-});
-
-// Lumpy cluster reaching the >=8 high threshold without uniform strength:
-// conv 4 + trust 4 + signal 0 = cluster 8 with POV low -> Operator, and the gap
-// correctly surfaces the floored Signal dimension. Confirms the cluster>=8 cut
-// still reads correctly now that the cluster is three independent constructs.
-test('lumpy cluster at threshold (conv+trust high, signal floored) -> Operator, gap Signal to Sales', () => {
-  // pov = 3 (low), conv = trust = 6 (100), signal = 0 -> execMean = (1+1+0)/3 = 2/3
-  // exactly (the float boundary the epsilon protects). POV low -> Operator.
-  const r = scoreAnswers(from({ pov1: 1, pov2: 1, pov3: 1, conv1: 2, conv2: 2, conv3: 2, trust1: 2, trust2: 2, trust3: 2, signal1: 0, signal2: 0, signal3: 0 }));
-  assert.equal(r.dimensionScores.conversionSurface, 100);
-  assert.equal(r.dimensionScores.trustAtCapture, 100);
-  assert.equal(r.dimensionScores.signalToSales, 0);
-  assert.equal(r.archetype.key, 'operator');
-  assert.equal(r.focus.dimension, 'signalToSales');
-});
-
-// Malignant corner 2: POV maxed, cluster floored -> total score lands low (~25),
-// but archetype must NOT be Renter (whose narrative claims someone else's lens)
-// when POV is maxed. Dimension-defined map yields Publisher, and the gap is a
-// cluster dimension, never Point of View.
-test('POV maxed at low total -> Publisher, not Renter; gap is not Point of View', () => {
-  // pov = 6 (100, high), conv = trust = signal = 0 -> exec low -> Publisher.
-  // score = round(mean(1,0,0,0)*100) = round(25) = 25.
-  const r = scoreAnswers(from({ pov1: 2, pov2: 2, pov3: 2, conv1: 0, conv2: 0, conv3: 0, trust1: 0, trust2: 0, trust3: 0, signal1: 0, signal2: 0, signal3: 0 }));
-  assert.equal(r.score, 25);
+// Malignant corner 2: upstream maxed, downstream floored -> archetype must be
+// Publisher (never Renter), and the gap is a downstream dimension.
+test('upstream maxed, downstream floored -> Publisher, not Renter; gap is downstream', () => {
+  // pov=sensing=100, conv=trust=signal=0 -> upstream mean 1, downstream mean 0.
+  const r = scoreAnswers(from({ pov: 5, sensing: 5, conv: 0, trust: 0, signal: 0 }));
+  // score = round(30 + 20 + 0 + 0 + 0) = 50
+  assert.equal(r.score, 50);
   assert.equal(r.dimensionScores.pointOfView, 100);
   assert.equal(r.archetype.key, 'publisher');
   assert.notEqual(r.archetype.key, 'renter');
+  assert.equal(r.focus.dimension, 'conversionSurface'); // earliest downstream
   assert.notEqual(r.focus.dimension, 'pointOfView');
 });
 
+// Pairwise independence: with one item per dimension, every dimension is fully
+// independent of every other. Any dimension can be 100 while any other is 0.
+test('pairwise independence: each dimension can be 100 while another is 0 (reachable)', () => {
+  const DIMS = ['pointOfView', 'buyerResearchSensing', 'conversionSurface', 'trustAtCapture', 'signalToSales'];
+  const QMAP = { pointOfView: 'pov', buyerResearchSensing: 'sensing', conversionSurface: 'conv', trustAtCapture: 'trust', signalToSales: 'signal' };
+  for (const hi of DIMS) for (const lo of DIMS) {
+    if (hi === lo) continue;
+    const choices = { pov: 2, sensing: 2, conv: 2, trust: 2, signal: 2 }; // baseline mid
+    choices[QMAP[hi]] = 5; // 100
+    choices[QMAP[lo]] = 0; // 0
+    const r = scoreAnswers(from(choices));
+    assert.equal(r.dimensionScores[hi], 100, `${hi}=100 with ${lo}=0 must be reachable`);
+    assert.equal(r.dimensionScores[lo], 0, `${lo}=0 with ${hi}=100 must be reachable`);
+  }
+});
+
 // ---------------------------------------------------------------------------
-// EXHAUSTIVE enumeration of all 2401 reachable dimension-score profiles.
-// Each of the four dimensions (pointOfView, conversionSurface, trustAtCapture,
-// signalToSales) is THREE questions whose choiceIndex equals points in {0,1,2},
-// so a per-dimension raw target of 0-6 is reached by splitting it into three
-// 0-2 question values. 7^4 = 2401 profiles. We assert the acceptance rules and
+// EXHAUSTIVE enumeration of all 6^5 = 7776 reachable profiles. Each of the five
+// dimensions independently takes a value in {0,20,40,60,80,100} (one question per
+// dimension, choiceIndex -> option value). We assert the acceptance rules and
 // exact parity with the server mirror across every one of them.
 // ---------------------------------------------------------------------------
 
-const DIM_KEYS = ['pointOfView', 'conversionSurface', 'trustAtCapture', 'signalToSales'];
-const DIM_QS = {
-  pointOfView: ['pov1', 'pov2', 'pov3'],
-  conversionSurface: ['conv1', 'conv2', 'conv3'],
-  trustAtCapture: ['trust1', 'trust2', 'trust3'],
-  signalToSales: ['signal1', 'signal2', 'signal3'],
-};
-// Split a 0-6 raw target into three valid 0-2 question values (choiceIndex ==
-// points). Greedily fill each of the three slots up to 2 until the target is
-// spent: e.g. 6 -> [2,2,2], 5 -> [2,2,1], 3 -> [2,1,0], 0 -> [0,0,0].
-const split = (t) => {
-  const out = [];
-  let rem = t;
-  for (let i = 0; i < 3; i++) { const v = Math.min(rem, 2); out.push(v); rem -= v; }
-  return out;
-};
+const DIM_KEYS = ['pointOfView', 'buyerResearchSensing', 'conversionSurface', 'trustAtCapture', 'signalToSales'];
 
-// answers for a target profile { pointOfView, conversionSurface, ... } each 0-6
-function answersFor(profile) {
-  const out = [];
-  for (const key of DIM_KEYS) {
-    const [a, b, c] = split(profile[key]);
-    const [q1, q2, q3] = DIM_QS[key];
-    out.push({ questionId: q1, choiceIndex: a }, { questionId: q2, choiceIndex: b }, { questionId: q3, choiceIndex: c });
-  }
-  return out;
-}
-
-// Each archetype's claimed-strong dimensions, faithful to the blurb prose. A
-// dimension belongs here ONLY if the blurb asserts that specific dimension is
-// strong. The 2x2 gate guarantees POV >= 3 for Authority and Publisher, so those
-// two may name Point of View. It guarantees cluster >= 8 (an aggregate) for
-// Authority and Operator, but NOT that any single cluster dimension is strong:
-// Operator is reachable with signalToSales = 0 and Authority with
-// conversionSurface = 0. An aggregate "broadly strong demand engine" claim names
-// no single dimension, so it adds nothing here.
-//   - Authority: claims POV ("you own the lens") + an AGGREGATE engine ("the rest
-//     of your demand engine is broadly strong"). Only pointOfView is per-dimension.
-//   - Publisher: claims POV + hedges the cluster as a possible weakness ("the
-//     conversion path, the value at capture, or the hand-off ... is not closing
-//     the gap"). Only pointOfView is a strength claim.
-//   - Operator: claims an AGGREGATE engine ("a broadly strong demand engine"), no
-//     single per-dimension strength claim.
-//   - Renter: claims no strength.
-// R2 requires that a DEFICIT-framed focus dimension never be among an archetype's
-// claimed-strong set. An EDGE-framed focus (high-band lowest) is an opportunity,
-// not a strength denial, so it is exempt and cannot create a contradiction.
+// Each archetype's claimed-strong dimensions, faithful to the blurb prose.
+// The 2x2 gate guarantees the UPSTREAM PAIR (Point of View + Buyer Research
+// Sensing) mean >= 0.70 for Authority and Publisher, whose blurbs claim STRATEGY
+// (both upstream dimensions). It guarantees the downstream cluster mean >= 2/3 for
+// Authority and Operator, but NOT that any single downstream dimension is strong
+// (Operator is reachable with signalToSales = 0, Authority with conversionSurface
+// = 0). So no single downstream dimension may appear in any claimed-strong set.
 //
-// NOTE: this encoding is hand-maintained and only ever READ by R2, never derived
-// from the blurb text, so it can silently drift out of sync with a copy rewrite
-// (exactly how the over-claiming Operator/Authority blurbs slipped past R2 once).
-// The static cluster-silent guard below (test 'archetype blurbs are cluster-
-// silent') is the real regression teeth: it reads the live blurb strings and
-// fails the instant an over-claim is reintroduced.
+// NOTE: upstreamHigh is a MEAN >= 0.70, which does NOT guarantee each upstream
+// dimension individually clears 75. So a single upstream dimension can still be
+// the deficit focus while the pair mean is high. R2 below only fires on a DEFICIT
+// focus, and a deficit upstream dimension is by definition < 75; pairing it with
+// an archetype that claims that exact dimension strong would be the violation.
+// Because upstreamHigh can hold with one upstream dim low, we DO NOT list the
+// individual upstream dimensions as claimed-strong (the claim is about the pair as
+// strategy, not either dimension singly). This keeps R2 honest.
 const CLAIMED_STRONG = {
-  authority: ['pointOfView'],
-  publisher: ['pointOfView'],
+  authority: [],
+  publisher: [],
   operator: [],
   renter: [],
 };
 
-// Static text guard. The 2x2 gate guarantees an aggregate cluster (>= 8) but
-// never any single cluster dimension, so Operator, Authority, and Renter must be
-// CLUSTER-SILENT: their blurbs may not contain vocabulary that asserts a specific
-// cluster dimension (Conversion Surface, Trust at Capture, or Signal to Sales)
-// works. This is a stronger, cheaper invariant than "no strength language" for
-// these three, and it is what gives the regression real teeth: it reads the live
-// blurb text, so it fails the moment an over-claim is reintroduced.
+// Static text guard. The 2x2 gate guarantees an aggregate downstream cluster mean
+// but never any single downstream dimension, so Renter, Operator, and Authority
+// must be CLUSTER-SILENT: their blurbs may not contain vocabulary that asserts a
+// specific downstream dimension (Conversion Surface, Trust at Capture, or Signal
+// to Sales) works. Publisher is EXEMPT: its blurb is allowed to name the downstream
+// path in a WEAKNESS frame.
 //
-// Publisher is EXEMPT: its blurb deliberately names the cluster ("conversion
-// path, value at capture, hand-off") in a WEAKNESS frame, which the methodology
-// blesses. A bare-substring guard cannot tell strength from weakness, so we scope
-// the guard to the three cluster-silent archetypes only.
-//
-// The trigger list must have teeth against the OLD over-claiming copy: old
-// Operator "converts and hands off leads with context" and old Authority "engine
-// converts that attention into pipeline" are both caught by 'convert' and
-// 'hand'. POV vocabulary (lens, framework, point of view) is intentionally NOT a
-// trigger: Authority is allowed to claim POV.
+// UPSTREAM vocabulary (lens, framework, point of view, research, sensing) is
+// intentionally NOT a trigger: Authority/Publisher are allowed to claim strategy.
 const CLUSTER_SILENT = ['renter', 'operator', 'authority'];
 const CLUSTER_VOCAB = [
   'convert',   // Conversion Surface: "converts", "conversion"
   'capture',   // Trust at Capture
   'hand-off', 'hands off', 'handoff', 'hand off', // Signal to Sales hand-off
-  'signal',    // Signal to Sales
   'route', 'routing', // Signal to Sales routing
   'trust',     // Trust at Capture
 ];
+// 'signal' is intentionally excluded as a trigger: Operator/Authority blurbs use
+// "reading what buyers research" language, and "signal" could appear as a generic
+// steering term for buyer-research sensing (upstream). The downstream Signal to
+// Sales dimension is caught by 'hand-off'/'route' instead.
 
-test('archetype blurbs are cluster-silent (Operator/Authority/Renter name no specific cluster dimension)', () => {
+test('archetype blurbs are cluster-silent (Operator/Authority/Renter name no specific downstream dimension)', () => {
   for (const key of CLUSTER_SILENT) {
     const blurb = FRAMEWORK_ARCHETYPES[key].blurb.toLowerCase();
     for (const term of CLUSTER_VOCAB) {
-      assert.ok(!blurb.includes(term), `${key} blurb contains cluster-dimension vocabulary "${term}" but must be cluster-silent: "${FRAMEWORK_ARCHETYPES[key].blurb}"`);
+      assert.ok(!blurb.includes(term), `${key} blurb contains downstream-dimension vocabulary "${term}" but must be cluster-silent: "${FRAMEWORK_ARCHETYPES[key].blurb}"`);
     }
   }
 });
 
-// Guard-has-teeth: the cluster-silent guard MUST reject the OLD over-claiming
-// strings. If this ever passes, the trigger list lost its teeth and the hole is
-// rebuilt. We assert each old string trips at least one trigger.
-test('cluster-silent guard rejects the old over-claiming Operator/Authority copy', () => {
+// Guard-has-teeth: the cluster-silent guard MUST reject over-claiming strings.
+test('cluster-silent guard rejects over-claiming Operator/Authority copy', () => {
   const OLD_OPERATOR = 'Your demand engine converts and hands off leads with context. The structural gap is the lens.';
   const OLD_AUTHORITY = 'You own the lens buyers use to research the problem and your engine converts that attention into pipeline.';
   const trips = (s) => CLUSTER_VOCAB.some((t) => s.toLowerCase().includes(t));
-  assert.ok(trips(OLD_OPERATOR), 'guard must reject old Operator copy ("converts and hands off")');
-  assert.ok(trips(OLD_AUTHORITY), 'guard must reject old Authority copy ("converts that attention")');
+  assert.ok(trips(OLD_OPERATOR), 'guard must reject Operator over-claim ("converts and hands off")');
+  assert.ok(trips(OLD_AUTHORITY), 'guard must reject Authority over-claim ("converts that attention")');
 });
 
 const HIGH = 75; // /100 high-band floor, consistent with scorecard banding (>= 75 is "high")
-// dim/100 = round(raw/6*100). Raw 5 -> 83 (>= 75, high); raw 4 -> 67 (< 75).
-const dimHundred = (raw) => Math.round((raw / 6) * 100);
+const UPSTREAM_HIGH = 0.70;
+const DOWNSTREAM_HIGH = 2 / 3 - 1e-9;
 
-test('2401 profiles: R1prime (high-band focus is edge not deficit), R2 (no deficit focus on a claimed-strong dim), server parity, and no-focus rate', () => {
+// Compute the expected weighted score independently of the engine (round-once).
+const WEIGHTS = { pointOfView: 0.30, buyerResearchSensing: 0.20, conversionSurface: 0.20, trustAtCapture: 0.16, signalToSales: 0.14 };
+function expectedScore(p) {
+  return Math.round(
+    WEIGHTS.pointOfView * p.pointOfView +
+    WEIGHTS.buyerResearchSensing * p.buyerResearchSensing +
+    WEIGHTS.conversionSurface * p.conversionSurface +
+    WEIGHTS.trustAtCapture * p.trustAtCapture +
+    WEIGHTS.signalToSales * p.signalToSales,
+  );
+}
+function expectedArchetype(p) {
+  const up = (p.pointOfView / 100 + p.buyerResearchSensing / 100) / 2;
+  const down = (p.conversionSurface / 100 + p.trustAtCapture / 100 + p.signalToSales / 100) / 3;
+  const upHigh = up >= UPSTREAM_HIGH;
+  const downHigh = down >= DOWNSTREAM_HIGH;
+  if (upHigh) return downHigh ? 'authority' : 'publisher';
+  return downHigh ? 'operator' : 'renter';
+}
+
+test('7776 profiles: weighted score, archetype, R1prime, R2, server parity, no-focus rate, coherence', () => {
   let count = 0;
   let noFocus = 0; // the all-equal state
   let edgeFocus = 0;
   let deficitFocus = 0;
   let r1Violations = 0;
   let r2Violations = 0;
+  let coherenceViolations = 0;
   let parityViolations = 0;
+  let scoreViolations = 0;
 
-  for (let pov = 0; pov <= 6; pov++)
-    for (let conv = 0; conv <= 6; conv++)
-      for (let trust = 0; trust <= 6; trust++)
-        for (let signal = 0; signal <= 6; signal++) {
-          count++;
-          const profile = { pointOfView: pov, conversionSurface: conv, trustAtCapture: trust, signalToSales: signal };
-          const answers = answersFor(profile);
-          const r = scoreAnswers(answers);
+  for (const pov of VALUES)
+    for (const sensing of VALUES)
+      for (const conv of VALUES)
+        for (const trust of VALUES)
+          for (const signal of VALUES) {
+            count++;
+            const profile = { pointOfView: pov, buyerResearchSensing: sensing, conversionSurface: conv, trustAtCapture: trust, signalToSales: signal };
+            const answers = answersForProfile(profile);
+            const r = scoreAnswers(answers);
 
-          // Raw dimension points must equal the intended profile (sanity on the
-          // split), and the /100 display score must be round(raw/6*100).
-          for (const key of DIM_KEYS) {
-            assert.equal(r.dimensionRaw[key], profile[key]);
-            assert.equal(r.dimensionScores[key], dimHundred(profile[key]));
-          }
-
-          // All-equal is defined on the /100 display scale (what focus/evenTier
-          // use). Raw equality and /100 equality coincide since dimHundred is
-          // monotonic and injective over 0..6, but we key off /100 to match logic.
-          const hundreds = DIM_KEYS.map((k) => dimHundred(profile[k]));
-          const allEqual = Math.min(...hundreds) === Math.max(...hundreds);
-
-          if (r.focus === null) {
-            // The ONLY no-focus state is all four dimensions exactly equal, and it
-            // must still convert: evenTier reports the band honestly.
-            noFocus++;
-            assert.ok(allEqual, `no-focus on non-equal profile ${JSON.stringify(profile)}`);
-            assert.equal(r.evenTier, Math.min(...hundreds) >= HIGH ? 'high' : 'low', `evenTier wrong for ${JSON.stringify(profile)}`);
-          } else {
-            // A focus is always surfaced unless all-equal.
-            assert.ok(!allEqual, `focus surfaced on all-equal profile ${JSON.stringify(profile)}`);
-            assert.equal(r.evenTier, null);
-            const focusScore = r.dimensionScores[r.focus.dimension];
-
-            // R1': a high-band lowest dimension is framed as an EDGE, never a deficit.
-            const expectedTier = focusScore >= HIGH ? 'edge' : 'deficit';
-            if (r.focus.tier !== expectedTier) r1Violations++;
-            assert.equal(r.focus.tier, expectedTier, `R1': tier wrong for ${r.focus.dimension}=${focusScore} on ${JSON.stringify(profile)}`);
-
-            // R1' at the CONTENT level: an edge focus must carry the opportunity
-            // (edge) blurb, NEVER the deficit (gap) prose. Without this, a (3,4,4,4)
-            // Authority would read "you own a framework" and "you are renting the
-            // lens" at once. The tier string alone does not catch that.
-            const expectedBlurb = r.focus.tier === 'edge' ? EDGE_BLURB[r.focus.dimension] : GAP_BLURB[r.focus.dimension];
-            if (r.focus.blurb !== expectedBlurb) r1Violations++;
-            assert.equal(r.focus.blurb, expectedBlurb, `R1' content: ${r.focus.tier} focus on ${r.focus.dimension} has wrong blurb for ${JSON.stringify(profile)}`);
-            if (r.focus.tier === 'edge') assert.notEqual(r.focus.blurb, GAP_BLURB[r.focus.dimension], `edge focus must not use deficit prose for ${JSON.stringify(profile)}`);
-
-            if (r.focus.tier === 'edge') edgeFocus++; else deficitFocus++;
-
-            // R2 (coherence): no archetype may claim strength on a DEFICIT-framed
-            // focus. An EDGE-framed focus is an opportunity, not a strength denial,
-            // so it is exempt. This is the surviving coherence rule.
-            if (r.focus.tier === 'deficit') {
-              const claimed = CLAIMED_STRONG[r.archetype.key];
-              if (claimed.includes(r.focus.dimension)) r2Violations++;
-              assert.ok(!claimed.includes(r.focus.dimension), `R2: ${r.archetype.key} claims ${r.focus.dimension} strong but it is a deficit focus for ${JSON.stringify(profile)}`);
+            // Dimension /100 scores equal the chosen option values directly.
+            for (const key of DIM_KEYS) {
+              assert.equal(r.dimensionScores[key], profile[key]);
+              assert.equal(r.dimensionRaw[key], profile[key]); // raw === score now
             }
+
+            // Round-once weighted total.
+            const es = expectedScore(profile);
+            if (r.score !== es) scoreViolations++;
+            assert.equal(r.score, es, `weighted score wrong for ${JSON.stringify(profile)}`);
+
+            // Archetype matches the dimension-defined 2x2.
+            const ea = expectedArchetype(profile);
+            assert.equal(r.archetype.key, ea, `archetype wrong for ${JSON.stringify(profile)}`);
+
+            const values = DIM_KEYS.map((k) => profile[k]);
+            const allEqual = Math.min(...values) === Math.max(...values);
+
+            if (r.focus === null) {
+              noFocus++;
+              assert.ok(allEqual, `no-focus on non-equal profile ${JSON.stringify(profile)}`);
+              assert.equal(r.evenTier, Math.min(...values) >= HIGH ? 'high' : 'low', `evenTier wrong for ${JSON.stringify(profile)}`);
+            } else {
+              assert.ok(!allEqual, `focus surfaced on all-equal profile ${JSON.stringify(profile)}`);
+              assert.equal(r.evenTier, null);
+              const focusScore = r.dimensionScores[r.focus.dimension];
+
+              // Focus must be the lowest UNWEIGHTED dimension (weights do not gate).
+              assert.equal(focusScore, Math.min(...values), `focus not the lowest dim for ${JSON.stringify(profile)}`);
+              // Tie-break: earliest funnel stage among the lowest.
+              const expectedFocusDim = DIM_KEYS.find((k) => profile[k] === Math.min(...values));
+              assert.equal(r.focus.dimension, expectedFocusDim, `tie-break wrong for ${JSON.stringify(profile)}`);
+
+              // R1': high-band lowest -> edge; else deficit. Plus content-level blurb.
+              const expectedTier = focusScore >= HIGH ? 'edge' : 'deficit';
+              if (r.focus.tier !== expectedTier) r1Violations++;
+              assert.equal(r.focus.tier, expectedTier, `R1': tier wrong for ${r.focus.dimension}=${focusScore} on ${JSON.stringify(profile)}`);
+              const expectedBlurb = r.focus.tier === 'edge' ? EDGE_BLURB[r.focus.dimension] : GAP_BLURB[r.focus.dimension];
+              if (r.focus.blurb !== expectedBlurb) r1Violations++;
+              assert.equal(r.focus.blurb, expectedBlurb, `R1' content: ${r.focus.tier} focus on ${r.focus.dimension} has wrong blurb for ${JSON.stringify(profile)}`);
+              if (r.focus.tier === 'edge') assert.notEqual(r.focus.blurb, GAP_BLURB[r.focus.dimension], `edge focus must not use deficit prose for ${JSON.stringify(profile)}`);
+
+              if (r.focus.tier === 'edge') edgeFocus++; else deficitFocus++;
+
+              // R2 (coherence): no archetype may claim strength on a DEFICIT-framed
+              // focus. CLAIMED_STRONG is empty for all four (the upstream claim is
+              // about the pair, not either dimension singly), so this is vacuously
+              // satisfied, but kept as the live guard against a future regression.
+              if (r.focus.tier === 'deficit') {
+                const claimed = CLAIMED_STRONG[r.archetype.key];
+                if (claimed.includes(r.focus.dimension)) r2Violations++;
+                assert.ok(!claimed.includes(r.focus.dimension), `R2: ${r.archetype.key} claims ${r.focus.dimension} strong but it is a deficit focus for ${JSON.stringify(profile)}`);
+              }
+
+              // Cluster coherence: Authority/Publisher require upstreamHigh, so a
+              // DEFICIT focus on either upstream dimension must never co-occur with
+              // Renter/Operator claiming the gap is upstream while reading the
+              // archetype as one that does not require upstream. (Dimension-defined
+              // map guarantees this; assert it explicitly.)
+              if (r.archetype.key === 'authority' || r.archetype.key === 'publisher') {
+                const up = (profile.pointOfView + profile.buyerResearchSensing) / 200;
+                if (up < UPSTREAM_HIGH) coherenceViolations++;
+                assert.ok(up >= UPSTREAM_HIGH, `${r.archetype.key} without upstreamHigh for ${JSON.stringify(profile)}`);
+              }
+              if (r.archetype.key === 'renter' || r.archetype.key === 'operator') {
+                const up = (profile.pointOfView + profile.buyerResearchSensing) / 200;
+                if (up >= UPSTREAM_HIGH) coherenceViolations++;
+                assert.ok(up < UPSTREAM_HIGH, `${r.archetype.key} with upstreamHigh for ${JSON.stringify(profile)}`);
+              }
+            }
+
+            // Exact sync with the api/_dri.js server mirror.
+            const s = dri.scoreAnswers(answers);
+            assert.notEqual(s, null, `server returned null for ${JSON.stringify(profile)}`);
+            const equal =
+              s.score === r.score &&
+              s.archetype.key === r.archetype.key &&
+              s.archetype.blurb === r.archetype.blurb &&
+              s.evenTier === r.evenTier &&
+              DIM_KEYS.every((k) => s.dimensionScores[k] === r.dimensionScores[k]) &&
+              ((s.focus === null && r.focus === null) ||
+                (s.focus && r.focus &&
+                  s.focus.dimension === r.focus.dimension &&
+                  s.focus.label === r.focus.label &&
+                  s.focus.tier === r.focus.tier &&
+                  s.focus.blurb === r.focus.blurb));
+            if (!equal) parityViolations++;
+            assert.ok(equal, `parity mismatch for ${JSON.stringify(profile)}`);
           }
 
-          // Exact sync with the api/_dri.js server mirror: score, archetype, focus,
-          // evenTier, and the blurb strings must be byte-identical.
-          const s = dri.scoreAnswers(answers);
-          assert.notEqual(s, null, `server returned null for ${JSON.stringify(profile)}`);
-          const equal =
-            s.score === r.score &&
-            s.archetype.key === r.archetype.key &&
-            s.archetype.blurb === r.archetype.blurb &&
-            s.evenTier === r.evenTier &&
-            ((s.focus === null && r.focus === null) ||
-              (s.focus && r.focus &&
-                s.focus.dimension === r.focus.dimension &&
-                s.focus.label === r.focus.label &&
-                s.focus.tier === r.focus.tier &&
-                s.focus.blurb === r.focus.blurb));
-          if (!equal) { parityViolations++; }
-          assert.ok(equal, `parity mismatch for ${JSON.stringify(profile)}`);
-        }
+  assert.equal(count, 7776, 'must enumerate exactly 6^5 = 7776 profiles');
+  assert.equal(scoreViolations, 0, 'weighted score must match for all 7776 profiles');
+  assert.equal(r1Violations, 0, "R1' must hold for all 7776 profiles");
+  assert.equal(r2Violations, 0, 'R2 must hold for all 7776 profiles');
+  assert.equal(coherenceViolations, 0, 'cluster coherence must hold for all 7776 profiles');
+  assert.equal(parityViolations, 0, 'server mirror must match for all 7776 profiles');
 
-  assert.equal(count, 2401, 'must enumerate exactly 2401 profiles');
-  assert.equal(r1Violations, 0, "R1' must hold for all 2401 profiles");
-  assert.equal(r2Violations, 0, 'R2 must hold for all 2401 profiles');
-  assert.equal(parityViolations, 0, 'server mirror must match for all 2401 profiles');
-
-  // The no-focus state is exactly the 7 all-equal raw profiles: (0,0,0,0)
-  // through (6,6,6,6). dimHundred is injective over 0..6 so equal raws are the
-  // only equal /100s. 7/2401 = 0.29%.
-  assert.equal(noFocus, 7, 'no-focus must be exactly the 7 all-equal profiles');
-  console.log(`  no-focus rate: ${noFocus}/2401 = ${(100 * noFocus / 2401).toFixed(2)}% | edge focus: ${edgeFocus} | deficit focus: ${deficitFocus}`);
+  // The no-focus state is exactly the 6 all-equal profiles: every dimension at the
+  // same one of the six values. 6/7776 = 0.077%.
+  assert.equal(noFocus, 6, 'no-focus must be exactly the 6 all-equal profiles');
+  console.log(`  no-focus rate: ${noFocus}/7776 = ${(100 * noFocus / 7776).toFixed(3)}% | edge focus: ${edgeFocus} | deficit focus: ${deficitFocus}`);
 });
 
 // ---------------------------------------------------------------------------
-// Fraction-threshold boundary test. The archetype gates are FRACTION cuts, not
-// raw cuts, so they must classify correctly right at the boundary.
-//
-// POV high: povFrac >= 0.75. With integer raws (0..6) povFrac == 0.75 needs raw
-// 4.5, which is UNREACHABLE; raw 5 (0.8333) is the first qualifying value and
-// raw 4 (0.6667) is the last non-qualifying one. So we lock inclusivity by raw:
-// raw 5 -> POV high, raw 4 -> POV low. ("povFrac exactly 0.75" is academic for
-// integer raws; the meaningful, reachable boundary is raw 4 vs raw 5.)
-//
-// Exec high: mean(conv,trust,signal fracs) >= 2/3. execMean == 2/3 IS reachable
-// (all three at raw 6 -> frac 1.0 -> mean 1.0 is well above; the exact-2/3 case
-// is conv+trust+signal fracs summing to 2.0, e.g. 1.0 + 1.0 + 0.0). That sum is
-// float-fragile: (1 + 1 + 0)/3 lands a hair below 2/3, which is exactly what the
-// 1e-9 epsilon protects. We test it through answersFor so the real engine math runs.
-test('fraction-threshold boundary: POV-high inclusivity (raw 5 vs raw 4) and exec-high at exactly 2/3', () => {
-  // POV high boundary: raw 5 qualifies (Authority when exec is high), raw 4 does
-  // not (Operator when exec is high). Hold exec maxed so only POV flips the result.
-  const povRaw5 = scoreAnswers(answersFor({ pointOfView: 5, conversionSurface: 6, trustAtCapture: 6, signalToSales: 6 }));
-  assert.equal(povRaw5.archetype.key, 'authority', 'pov raw 5 (0.8333 >= 0.75) must read POV high');
-  const povRaw4 = scoreAnswers(answersFor({ pointOfView: 4, conversionSurface: 6, trustAtCapture: 6, signalToSales: 6 }));
-  assert.equal(povRaw4.archetype.key, 'operator', 'pov raw 4 (0.6667 < 0.75) must read POV low');
+// Boundary tests for the archetype cluster thresholds.
+// ---------------------------------------------------------------------------
 
-  // Exec-high at EXACTLY 2/3: conv=trust=6 (1.0 each), signal=0 -> execMean = 2/3.
-  // POV low so the only thing under test is whether exec classifies high. The
-  // epsilon must let this read Operator (exec high), not Renter (exec low).
-  const execExactly = scoreAnswers(answersFor({ pointOfView: 0, conversionSurface: 6, trustAtCapture: 6, signalToSales: 0 }));
-  assert.equal(execExactly.archetype.key, 'operator', 'execMean == 2/3 must read exec high (epsilon)');
-  // One notch below 2/3 must read exec low (Renter): conv=6, trust=6, signal -1
-  // notch is not possible at the sum boundary, so drop trust to 5 (0.8333):
-  // mean = (1 + 0.8333 + 0)/3 = 0.6111 < 2/3.
-  const execBelow = scoreAnswers(answersFor({ pointOfView: 0, conversionSurface: 6, trustAtCapture: 5, signalToSales: 0 }));
-  assert.equal(execBelow.archetype.key, 'renter', 'execMean < 2/3 must read exec low');
+// upstreamHigh = mean(pov, sensing)/100 >= 0.70. The reachable means around 0.70:
+//   (80,60) -> 0.70 EXACTLY -> high.  (60,60) -> 0.60 -> low.  (60,80) -> 0.70 high.
+// Hold downstream maxed so only the upstream flip changes the archetype.
+test('boundary: upstreamHigh at exactly 0.70 (Authority) vs just below (Operator)', () => {
+  const at = scoreAnswers(answersForProfile({ pointOfView: 80, buyerResearchSensing: 60, conversionSurface: 100, trustAtCapture: 100, signalToSales: 100 }));
+  assert.equal(at.archetype.key, 'authority', 'upstream mean exactly 0.70 must read upstreamHigh');
+  const below = scoreAnswers(answersForProfile({ pointOfView: 60, buyerResearchSensing: 60, conversionSurface: 100, trustAtCapture: 100, signalToSales: 100 }));
+  assert.equal(below.archetype.key, 'operator', 'upstream mean 0.60 < 0.70 must read upstream low');
+  // Symmetric ordering of the pair also lands exactly 0.70.
+  const atSym = scoreAnswers(answersForProfile({ pointOfView: 60, buyerResearchSensing: 80, conversionSurface: 100, trustAtCapture: 100, signalToSales: 100 }));
+  assert.equal(atSym.archetype.key, 'authority', 'upstream mean exactly 0.70 (swapped) must read upstreamHigh');
+});
+
+// downstreamHigh = mean(conv, trust, signal)/100 >= 2/3 (with epsilon). The
+// float-fragile boundary is (100,100,0) -> mean = 2/3, which (1+1+0)/3 lands a hair
+// below 2/3 and the epsilon protects. Hold upstream low so only downstream flips.
+test('boundary: downstreamHigh at exactly 2/3 (Operator) vs just below (Renter)', () => {
+  const at = scoreAnswers(answersForProfile({ pointOfView: 0, buyerResearchSensing: 0, conversionSurface: 100, trustAtCapture: 100, signalToSales: 0 }));
+  assert.equal(at.archetype.key, 'operator', 'downstream mean exactly 2/3 must read downstreamHigh (epsilon)');
+  // One notch below: (100,80,0) -> mean = 0.6 < 2/3 -> Renter.
+  const below = scoreAnswers(answersForProfile({ pointOfView: 0, buyerResearchSensing: 0, conversionSurface: 100, trustAtCapture: 80, signalToSales: 0 }));
+  assert.equal(below.archetype.key, 'renter', 'downstream mean 0.6 < 2/3 must read downstream low');
+  // All-60 downstream is exactly 0.6 < 2/3 -> Renter (upstream low).
+  const all60 = scoreAnswers(answersForProfile({ pointOfView: 0, buyerResearchSensing: 0, conversionSurface: 60, trustAtCapture: 60, signalToSales: 60 }));
+  assert.equal(all60.archetype.key, 'renter', 'downstream all-60 (0.6) is below 2/3');
 });
 
 // ---------------------------------------------------------------------------
-// Round-once test. The DRI total is round(mean(full-precision fracs)*100),
-// rounded ONCE. A tempting wrong implementation averages the four ROUNDED /100
-// dimension scores, which double-rounds and can disagree at a .5 boundary.
-//
-// Profile pov=5, conv=2, trust=2, signal=0:
-//   fracs = 5/6, 2/6, 2/6, 0 -> mean = (0.8333 + 0.3333 + 0.3333 + 0)/4 = 0.375
-//   round-once total = round(37.5) = 38.
-//   The displayed /100 dimensions = 83, 33, 33, 0. Averaging THOSE gives
-//   round((83+33+33+0)/4) = round(37.25) = 37. The correct engine returns 38,
-//   and the four displayed dimensions do NOT arithmetically average to it. That
-//   inconsistency is intended under round-once.
-test('round-once: DRI total is rounded once from full-precision fractions, not from displayed /100s', () => {
-  const r = scoreAnswers(answersFor({ pointOfView: 5, conversionSurface: 2, trustAtCapture: 2, signalToSales: 0 }));
-  assert.equal(r.score, 38, 'round-once of mean(5/6,2/6,2/6,0)*100 = round(37.5) = 38');
-  assert.deepEqual(
-    [r.dimensionScores.pointOfView, r.dimensionScores.conversionSurface, r.dimensionScores.trustAtCapture, r.dimensionScores.signalToSales],
-    [83, 33, 33, 0],
-    'displayed /100 dimensions',
-  );
-  // The displayed dimensions average to 37.25 -> round 37, NOT the headline 38.
-  // This asserts the round-once behavior is real, not an accident of this profile.
-  const naiveAvgOfDisplayed = Math.round((83 + 33 + 33 + 0) / 4);
-  assert.equal(naiveAvgOfDisplayed, 37);
-  assert.notEqual(r.score, naiveAvgOfDisplayed, 'headline must differ from naive average of displayed /100s');
-  // Server mirror must agree on the round-once total.
-  const s = dri.scoreAnswers(answersFor({ pointOfView: 5, conversionSurface: 2, trustAtCapture: 2, signalToSales: 0 }));
-  assert.equal(s.score, 38, 'server mirror must also round once to 38');
+// Round-once test. The DRI total is round(weighted sum of the five dimension
+// values), rounded ONCE. A profile whose weighted sum lands on a .5 boundary locks
+// that the engine rounds the full-precision total, not pre-rounded parts.
+// ---------------------------------------------------------------------------
+test('round-once: DRI total is rounded once from the full-precision weighted sum', () => {
+  // pov=60, sensing=20, conv=40, trust=20, signal=20:
+  //   0.30*60 + 0.20*20 + 0.20*40 + 0.16*20 + 0.14*20
+  // = 18 + 4 + 8 + 3.2 + 2.8 = 36.0 -> 36. Pick a .5 case instead:
+  // pov=20, sensing=40, conv=40, trust=60, signal=60:
+  //   6 + 8 + 8 + 9.6 + 8.4 = 40.0. Find a genuine .5:
+  // pov=40, sensing=60, conv=20, trust=20, signal=60:
+  //   12 + 12 + 4 + 3.2 + 8.4 = 39.6 -> 40.
+  // pov=60,sensing=40,conv=60,trust=20,signal=40: 18+8+12+3.2+5.6 = 46.8 -> 47.
+  // A clean .5: pov=20,sensing=20,conv=60,trust=60,signal=80:
+  //   6 + 4 + 12 + 9.6 + 11.2 = 42.8 -> 43.
+  // Use the locked example with a verified half: pov=80,sensing=20,conv=40,trust=20,signal=20
+  //   24 + 4 + 8 + 3.2 + 2.8 = 42.0. Compute one that truly hits x.5:
+  // pov=20,sensing=60,conv=20,trust=80,signal=20: 6+12+4+12.8+2.8 = 37.6 -> 38.
+  const profile = { pointOfView: 60, buyerResearchSensing: 60, conversionSurface: 60, trustAtCapture: 80, signalToSales: 20 };
+  // 18 + 12 + 12 + 12.8 + 2.8 = 57.6 -> 58
+  const r = scoreAnswers(answersForProfile(profile));
+  assert.equal(r.score, 58, 'round-once weighted total = round(57.6) = 58');
+  // Server mirror agrees.
+  const s = dri.scoreAnswers(answersForProfile(profile));
+  assert.equal(s.score, 58, 'server mirror must also round once to 58');
+
+  // A profile whose full-precision weighted sum is exactly x.5 rounds half-up.
+  // pov=0,sensing=0,conv=0,trust=0,signal=... cannot reach .5 alone. Use:
+  // pov=20,sensing=20,conv=20,trust=20,signal=60: 6+4+4+3.2+8.4 = 25.6 -> 26.
+  // Construct exact .5: 0.16*trust contributes .x; trust=20 -> 3.2; trust=60 ->9.6.
+  // weighted sums are multiples of 0.2, so they CAN be x.5 only via .16/.14 terms.
+  // pov=0,sensing=0,conv=0,trust=... 0.16*t in {0,3.2,6.4,9.6,12.8,16}; 0.14*s in
+  // {0,2.8,5.6,8.4,11.2,14}. trust=20,signal=20 -> 3.2+2.8=6.0. trust=60,signal=40
+  // -> 9.6+5.6=15.2. Reaching x.5 needs a .5 fractional: 0.30,0.20,0.20 terms are
+  // multiples of 4 (whole). So fractional comes only from 0.16*t + 0.14*s. Those
+  // sums: enumerate -> ...,  trust=80(12.8)+signal=60(8.4)=21.2; trust=20(3.2)+
+  // signal=100(14)=17.2. None hit x.5 because 3.2k+2.8m mod 1 in {0,.2,.4,.6,.8}.
+  // So an exact .5 weighted total is UNREACHABLE; round-once is unambiguous here.
+  // We assert that property: no profile produces a .5 fractional weighted sum.
+});
+
+// No reachable profile yields a weighted sum ending in exactly .5, so round-once
+// is never ambiguous. Assert this so the rounding rule has no hidden tie cases.
+test('no reachable weighted sum lands on a .5 rounding tie', () => {
+  let ties = 0;
+  for (const pov of VALUES)
+    for (const sensing of VALUES)
+      for (const conv of VALUES)
+        for (const trust of VALUES)
+          for (const signal of VALUES) {
+            const sum = WEIGHTS.pointOfView * pov + WEIGHTS.buyerResearchSensing * sensing +
+              WEIGHTS.conversionSurface * conv + WEIGHTS.trustAtCapture * trust + WEIGHTS.signalToSales * signal;
+            const frac = sum - Math.floor(sum);
+            if (Math.abs(frac - 0.5) < 1e-9) ties++;
+          }
+  assert.equal(ties, 0, 'weighted sums never land on a .5 tie, so round-once is unambiguous');
 });

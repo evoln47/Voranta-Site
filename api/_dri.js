@@ -11,29 +11,31 @@
 
 const BOOKING_URL = 'https://calendly.com/evoln47/30min';
 
-// 3 questions per dimension, options 0/1/2 points. Mirrors framework.mjs.
+// ONE question per dimension. The six option values (0,20,40,60,80,100) ARE the
+// dimension /100 scores; choiceIndex selects one. Mirrors framework.mjs.
+const OPTION_VALUES = [0, 20, 40, 60, 80, 100];
 const QUESTIONS = {
-  pov1: { dimension: 'pointOfView', points: [0, 1, 2] },
-  pov2: { dimension: 'pointOfView', points: [0, 1, 2] },
-  pov3: { dimension: 'pointOfView', points: [0, 1, 2] },
-  conv1: { dimension: 'conversionSurface', points: [0, 1, 2] },
-  conv2: { dimension: 'conversionSurface', points: [0, 1, 2] },
-  conv3: { dimension: 'conversionSurface', points: [0, 1, 2] },
-  trust1: { dimension: 'trustAtCapture', points: [0, 1, 2] },
-  trust2: { dimension: 'trustAtCapture', points: [0, 1, 2] },
-  trust3: { dimension: 'trustAtCapture', points: [0, 1, 2] },
-  signal1: { dimension: 'signalToSales', points: [0, 1, 2] },
-  signal2: { dimension: 'signalToSales', points: [0, 1, 2] },
-  signal3: { dimension: 'signalToSales', points: [0, 1, 2] },
+  pov: { dimension: 'pointOfView', points: OPTION_VALUES },
+  sensing: { dimension: 'buyerResearchSensing', points: OPTION_VALUES },
+  conv: { dimension: 'conversionSurface', points: OPTION_VALUES },
+  trust: { dimension: 'trustAtCapture', points: OPTION_VALUES },
+  signal: { dimension: 'signalToSales', points: OPTION_VALUES },
 };
 
-// maxPerDim = 3 questions * 2 = 6. Per-dimension raw runs 0..6.
-const MAX_PER_DIM = 6;
-// Fraction thresholds mirror assessment/scoring.mjs. The EXEC epsilon is
-// load-bearing: the all-strong exec cluster mean lands a hair below 2/3 in
+// Scoring weights, sum 1.00. Mirrors assessment/scoring.mjs WEIGHTS.
+const WEIGHTS = {
+  pointOfView: 0.30,
+  buyerResearchSensing: 0.20,
+  conversionSurface: 0.20,
+  trustAtCapture: 0.16,
+  signalToSales: 0.14,
+};
+
+// Archetype thresholds on the /100-as-fraction scale. The DOWNSTREAM epsilon is
+// load-bearing: a downstream cluster like (1.0,1.0,0.0) means a hair below 2/3 in
 // floating point and must still classify high.
-const POV_HIGH_FRAC = 0.75;
-const EXEC_HIGH_FRAC = 2 / 3 - 1e-9;
+const UPSTREAM_HIGH_FRAC = 0.70;
+const DOWNSTREAM_HIGH_FRAC = 2 / 3 - 1e-9;
 const HIGH_BAND_100 = 75; // /100 band cut: high = >= 75.
 
 // [key, label, gap blurb, edge blurb] in the demand-funnel order ties break by.
@@ -43,6 +45,9 @@ const DIMENSIONS = [
   ['pointOfView', 'Point of View',
     "Buyers research the problem using a framework someone else named. Every piece of content you publish builds authority for that framework, not yours. A proprietary, opinionated framework the market associates with your brand changes that. It turns your competitors' positioning pressure into evidence for a category point of view only you can claim.",
     'Your point of view is already reaching buyers and shaping how they think about the problem. The next step is formalizing it into a named, structured framework the market associates with your brand. That move lifts a content strength into a category position a competitor cannot replicate by outspending you.'],
+  ['buyerResearchSensing', 'Buyer Research Sensing',
+    'You are publishing without a reliable read on what your buyers are actually researching. The market moves and your positioning does not follow, because nothing systematically tells it to. A measured loop, where buyer research behavior is captured and feeds back into what you publish and how you frame the problem, turns guesswork into a steering signal for the whole engine.',
+    'You already read what buyers are researching and let it shape your marketing. The next step is closing the loop fully, so buyer behavior does not just inform a campaign but continuously revises the framework itself. That is what keeps your point of view current as the category moves, instead of aging into yesterday\'s answer.'],
   ['conversionSurface', 'Conversion Surface',
     'You earn attention, but the action you ask for leaks it. Buyers who were ready to engage step off the path before you can identify them. A lower-friction, relevant next step tied to clear measurement closes that leak and turns earned attention into attributable pipeline.',
     'Your conversion surface is working. Buyers who engage are becoming identifiable contacts at a measurable rate. The next step is precision: tighter paths and sharper measurement so every point of earned attention becomes attributable pipeline, not just most of it.'],
@@ -55,27 +60,27 @@ const DIMENSIONS = [
 ];
 
 const ARCHETYPES = {
-  renter: { key: 'renter', label: 'The Renter', blurb: "Buyers read your content, then research the problem using someone else's framework. That framework sets the vocabulary, shapes the shortlist, and earns the referral. Until you own the framework buyers research against, your content spend builds authority for whoever does." },
-  publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You have built a genuine point of view and buyers engage with it. The gap is downstream. The conversion path, the value at capture, or the hand-off to sales is not closing the distance between earned attention and identifiable pipeline.' },
-  operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong funnel. The structural gap is the point of view. You compete on a framework someone else defined and named, which means a well-resourced rival can claim the category point of view you are currently borrowing.' },
-  authority: { key: 'authority', label: 'The Authority', blurb: 'You own the framework buyers research against, and the rest of your funnel is broadly strong. That combination is hard to build and harder to sustain. The question is how quickly you can deepen the position before a well-resourced rival makes it worth challenging.' },
+  renter: { key: 'renter', label: 'The Renter', blurb: "Buyers read your content, then research the problem using someone else's framework. That framework sets the vocabulary, shapes the shortlist, and earns the referral. Until you own the framework buyers research against and read what they are researching, your content spend builds authority for whoever does." },
+  publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You have built real strategy: a point of view the market engages with and a read on what your buyers are researching. The gap is downstream. The path from earned attention to identifiable, sales-ready pipeline is not closing the distance the strategy has already opened.' },
+  operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong downstream engine. The structural gap is upstream. You compete on a framework someone else defined, and you are not systematically reading what buyers research, which means a well-resourced rival can claim the category position you are currently borrowing.' },
+  authority: { key: 'authority', label: 'The Authority', blurb: 'You own the framework buyers research against, you read what they are researching and feed it back, and the rest of your engine is broadly strong. That combination is hard to build and harder to sustain. The question is how quickly you can deepen the position before a well-resourced rival makes it worth challenging.' },
 };
 
 // Re-derive the full result from answers. Mirrors assessment/scoring.mjs.
 // Returns null if the submission is not a complete, valid set of answers.
 //
 // RESULT SHAPE (mirrors assessment/scoring.mjs scoreAnswers):
-//   score            DRI 0-100, round(mean(dimFrac)*100), rounded ONCE from
-//                    full-precision fractions (the four displayed dimension /100s
-//                    do not always average to this; that is intended).
-//   dimensionScores  { <dimKey>: <0-100> } per-dimension /100 for display/email.
-//   dimensionRaw     { <dimKey>: <0-6> } raw points per dimension.
-//   points           total raw points across all 12 questions (0..24).
+//   score            DRI 0-100, round(weighted sum of the five dimension values),
+//                    rounded ONCE from the full-precision weighted sum (the five
+//                    displayed dimension /100s do not always average to this; that
+//                    is intended).
+//   dimensionScores  { <dimKey>: <0-100> } the chosen option value per dimension.
+//   dimensionRaw     { <dimKey>: <0-100> } identical to dimensionScores (one item
+//                    per dimension, so there is no separate raw scale).
 //   archetype, focus, evenTier as before.
 function scoreAnswers(answers) {
   if (!Array.isArray(answers)) return null;
-  const dimensionRaw = { pointOfView: 0, conversionSurface: 0, trustAtCapture: 0, signalToSales: 0 };
-  let points = 0;
+  const dimensionScores = {};
 
   for (const id of Object.keys(QUESTIONS)) {
     const q = QUESTIONS[id];
@@ -83,59 +88,49 @@ function scoreAnswers(answers) {
     if (!a) return null; // every question must be answered
     const idx = a.choiceIndex;
     if (!Number.isInteger(idx) || idx < 0 || idx >= q.points.length) return null;
-    const p = q.points[idx];
-    points += p;
-    dimensionRaw[q.dimension] += p;
+    // One question per dimension: the chosen option value is the dimension /100.
+    dimensionScores[q.dimension] = q.points[idx];
   }
 
-  // Full-precision fractions per dimension, then /100 display scores.
-  const dimFrac = {
-    pointOfView: dimensionRaw.pointOfView / MAX_PER_DIM,
-    conversionSurface: dimensionRaw.conversionSurface / MAX_PER_DIM,
-    trustAtCapture: dimensionRaw.trustAtCapture / MAX_PER_DIM,
-    signalToSales: dimensionRaw.signalToSales / MAX_PER_DIM,
-  };
-  const dimensionScores = {
-    pointOfView: Math.round(dimFrac.pointOfView * 100),
-    conversionSurface: Math.round(dimFrac.conversionSurface * 100),
-    trustAtCapture: Math.round(dimFrac.trustAtCapture * 100),
-    signalToSales: Math.round(dimFrac.signalToSales * 100),
-  };
+  // dimensionRaw kept identical for any consumer that reads it.
+  const dimensionRaw = { ...dimensionScores };
 
-  // DRI /100: mean of the four full-precision fractions, rounded ONCE. Same
-  // operation order as assessment/scoring.mjs so float parity holds at .5 edges.
-  const meanFrac = (dimFrac.pointOfView + dimFrac.conversionSurface + dimFrac.trustAtCapture + dimFrac.signalToSales) / 4;
-  const score = Math.round(meanFrac * 100);
+  // DRI /100: weighted sum of the five dimension values (each already 0..100),
+  // rounded ONCE. Same operation order as assessment/scoring.mjs so float parity
+  // holds at .5 edges.
+  let weighted = 0;
+  for (const [key] of DIMENSIONS) weighted += WEIGHTS[key] * dimensionScores[key];
+  const score = Math.round(weighted);
 
   // Archetype is DIMENSION-DEFINED, not score-defined, so it can never contradict
-  // the #1 gap (the lowest dimension). A clean 2x2 over two FRACTION axes:
-  //   - Point of View: high = povFrac >= 0.75.
-  //   - The conversion/trust/signal EXECUTION cluster: high = mean of the three
-  //     fractions >= 2/3 (with the float epsilon).
-  // This satisfies the required gates: Authority requires POV high (a POV floor)
-  // and Renter requires POV low (a POV ceiling). Mirrors assessment/scoring.mjs
+  // the #1 gap (the lowest dimension). A clean 2x2 over two cluster means on the
+  // /100-as-fraction scale:
+  //   - UPSTREAM (strategy): mean(pointOfView, buyerResearchSensing) >= 0.70.
+  //   - DOWNSTREAM (execution): mean(conversionSurface, trustAtCapture,
+  //     signalToSales) >= 2/3 (with the float epsilon).
+  // Authority/Publisher require upstreamHigh (an upstream floor); Renter/Operator
+  // require upstream low (an upstream ceiling). Mirrors assessment/scoring.mjs
   // pickArchetype() exactly. Keep in sync.
   //
-  //                  exec low (<2/3)    exec high (>=2/3)
-  //   POV high (>=.75)  Publisher          Authority
-  //   POV low  (<.75)   Renter             Operator
-  const povHigh = dimFrac.pointOfView >= POV_HIGH_FRAC;
-  const execMean = (dimFrac.conversionSurface + dimFrac.trustAtCapture + dimFrac.signalToSales) / 3;
-  const execHigh = execMean >= EXEC_HIGH_FRAC;
+  //                       downstream low      downstream high
+  //   upstream high          Publisher           Authority
+  //   upstream low           Renter              Operator
+  const upstreamMean = (dimensionScores.pointOfView / 100 + dimensionScores.buyerResearchSensing / 100) / 2;
+  const downstreamMean = (dimensionScores.conversionSurface / 100 + dimensionScores.trustAtCapture / 100 + dimensionScores.signalToSales / 100) / 3;
+  const upstreamHigh = upstreamMean >= UPSTREAM_HIGH_FRAC;
+  const downstreamHigh = downstreamMean >= DOWNSTREAM_HIGH_FRAC;
   let archetype;
-  if (povHigh) archetype = execHigh ? ARCHETYPES.authority : ARCHETYPES.publisher;
-  else archetype = execHigh ? ARCHETYPES.operator : ARCHETYPES.renter;
+  if (upstreamHigh) archetype = downstreamHigh ? ARCHETYPES.authority : ARCHETYPES.publisher;
+  else archetype = downstreamHigh ? ARCHETYPES.operator : ARCHETYPES.renter;
 
-  // FOCUS is the single dimension to act on next, ALWAYS surfaced unless all four
-  // dimensions are exactly equal. Lowest wins; ties break by DIMENSIONS order (the
-  // demand-funnel sequence). tier is set by the focus dimension's own band using
-  // the same HIGH = 75 cut as band() below: < 75 -> 'deficit' (gap to close),
-  // >= 75 -> 'edge' (next lever to extend). A high-band lowest is an edge, never a
-  // deficit, so it never contradicts a strong archetype. null only when all four
-  // are equal (the sole no-focus state); evenTier then reports high vs low so the
-  // copy stays honest. Mirrors assessment/scoring.mjs pickFocus()/evenTier()
-  // exactly. Keep in sync. focus is { dimension, label, tier, blurb } or null.
-  // dimensionScores here are /100, so the comparisons run on the /100 scale.
+  // FOCUS is the single dimension to act on next, ALWAYS surfaced unless all five
+  // dimensions are exactly equal. Lowest UNWEIGHTED /100 wins; the scoring weights
+  // do NOT affect gap selection. Ties break by DIMENSIONS order (the demand-funnel
+  // sequence). tier is set by the focus dimension's own band using the same HIGH =
+  // 75 cut as band() below: < 75 -> 'deficit' (gap to close), >= 75 -> 'edge' (next
+  // lever to extend). A high-band lowest is an edge, never a deficit. null only when
+  // all five are equal (the sole no-focus state); evenTier then reports high vs low.
+  // Mirrors assessment/scoring.mjs pickFocus()/evenTier() exactly. Keep in sync.
   const dimValues = DIMENSIONS.map(([key]) => dimensionScores[key]);
   const dimMin = Math.min(...dimValues);
   const dimMax = Math.max(...dimValues);
@@ -154,7 +149,6 @@ function scoreAnswers(answers) {
 
   return {
     score,
-    points,
     dimensionScores,
     dimensionRaw,
     archetype: { key: archetype.key, label: archetype.label, blurb: archetype.blurb },
@@ -200,7 +194,8 @@ const LEAD_IN = {
 
 // DIMENSION_FIRST_SENTENCE: keyed by dimension key, gap (low/mid) and edge (high).
 const DIMENSION_FIRST_SENTENCE = {
-  pointOfView:       { gap: 'Buyers research the problem using a framework someone else named.',    edge: 'Your point of view is already reaching buyers and shaping how they think about the problem.' },
+  pointOfView:          { gap: 'Buyers research the problem using a framework someone else named.',    edge: 'Your point of view is already reaching buyers and shaping how they think about the problem.' },
+  buyerResearchSensing: { gap: 'You are publishing without a reliable read on what your buyers are actually researching.', edge: 'You already read what buyers are researching and let it shape your marketing.' },
   conversionSurface: { gap: 'You earn attention, but the action you ask for leaks it.', edge: 'Your conversion surface is working.' },
   trustAtCapture:    { gap: 'What you ask for and what you give back are out of balance.', edge: 'The exchange at capture already earns its keep.' },
   signalToSales:     { gap: 'Your reps start from scratch on every first call.',    edge: 'Reps already have meaningful context before the first call.' },
