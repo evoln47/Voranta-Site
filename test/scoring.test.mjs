@@ -42,3 +42,30 @@ test('gap is the strictly lowest dimension regardless of archetype', () => {
   assert.equal(r.archetype.key, 'authority');
   assert.equal(r.gap.dimension, 'pointOfView');
 });
+
+// Malignant corner 1: POV floored, cluster high -> total score lands high (~69),
+// but archetype must NOT be Authority (whose narrative claims a framework buyers
+// research against) when POV is the gap. Dimension-defined map yields Operator.
+test('POV floored at high total -> Operator, not Authority; gap is Point of View', () => {
+  // pov = 0, conv = 4, trust = 4, signal = 3 -> points 11, score 69
+  const r = scoreAnswers(from({ pov1: 0, pov2: 0, conv1: 2, conv2: 2, trust1: 2, trust2: 2, signal1: 2, signal2: 1 }));
+  assert.equal(r.score, 69);
+  assert.equal(r.dimensionScores.pointOfView, 0);
+  assert.equal(r.archetype.key, 'operator');
+  assert.notEqual(r.archetype.key, 'authority');
+  assert.equal(r.gap.dimension, 'pointOfView');
+});
+
+// Malignant corner 2: POV maxed, cluster floored -> total score lands low (~25),
+// but archetype must NOT be Renter (whose narrative claims someone else's lens)
+// when POV is maxed. Dimension-defined map yields Publisher, and the gap is a
+// cluster dimension, never Point of View.
+test('POV maxed at low total -> Publisher, not Renter; gap is not Point of View', () => {
+  // pov = 4, conv = 0, trust = 0, signal = 0 -> points 4, score 25
+  const r = scoreAnswers(from({ pov1: 2, pov2: 2, conv1: 0, conv2: 0, trust1: 0, trust2: 0, signal1: 0, signal2: 0 }));
+  assert.equal(r.score, 25);
+  assert.equal(r.dimensionScores.pointOfView, 4);
+  assert.equal(r.archetype.key, 'publisher');
+  assert.notEqual(r.archetype.key, 'renter');
+  assert.notEqual(r.gap.dimension, 'pointOfView');
+});

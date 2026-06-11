@@ -57,10 +57,24 @@ function scoreAnswers(answers) {
 
   const score = Math.round((points / 16) * 100);
 
+  // Archetype is DIMENSION-DEFINED, not score-defined, so it can never contradict
+  // the #1 gap (the lowest dimension). A clean 2x2 over two axes:
+  //   - Point of View (one dimension, 0-4): high = >= 3.
+  //   - The conversion/trust/signal cluster (three dimensions, 0-12): high = >= 8
+  //     (two-thirds of the range, a clearly strong cluster).
+  // This satisfies the required gates: Authority requires POV high (a POV floor)
+  // and Renter requires POV low (a POV ceiling). Mirrors assessment/scoring.mjs
+  // pickArchetype() exactly. Keep in sync.
+  //
+  //                  cluster low (<8)   cluster high (>=8)
+  //   POV high (>=3)   Publisher          Authority
+  //   POV low  (<3)    Renter             Operator
+  const povHigh = dimensionScores.pointOfView >= 3;
+  const cluster = dimensionScores.conversionSurface + dimensionScores.trustAtCapture + dimensionScores.signalToSales;
+  const clusterHigh = cluster >= 8;
   let archetype;
-  if (score < 40) archetype = ARCHETYPES.renter;
-  else if (score >= 65) archetype = ARCHETYPES.authority;
-  else archetype = dimensionScores.pointOfView >= dimensionScores.conversionSurface ? ARCHETYPES.publisher : ARCHETYPES.operator;
+  if (povHigh) archetype = clusterHigh ? ARCHETYPES.authority : ARCHETYPES.publisher;
+  else archetype = clusterHigh ? ARCHETYPES.operator : ARCHETYPES.renter;
 
   let gap = null;
   for (const [key, label, blurb] of DIMENSIONS) {
