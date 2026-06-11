@@ -37,6 +37,7 @@
 </script>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to content</a>
 
 <!-- TOPBAR -->
 <header class="topbar">
@@ -59,14 +60,15 @@
       <div class="hamburger-lines"><span></span><span></span><span></span></div>
     </button>
     <nav>
-      <a href="/aipq">Framework</a>
+      <a href="/aipq" aria-current="page">Framework</a>
       <a href="/about">About</a>
+      <a href="/assessment">Assessment</a>
       <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="cta-link">Book a call</a>
     </nav>
   </div>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner" style="grid-template-columns: 1fr;">
@@ -362,7 +364,7 @@
 
 <script>
   /* ============================================================
-     SCORECARD — radar + 2x2 interactivity
+     SCORECARD - radar + 2x2 interactivity
      ============================================================ */
   (function() {
     var pillars = [
@@ -437,7 +439,7 @@
       pointsG.appendChild(c);
     });
 
-    // Axis labels — visual gap matched across all sides via anchor-aware positioning
+    // Axis labels - visual gap matched across all sides via anchor-aware positioning
     var labelsG = document.getElementById("sc-axis-labels");
     function anchorFor(angle) {
       var c = Math.cos(angle);

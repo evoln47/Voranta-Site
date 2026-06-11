@@ -37,6 +37,7 @@
 </script>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to content</a>
 
 <!-- TOPBAR -->
 <header class="topbar">
@@ -61,12 +62,13 @@
     <nav>
       <a href="/aipq">Framework</a>
       <a href="/about">About</a>
+      <a href="/assessment" aria-current="page">Assessment</a>
       <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="cta-link">Book a call</a>
     </nav>
   </div>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <section class="assessment">
   <div class="section-inner">
     <div class="dri-app" id="dri-app">
@@ -90,6 +92,7 @@
 
       <!-- RESULTS -->
       <div class="dri-screen" data-screen="results" hidden>
+        <h2 class="sr-only">Assessment results</h2>
         <div class="dri-results-grid">
           <div class="sc-card is-dark dri-score-card">
             <div class="sc-card-head"><h3>Demand Research Index</h3></div>
@@ -157,7 +160,7 @@
     </a>
     <div class="meta">
       <a href="/aipq">Framework</a>
-      <a href="#methodology">Methodology</a>
+      <a href="/aipq#methodology">Methodology</a>
       <a href="/about">About</a>
       <a href="/#sponsors">Sponsors</a>
       <a href="mailto:hello@voranta.co">Contact</a>

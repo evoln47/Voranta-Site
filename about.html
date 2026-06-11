@@ -21,22 +21,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&family=Geist:wght@300..700&family=Geist+Mono:wght@300..600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<style>
-.founder-social {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 24px;
-}
-.social-icon-link {
-  display: inline-flex;
-  align-items: center;
-  opacity: 1;
-  transition: opacity 0.15s ease;
-}
-.social-icon-link:hover { opacity: 0.5; }
-.social-icon-link img { display: block; width: 28px; height: 28px; }
-</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -53,6 +37,7 @@
 </script>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to content</a>
 
 <!-- TOPBAR -->
 <header class="topbar">
@@ -76,13 +61,14 @@
     </button>
     <nav>
       <a href="/aipq">Framework</a>
-      <a href="/about">About</a>
+      <a href="/about" aria-current="page">About</a>
+      <a href="/assessment">Assessment</a>
       <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="cta-link">Book a call</a>
     </nav>
   </div>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <!-- FOUNDER -->
 <section style="background: var(--color-paper);">
   <div class="section-inner">
@@ -106,7 +92,7 @@
 </section>
 
 <!-- FOUNDER BIO -->
-<section style="background: var(--color-paper-light);">
+<section id="founder" style="background: var(--color-paper-light);">
   <div class="section-inner">
     <div class="founder-grid">
       <div class="founder-photo">
