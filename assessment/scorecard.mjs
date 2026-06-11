@@ -47,7 +47,7 @@ export function renderScorecard(result, els) {
     dimensions.forEach((dim) => {
       const raw = result.dimensionScores[dim.key];
       const li = document.createElement('li');
-      li.textContent = `${dim.label}: ${raw} out of 4`;
+      li.textContent = `${dim.label}: ${raw} out of 100`;
       els.dimensionList.appendChild(li);
     });
   }
@@ -84,11 +84,11 @@ export function renderScorecard(result, els) {
       // Show the focus dimension details in the callout
       const frameworkDim = dimensions.find((d) => d.key === f.dimension);
       const raw = result.dimensionScores[f.dimension];
-      const blurb = frameworkDim ? (raw >= 3 ? frameworkDim.edge : frameworkDim.gap) : '';
+      const blurb = frameworkDim ? (raw >= 75 ? frameworkDim.edge : frameworkDim.gap) : '';
       if (els.radarCalloutName) {
         els.radarCalloutName.textContent = f.tier === 'edge' ? 'Your strongest next move' : 'Where you are leaking';
       }
-      if (els.radarCalloutScore) els.radarCalloutScore.textContent = `${f.label} · ${raw} / 4`;
+      if (els.radarCalloutScore) els.radarCalloutScore.textContent = `${f.label} · ${raw} / 100`;
       if (els.radarCalloutReading) els.radarCalloutReading.textContent = blurb;
     } else if (result.evenTier === 'high') {
       if (els.radarCalloutName) els.radarCalloutName.textContent = 'Strong across every dimension';

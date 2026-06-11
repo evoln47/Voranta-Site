@@ -77,7 +77,7 @@ export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, 
   const fillEl = svgEl.querySelector('#dri-score-fill');
   if (fillEl) {
     const pts = RADAR_DIMS.map((dim, i) => {
-      const frac = dimensionScores[dim.key] / 4;
+      const frac = dimensionScores[dim.key] / 100;
       const p = polar(angles[i], maxR * frac);
       return `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
     }).join(' ');
@@ -94,7 +94,7 @@ export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, 
     pointsG.innerHTML = '';
     const circles = [];
     RADAR_DIMS.forEach((dim, i) => {
-      const frac = dimensionScores[dim.key] / 4;
+      const frac = dimensionScores[dim.key] / 100;
       const pt = polar(angles[i], maxR * frac);
       const circle = document.createElementNS(SVG_NS, 'circle');
       circle.setAttribute('cx', pt.x.toFixed(1));
@@ -105,7 +105,7 @@ export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, 
       // Roving tabindex: first point gets tabindex=0, rest start at -1.
       circle.setAttribute('tabindex', i === 0 ? '0' : '-1');
       circle.setAttribute('role', 'button');
-      circle.setAttribute('aria-label', `${dim.label}: ${dimensionScores[dim.key]} of 4`);
+      circle.setAttribute('aria-label', `${dim.label}: ${dimensionScores[dim.key]} of 100`);
       // Start off-center for animate-in
       circle.setAttribute('data-target-cx', pt.x.toFixed(1));
       circle.setAttribute('data-target-cy', pt.y.toFixed(1));
@@ -226,7 +226,7 @@ function animateRadarIn(svgEl, angles, maxR, dimensionScores, cx, cy) {
     const fillEl = svgEl.querySelector('#dri-score-fill');
     if (fillEl) {
       const targetPts = RADAR_DIMS.map((dim, i) => {
-        const frac = dimensionScores[dim.key] / 4;
+        const frac = dimensionScores[dim.key] / 100;
         const angle = (-Math.PI / 2) + (i * 2 * Math.PI / RADAR_DIMS.length);
         const tx = cx + Math.cos(angle) * maxR * frac;
         const ty = cy + Math.sin(angle) * maxR * frac;
@@ -279,10 +279,10 @@ export function setActiveDimension(svgEl, dimKey, dimensionScores, result, callo
 
   const frameworkDim = dimensions.find((d) => d.key === dimKey);
   const raw = dimensionScores[dimKey];
-  const blurb = frameworkDim ? (raw >= 3 ? frameworkDim.edge : frameworkDim.gap) : '';
+  const blurb = frameworkDim ? (raw >= 75 ? frameworkDim.edge : frameworkDim.gap) : '';
 
   if (calloutNameEl) calloutNameEl.textContent = dimData.label;
-  if (calloutScoreEl) calloutScoreEl.textContent = `${raw} / 4`;
+  if (calloutScoreEl) calloutScoreEl.textContent = `${raw} / 100`;
   if (calloutReadingEl) calloutReadingEl.textContent = blurb;
 
   // Visual update
@@ -297,10 +297,6 @@ export function setActiveDimension(svgEl, dimKey, dimensionScores, result, callo
  */
 export function renderQuadrant(gridEl, calloutEl, result) {
   const { archetype, dimensionScores } = result;
-
-  // Compute execution score (0-12) and pov (0-4)
-  const exec = dimensionScores.conversionSurface + dimensionScores.trustAtCapture + dimensionScores.signalToSales;
-  const pov = dimensionScores.pointOfView;
 
   // Build quadrant cells - roving tabindex: ONE tab stop for the group.
   gridEl.innerHTML = '';
@@ -383,18 +379,27 @@ export function renderQuadrant(gridEl, calloutEl, result) {
   });
 
   // Buyer dot - piecewise-linear mapping so the dot accurately reflects quadrant boundaries.
+  // Axes use fraction thresholds: povFrac = pov/100 with divider at 0.75;
+  // execMean = mean(conv, trust, signal each /100) with divider at 2/3.
+  // leftPct: execution axis (0 = left/exec-low, 100 = right/exec-high), divider at 2/3.
+  // bottomPct: POV axis (0 = bottom/pov-low, 100 = top/pov-high), divider at 0.75.
   const MIN_PCT = 8, MAX_PCT = 92, THRESHOLD_NUDGE = 3;
+  const EXEC_DIV = 2 / 3;  // ~0.6667
+  const POV_DIV = 0.75;
+
+  const povFrac = dimensionScores.pointOfView / 100;
+  const execMean = (dimensionScores.conversionSurface + dimensionScores.trustAtCapture + dimensionScores.signalToSales) / 300;
 
   let leftPct, bottomPct;
-  if (exec < 8) {
-    leftPct = (exec / 8) * 50;
+  if (execMean < EXEC_DIV) {
+    leftPct = (execMean / EXEC_DIV) * 50;
   } else {
-    leftPct = exec === 8 ? 50 + THRESHOLD_NUDGE : 50 + ((exec - 8) / 4) * 50;
+    leftPct = execMean === EXEC_DIV ? 50 + THRESHOLD_NUDGE : 50 + ((execMean - EXEC_DIV) / (1 - EXEC_DIV)) * 50;
   }
-  if (pov < 3) {
-    bottomPct = (pov / 3) * 50;
+  if (povFrac < POV_DIV) {
+    bottomPct = (povFrac / POV_DIV) * 50;
   } else {
-    bottomPct = pov === 3 ? 50 + THRESHOLD_NUDGE : 50 + ((pov - 3) / 1) * 50;
+    bottomPct = povFrac === POV_DIV ? 50 + THRESHOLD_NUDGE : 50 + ((povFrac - POV_DIV) / (1 - POV_DIV)) * 50;
   }
   leftPct = Math.max(MIN_PCT, Math.min(MAX_PCT, leftPct));
   bottomPct = Math.max(MIN_PCT, Math.min(MAX_PCT, bottomPct));
