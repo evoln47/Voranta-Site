@@ -277,7 +277,7 @@ function buildVisitorText(result) {
     priorityBody = f.blurb;
   } else if (result.evenTier === 'high') {
     priorityLabel = 'Strong across every dimension';
-    priorityBody = 'All four dimensions score in the high band. That is a real structural position. The priority now is to deepen the lead before a competitor decides it is worth building against.';
+    priorityBody = 'All five dimensions score in the high band. That is a real structural position. The priority now is to deepen the lead before a competitor decides it is worth building against.';
   } else {
     priorityLabel = 'A systemic opportunity';
     priorityBody = 'No single dimension is pulling the others down, which means there is no one fix to isolate. The opportunity is to build deliberately and in the right order. Voranta can scope that sequence in 30 minutes.';
@@ -328,7 +328,7 @@ function buildVisitorHtml(result) {
   const f = result.focus;
   const archetypeKey = result.archetype.key;
 
-  // Section 4: four dimension rows with /100 score, band, first-sentence read, and score bar.
+  // Section 4: five dimension rows with /100 score, band, first-sentence read, and score bar.
   const dimRows = DIMENSIONS.map(([key, label]) => {
     const score100 = ds[key];
     const b = band(score100);
@@ -369,7 +369,7 @@ function buildVisitorHtml(result) {
     priorityBody = f.blurb;
   } else if (result.evenTier === 'high') {
     priorityLabel = 'Strong across every dimension';
-    priorityBody = 'All four dimensions score in the high band. That is a real structural position. The priority now is to deepen the lead before a competitor decides it is worth building against.';
+    priorityBody = 'All five dimensions score in the high band. That is a real structural position. The priority now is to deepen the lead before a competitor decides it is worth building against.';
   } else {
     priorityLabel = 'A systemic opportunity';
     priorityBody = 'No single dimension is pulling the others down, which means there is no one fix to isolate. The opportunity is to build deliberately and in the right order. Voranta can scope that sequence in 30 minutes.';
