@@ -218,10 +218,10 @@ const POSITIONING = {
 // CTA_FRAMING: sentence before the booking button, keyed on archetype key.
 // evenHigh uses authority, evenLow uses renter (same as POSITIONING key).
 const CTA_FRAMING = {
-  renter:    'Your score shows where the build starts. A 30 minute call with Evan maps the sequence so you are not rebuilding in the wrong order.',
-  publisher: 'The point of view is the hard part, and you have it. A 30 minute call with Evan identifies the specific downstream gap costing you the pipeline your content has already earned.',
-  operator:  'Your demand engine is ready to compound a framework you own. A 30 minute call with Evan scopes what that framework looks like for your category and how fast you can move.',
-  authority: 'You hold the position. A 30 minute call with Evan identifies the specific move that makes it structurally harder to challenge before a rival attempts it.',
+  renter:    'Your score shows where the build starts. A 30 minute call with Voranta maps the sequence so you are not rebuilding in the wrong order.',
+  publisher: 'The point of view is the hard part, and you have it. A 30 minute call with Voranta identifies the specific downstream gap costing you the pipeline your content has already earned.',
+  operator:  'Your demand engine is ready to compound a framework you own. A 30 minute call with Voranta scopes what that framework looks like for your category and how fast you can move.',
+  authority: 'You hold the position. A 30 minute call with Voranta identifies the specific move that makes it structurally harder to challenge before a rival attempts it.',
 };
 
 // Returns the email subject line for the visitor email.
@@ -324,7 +324,7 @@ function buildVisitorText(result) {
     ctaFraming,
     ctaLine,
     '',
-    'You took the Demand Research Index at voranta.co. Reply to this email and it reaches Evan directly.',
+    'You took the Demand Research Index at voranta.co. Reply to this email and it reaches us directly.',
   ].join('\n');
 }
 
@@ -433,7 +433,7 @@ function buildVisitorHtml(result) {
         </td></tr>
 
         <!-- Section 8: footer -->
-        <tr><td style="border-top:1px solid #D2D8D3;padding-top:16px;font-size:13px;line-height:1.55;color:#57564F;">You took the Demand Research Index at voranta.co. Reply to this email and it reaches Evan directly.</td></tr>
+        <tr><td style="border-top:1px solid #D2D8D3;padding-top:16px;font-size:13px;line-height:1.55;color:#57564F;">You took the Demand Research Index at voranta.co. Reply to this email and it reaches us directly.</td></tr>
       </table>
     </td></tr>
   </table>
