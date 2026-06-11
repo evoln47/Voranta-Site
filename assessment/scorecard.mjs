@@ -9,9 +9,15 @@ export function renderScorecard(result, els) {
     els.gapLabel.textContent = result.gap.label;
     els.gapBlurb.textContent = result.gap.blurb;
   } else {
-    els.gapName.textContent = 'A balanced profile';
+    els.gapName.textContent = 'No single gap';
     els.gapLabel.textContent = '';
-    els.gapBlurb.textContent = 'Your funnel scores evenly across all four dimensions, no single gap stands out.';
+    els.gapBlurb.textContent = 'Your four dimensions score the same. No single one leads or lags.';
+  }
+
+  if (els.cta) {
+    els.cta.textContent = result.gap
+      ? 'Book a call to close the gap'
+      : 'Book a call to talk through your result';
   }
 
   els.bars.innerHTML = dimensions.map((dim) => {

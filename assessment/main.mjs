@@ -27,6 +27,7 @@ const quiz = createQuiz({
       gapLabel: document.getElementById('dri-gap-label'),
       gapBlurb: document.getElementById('dri-gap-blurb'),
       bars: document.getElementById('dri-bars'),
+      cta: document.getElementById('dri-results-cta'),
     });
     show('results');
     app.scrollIntoView({ behavior: 'smooth', block: 'start' });

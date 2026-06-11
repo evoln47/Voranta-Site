@@ -147,9 +147,9 @@ function buildVisitorText(result) {
     '',
     ...(result.gap
       ? [`Your #1 gap: ${result.gap.label}`, result.gap.blurb]
-      : ['Your funnel scores evenly across all four dimensions, no single gap stands out.']),
+      : ['No single gap', 'Your four dimensions score the same. No single one leads or lags.']),
     '',
-    result.gap ? `Book a call to close the gap: ${BOOKING_URL}` : `Book a call: ${BOOKING_URL}`,
+    result.gap ? `Book a call to close the gap: ${BOOKING_URL}` : `Book a call to talk through your result: ${BOOKING_URL}`,
     '',
     'You took the Demand Research Index at voranta.co. Reply to this email and it reaches Evan directly.',
   ].join('\n');
@@ -191,13 +191,13 @@ function buildVisitorHtml(result) {
         ${result.gap
           ? `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">Your #1 gap: ${escapeHtml(result.gap.label)}</td></tr>
         <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">${escapeHtml(result.gap.blurb)}</td></tr>`
-          : `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">A balanced profile</td></tr>
-        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">Your funnel scores evenly across all four dimensions, no single gap stands out.</td></tr>`}
+          : `<tr><td style="border-top:1px solid #D2D8D3;padding:20px 0 4px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#0891B2;font-weight:600;">No single gap</td></tr>
+        <tr><td style="padding-bottom:26px;font-size:15px;line-height:1.55;color:#3A3A38;">Your four dimensions score the same. No single one leads or lags.</td></tr>`}
 
         <tr><td style="padding-bottom:30px;">
           <table role="presentation" cellpadding="0" cellspacing="0"><tr>
             <td style="background:#0891B2;border-radius:8px;">
-              <a href="${BOOKING_URL}" style="display:inline-block;padding:13px 24px;color:#ECF1ED;font-size:15px;font-weight:600;text-decoration:none;">${result.gap ? 'Book a call to close the gap' : 'Book a call'}</a>
+              <a href="${BOOKING_URL}" style="display:inline-block;padding:13px 24px;color:#ECF1ED;font-size:15px;font-weight:600;text-decoration:none;">${result.gap ? 'Book a call to close the gap' : 'Book a call to talk through your result'}</a>
             </td>
           </tr></table>
         </td></tr>
