@@ -1,7 +1,7 @@
 # Voranta Photography & Illustration System
 
 **Date:** 2026-06-11
-**Status:** Approved (all four system evolutions accepted by owner)
+**Status:** Approved (all four original system evolutions accepted by owner; stock-sourcing permission + §5.5 Full-bleed Hero Exception added 2026-06-11)
 **Authors:** visual-designer + design-reviewer (synthesized)
 **Scope:** A deliberate, repeatable system for using photography and illustration across voranta.co to fill currently-empty space with signal, not decoration.
 
@@ -57,7 +57,7 @@ Currently applied to `.hero-visual`, `.about-image`, `.founder-photo`.
 
 **Hard rules (from the locked design system):**
 - No `box-shadow` / `filter: drop-shadow()` on images — the hairline border is the only edge treatment.
-- No gradient scrims or tint overlays on images (a translucent dark layer over a photo *is* a banned gradient). Text sits on an image only via a solid, opaque ink panel.
+- No gradient scrims or tint overlays on images. A `linear-gradient`/`radial-gradient`/`conic-gradient` value is prohibited everywhere, including as an overlay, regardless of how subtle. A flat, uniform `rgba()` fill layer is NOT a CSS gradient and is not banned by this rule; it may be used as a bounded legibility assist inside the §5.5 Full-bleed Hero Exception only, subject to all constraints there. Everywhere else, text sits on an image only via a solid, opaque ink panel.
 - No `border-radius` above 16px except the approved `.img-avatar` exception (§5.2).
 - No second accent hue. Naturally-occurring cyan/cool-blue *inside a photo* is fine; warm amber, green, magenta, purple, AI-violet are violations.
 - No emoji / AI-sparkle iconography — extends fully to illustration.
@@ -153,6 +153,52 @@ Diagrams/framework illustrations are restricted to the greyscale ramp + cyan acc
 1–1.5px strokes, no fills except `--color-accent-tint` / `--color-paper-light`, no shadows,
 no glows, corner geometry `--radius-sm` (6px) or sharp 0. Ties illustration directly to the
 existing radar/scorecard SVG vocabulary. → also add to CLAUDE.md.
+
+---
+
+### 5.5 Full-bleed Hero Exception (approved 2026-06-11, owner-authorized)
+
+**Scope:** the hero section of `index.html` only, one instance per page. NOT a general
+license to place text over any image/video anywhere. No other section, page, or future
+component inherits this without a separate named approval.
+
+**Grants:** a full-bleed background image (or muted/looping video) that fills the hero
+edge-to-edge, with the H1 and supporting copy set directly over it. The locked image frame
+(12px radius + `::after` hairline) does not apply (full-bleed has no contained edge). Zero
+radius is below the 16px cap, so the cap is not implicated.
+
+**Legibility mechanism (all that apply must hold; verify with an eyedropper on real pixels,
+not the mockup):**
+1. *Primary — art-directed low-key imagery.* Prefer an image whose headline zone is
+   inherently dark enough that cream/ink text meets WCAG AA (4.5:1 normal, 3:1 for ≥18px bold).
+2. *Secondary — one flat uniform ink tint, permitted.* If (1) is insufficient, a flat
+   `rgba(10,9,8,X)` overlay on the hero container is allowed, X = minimum needed, hard-capped
+   at **0.55**. Flat and uniform only: no direction, no falloff, no CSS gradient function, no
+   second color. If 55% ink still fails AA, the image is non-compliant; replace it, do not
+   darken further.
+3. No `text-shadow` / `drop-shadow` on text, ever.
+
+**Typography:** H1 uses **Geist** (it is a heading; the Fraunces-never-on-H1–H4 rule stays in
+effect — most likely implementation error). Eyebrow = Geist Mono. Subhead = Geist, ≥14px.
+Headline/subhead color = `--color-paper` (`#ECF1ED`), not pure white. Cyan (`#0891B2`) only on
+a single inline word, the eyebrow badge, or the CTA. No other color. No `text-shadow`.
+
+**Subject-matter & tone (unchanged from Track A, fully binding):** `.img-brand-tone` required;
+quiet structural/architectural or printed-research subjects only; all §5.3 banned subjects stay
+banned; no second accent hue from grade or tint; Pexels/Artgrid only, logged in
+`docs/imagery-licenses.md`. The scale.com reference is **layout only** (full-bleed,
+text-over-image). The cinematic-defense/SaaS-growth register is NOT authorized; an image that
+looks like it belongs on a defense-contractor or growth-marketing site fails the guardrail
+regardless of technical compliance.
+
+**Mobile (required):** the image must stay visible at/below 880px (the headline rides on it,
+so `display:none` is not permitted here). Re-verify the contrast floor at mobile crop; tint
+opacity may rise toward the 0.55 ceiling if the crop exposes a lighter zone. Overrides go in
+the existing `@media (max-width: 880px)` block.
+
+**Other locked rules:** no-gradient, no-shadow (incl. on text and container), accent-color-only,
+no-AI-imagery, and no-emoji all remain fully in effect inside this exception. Only the locked
+frame and the solid-opaque-panel requirement are exempted, and only for this hero container.
 
 ---
 

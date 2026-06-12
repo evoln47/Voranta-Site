@@ -35,6 +35,8 @@ The locked Voranta design system is defined authoritatively in `globals.css` (Ta
 - No body font-size below 14px on reading surfaces
 - No emoji or AI-sparkle iconography on brand surfaces
 
+**One approved exception to the image-frame and text-over-image rules: the Full-bleed Hero Exception.** Permits a full-bleed, text-over-image (or video) hero, one per page, on `index.html` only for now. It does NOT relax any other rule (subject-matter guardrails, `.img-brand-tone`, the three-font rule incl. Geist-only headings, no-shadow, no-gradient, accent-color all stay in effect). Full constraints in spec §5.5; satisfy them in full before shipping.
+
 ## Assets
 
 - `voranta-wordmark.svg` — locked wordmark, embedded inline in `index.html`
@@ -47,9 +49,13 @@ The locked Voranta design system is defined authoritatively in `globals.css` (Ta
 
 ## Imagery system
 
-Photography and illustration follow the approved system spec at `docs/superpowers/specs/2026-06-11-imagery-system-design.md`. Photography = trust moments (real-world, human, physical artifacts); illustration = making abstract mechanisms visible. Both use the one locked image frame (12px radius + `0.5px` inset hairline `::after`, never a shadow). Approved token classes: `.img-brand-tone` (cool-desaturate filter) and `.img-avatar` (the only `border-radius: 50%` exception, headshots ≤200px only).
+Photography, video, and illustration follow the approved system spec at `docs/superpowers/specs/2026-06-11-imagery-system-design.md`. Photography = trust moments (real-world, human, physical artifacts); video = the same subject-matter standard, muted and looping, brought into brand tone; illustration = making abstract mechanisms visible. All use the one locked image frame (12px radius + `0.5px` inset hairline `::after`, never a shadow). Approved token classes: `.img-brand-tone` (cool-desaturate filter, applies equally to `<img>` and `<video>`) and `.img-avatar` (the only `border-radius: 50%` exception, headshots ≤200px only).
 
-**No-AI-slop guardrail (subject matter):** never use stock people-at-laptops, handshakes, team-at-whiteboard, glowing-orb/network-mesh, "AI brain", lens-flare hero shots, recognizable stock-library templates, or any AI-generated imagery. The brand is research-led; AI-generated visuals contradict that signal.
+**Stock sourcing (approved 2026-06-11):** agents may source real photographs and video from approved licensed libraries, currently **Pexels** and **Artgrid** only. (Coverr is NOT approved: it now mixes AI-generated footage into its library.) Sourcing from a library does not relax the subject-matter or cliché guardrails below; they apply regardless of origin. Log every licensed asset in `docs/imagery-licenses.md` (source, asset ID/URL, license type, attribution required Y/N).
+
+**No-AI-slop guardrail (subject matter):** never use people-at-laptops, handshakes, team-at-whiteboard, glowing-orb/network-mesh, "AI brain", lens-flare hero shots, the clichéd stock-template aesthetic (Unsplash-"business", Shutterstock-"innovation"), or any AI-generated imagery. Sourcing from an approved library does not exempt an asset from this list; "recognizable stock-library templates" means that cliché look, not the act of licensing from a library. The brand is research-led; AI-generated visuals contradict that signal, and this ban is permanent.
+
+**Video constraints:** `<video>` must be `muted`, `loop`, `playsinline`, carry a `poster` still and explicit `width`/`height`, and pass the subject-matter guardrail above. No baked-in type or lower-thirds (all type is live HTML in the brand fonts); no second accent hue introduced by the grade; quiet motion only (no rapid cuts, kinetic typography, or cinematic flare); honor `prefers-reduced-motion` (fall back to the poster still). Host on Vercel/CDN, not third-party iframes. Text-over-video legibility is governed by the locked image rules (text only on a solid opaque panel) unless a specific design-system exception has been approved. The **Full-bleed Hero Exception** (spec §5.5) is one such approved exception; its constraints are binding.
 
 **Illustration palette:** inline SVG only (no external `.svg` via `<img>`). Greyscale ramp + cyan accent, with cyan on exactly ONE element per diagram. Monoline 1–1.5px strokes, flat/geometric, no fills except `--color-accent-tint`/`--color-paper-light`, no shadows/glows. Extend the existing data-viz vocabulary (AIPQ radar, dot-grid, 2x2 matrix), never generic SaaS/isometric/blob art.
 
@@ -57,6 +63,7 @@ Photography and illustration follow the approved system spec at `docs/superpower
 
 - Section-specific layout overrides use `#section-id .class` selectors (see `#product .diff-grid`, `#methodology .diff-grid`) — never modify the base rule
 - New CSS appends to `styles.css` (the shared live stylesheet); mobile overrides go inside the existing `@media (max-width: 880px)` block. Design tokens that need a Next.js-parity definition are mirrored into `globals.css`, but the `styles.css` copy is what renders live
+- Exception: the `.hero--fullbleed` mobile overrides live in a SECOND `@media (max-width: 880px)` block placed AFTER the desktop `.hero--fullbleed` rules (near end of file). This is intentional and required: those desktop rules carry no media guard, so a mobile override of equal specificity must come later in source order to win. Do not merge this block back into the earlier mobile block
 
 ## Section structure
 
