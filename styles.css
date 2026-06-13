@@ -291,6 +291,128 @@
   .sc-summary-row-body { font-size: 14px; line-height: 1.55; color: var(--color-accent-dark); }
   .sc-summary-row-body strong { color: var(--color-ink); font-weight: 500; }
 
+  /* ============================================================
+     CRM BRIEF ARTIFACT (#sample-brief)
+     ============================================================ */
+  .crm-brief {
+    border: 0.5px solid var(--color-border-strong);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--color-paper);
+  }
+
+  .crm-brief-header {
+    background: var(--color-ink);
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .crm-brief-doc-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(244, 247, 244, 0.9);
+  }
+
+  .crm-brief-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-top: 0.5px solid rgba(244, 247, 244, 0.12);
+    padding-top: 20px;
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    column-gap: 40px;
+    row-gap: 16px;
+  }
+
+  .crm-brief-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 160px;
+  }
+
+  .crm-brief-meta-item--wide {
+    min-width: 280px;
+  }
+
+  .crm-brief-meta dt {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(244, 247, 244, 0.45);
+  }
+
+  .crm-brief-meta dd {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(244, 247, 244, 0.88);
+    margin: 0;
+  }
+
+  /* Single cyan element: the AIPQ score value */
+  .crm-brief-score {
+    color: var(--color-accent) !important;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .crm-brief-body {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .crm-brief-part {
+    padding: 28px 32px;
+    border-bottom: 0.5px solid var(--color-border-faint);
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .crm-brief-part:last-child {
+    border-bottom: none;
+  }
+
+  .crm-brief-part-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+    padding-top: 3px;
+  }
+
+  .crm-brief-part-body {
+    margin: 0;
+  }
+
+  .crm-brief-part-body p {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--color-ink-soft);
+    margin: 0;
+  }
+
+  .crm-brief-caption {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--color-ink-mute);
+    max-width: 640px;
+  }
+
   /* Mobile */
   @media (max-width: 880px) {
     .pillars, .diff-grid { grid-template-columns: 1fr; }
@@ -340,6 +462,12 @@
     .topbar nav a.cta-link { margin-top: 8px; border-bottom: none; text-align: center; width: 100%; }
     .scorecard-grid { grid-template-columns: 1fr; }
     .sc-summary { grid-template-columns: 1fr; gap: 32px; padding: 32px 28px; margin-top: 24px; }
+    .crm-brief-header { padding: 24px 20px; }
+    .crm-brief-meta { column-gap: 24px; row-gap: 14px; }
+    .crm-brief-meta-item { min-width: 120px; }
+    .crm-brief-meta-item--wide { min-width: 100%; }
+    .crm-brief-part { grid-template-columns: 1fr; gap: 10px; padding: 24px 20px; }
+    .crm-brief-part-label { padding-top: 0; }
     .sc-score-value { font-size: 4rem; }
     .pillar-axes { grid-template-columns: 1fr; }
     .pillar-axis:first-child { border-right: none; border-bottom: 0.5px solid var(--color-border-subtle); }
