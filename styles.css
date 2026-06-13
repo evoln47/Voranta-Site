@@ -114,6 +114,7 @@
   /* Differentiation block */
   .diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
   #product .diff-grid { grid-template-columns: repeat(2, 1fr); }
+  #how-it-works .diff-grid { grid-template-columns: repeat(2, 1fr); }
   .diff-card { display: flex; flex-direction: column; gap: 16px; padding: 28px; background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 12px; }
   .diff-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-mute); padding-bottom: 12px; border-bottom: 0.5px solid var(--color-border-subtle); }
   .diff-card h3 { font-size: 1.125rem; font-weight: 500; margin: 0; }
@@ -302,6 +303,7 @@
     .gap-numstat-lines { margin-top: 14px; padding-top: 14px; }
     #product .diff-grid { grid-template-columns: 1fr; }
     #methodology .diff-grid { grid-template-columns: 1fr; }
+    #how-it-works .diff-grid { grid-template-columns: 1fr; }
     .product-card-illus { max-width: 160px; height: auto; margin: 0 auto 8px; }
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
