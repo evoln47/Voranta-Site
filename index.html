@@ -212,11 +212,11 @@
           <rect x="14" y="55" width="152" height="10" rx="3" fill="none" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
           <rect x="14" y="70" width="152" height="10" rx="3" fill="none" stroke="#A8ACA8" stroke-width="0.75" opacity="0.5"/>
           <!-- Progress bar track -->
-          <rect x="14" y="88" width="152" height="4" rx="2" fill="#A8ACA8" opacity="0.2"/>
+          <rect x="14" y="88" width="128" height="4" rx="2" fill="#A8ACA8" opacity="0.2"/>
           <!-- Progress fill -- cyan, one element, ~60% done -->
-          <rect x="14" y="88" width="92" height="4" rx="2" fill="#0891B2"/>
-          <!-- Step label -->
-          <text x="170" y="92" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.06em">3/5</text>
+          <rect x="14" y="88" width="77" height="4" rx="2" fill="#0891B2"/>
+          <!-- Step label, clear of the track -->
+          <text x="166" y="92" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.06em">3/5</text>
         </svg>
         <span class="card-tag">The assessment</span>
         <h3>A branded assessment on your domain.</h3>
@@ -227,32 +227,30 @@
         <svg class="product-card-illus" viewBox="0 0 180 100" aria-hidden="true" focusable="false">
           <!-- Column headers -->
           <text x="14" y="16" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.08em" text-transform="uppercase">COMPANY</text>
-          <text x="90" y="16" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.08em">ARCHETYPE</text>
-          <text x="154" y="16" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.08em">SCORE</text>
+          <text x="86" y="16" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.08em">ARCHETYPE</text>
+          <text x="166" y="16" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.08em">SCORE</text>
           <!-- Header rule -->
           <line x1="14" y1="20" x2="166" y2="20" stroke="#A8ACA8" stroke-width="0.5" opacity="0.4"/>
-          <!-- Row 1 (highlighted) -->
-          <rect x="10" y="24" width="160" height="18" rx="3" fill="#A8ACA8" opacity="0.07"/>
-          <rect x="14" y="29" width="52" height="6" rx="2" fill="#A8ACA8" opacity="0.4"/>
+          <!-- Row 1 (highlighted), centred on y=32 -->
+          <rect x="10" y="24" width="160" height="16" rx="3" fill="#A8ACA8" opacity="0.07"/>
+          <rect x="14" y="29.5" width="52" height="5" rx="2" fill="#A8ACA8" opacity="0.4"/>
           <!-- Archetype tag -->
-          <rect x="90" y="27" width="42" height="12" rx="6" fill="#A8ACA8" opacity="0.2"/>
-          <text x="111" y="35" text-anchor="middle" font-family="Geist Mono,monospace" font-size="6.5" fill="#6B6E6B" letter-spacing="0.04em">STRANDED</text>
+          <rect x="86" y="27" width="46" height="10" rx="5" fill="#A8ACA8" opacity="0.2"/>
+          <text x="109" y="35" text-anchor="middle" font-family="Geist Mono,monospace" font-size="6" fill="#6B6E6B" letter-spacing="0.04em">STRANDED</text>
           <!-- Score -- cyan, one element -->
-          <text x="154" y="36" text-anchor="end" font-family="Geist Mono,monospace" font-size="11" fill="#0891B2" letter-spacing="-0.02em" font-weight="500">58</text>
-          <!-- Row divider -->
-          <line x1="14" y1="43" x2="166" y2="43" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
-          <!-- Row 2 -->
-          <rect x="14" y="49" width="44" height="5" rx="2" fill="#A8ACA8" opacity="0.25"/>
-          <rect x="90" y="47" width="38" height="12" rx="6" fill="#A8ACA8" opacity="0.12"/>
-          <rect x="14" y="59" width="35" height="5" rx="2" fill="#A8ACA8" opacity="0.18"/>
-          <rect x="90" y="57" width="44" height="12" rx="6" fill="#A8ACA8" opacity="0.12"/>
-          <!-- Row dividers -->
-          <line x1="14" y1="56" x2="166" y2="56" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
-          <line x1="14" y1="69" x2="166" y2="69" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
-          <!-- Row 3 -->
-          <rect x="14" y="75" width="50" height="5" rx="2" fill="#A8ACA8" opacity="0.18"/>
-          <rect x="90" y="73" width="40" height="12" rx="6" fill="#A8ACA8" opacity="0.12"/>
-          <line x1="14" y1="83" x2="166" y2="83" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
+          <text x="166" y="36" text-anchor="end" font-family="Geist Mono,monospace" font-size="11" fill="#0891B2" letter-spacing="-0.02em" font-weight="500">58</text>
+          <!-- Row 2, centred on y=47 -->
+          <line x1="14" y1="40" x2="166" y2="40" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
+          <rect x="14" y="44.5" width="44" height="5" rx="2" fill="#A8ACA8" opacity="0.25"/>
+          <rect x="86" y="42" width="40" height="10" rx="5" fill="#A8ACA8" opacity="0.12"/>
+          <!-- Row 3, centred on y=61 -->
+          <line x1="14" y1="54" x2="166" y2="54" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
+          <rect x="14" y="58.5" width="35" height="5" rx="2" fill="#A8ACA8" opacity="0.18"/>
+          <rect x="86" y="56" width="44" height="10" rx="5" fill="#A8ACA8" opacity="0.12"/>
+          <!-- Row 4, centred on y=75 -->
+          <line x1="14" y1="68" x2="166" y2="68" stroke="#A8ACA8" stroke-width="0.5" opacity="0.2"/>
+          <rect x="14" y="72.5" width="50" height="5" rx="2" fill="#A8ACA8" opacity="0.18"/>
+          <rect x="86" y="70" width="38" height="10" rx="5" fill="#A8ACA8" opacity="0.12"/>
         </svg>
         <span class="card-tag">The lead</span>
         <h3>A pre-diagnosed lead, not a name and an email.</h3>
@@ -272,7 +270,7 @@
           <rect x="52" y="56" width="11" height="28" rx="1" fill="#A8ACA8" opacity="0.3"/>
           <rect x="66" y="44" width="11" height="40" rx="1" fill="#A8ACA8" opacity="0.3"/>
           <rect x="80" y="36" width="11" height="48" rx="1" fill="#A8ACA8" opacity="0.3"/>
-          <!-- Cyan bar -- the peak, one element -->
+          <!-- Cyan bar -- modal bar, one element -->
           <rect x="94" y="34" width="11" height="50" rx="1" fill="#0891B2" opacity="0.7"/>
           <rect x="108" y="34" width="11" height="50" rx="1" fill="#A8ACA8" opacity="0.3"/>
           <rect x="122" y="50" width="11" height="34" rx="1" fill="#A8ACA8" opacity="0.3"/>
@@ -281,7 +279,6 @@
           <!-- X-axis labels -->
           <text x="20" y="93" text-anchor="middle" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.04em">LOW</text>
           <text x="166" y="93" text-anchor="end" font-family="Geist Mono,monospace" font-size="7" fill="#A8ACA8" letter-spacing="0.04em">HIGH</text>
-          <text x="99.5" y="18" text-anchor="middle" font-family="Geist Mono,monospace" font-size="7" fill="#6B6E6B" letter-spacing="0.04em">PEAK</text>
         </svg>
         <span class="card-tag">The benchmark</span>
         <h3>Your audience is the panel. No panel cost.</h3>
