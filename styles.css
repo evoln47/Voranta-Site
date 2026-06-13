@@ -755,7 +755,7 @@
    .framework-teaser-row, above the CTA button in its column.
    ============================================================ */
 .framework-teaser-row { display: flex; align-items: center; gap: 64px; flex-wrap: wrap; }
-.framework-teaser-copy { max-width: 560px; }
+.framework-teaser-copy { max-width: 660px; }
 /* Reuse the section-head pattern (eyebrow, rule, subhead spacing + the cyan rule);
    drop its 56px bottom margin so the copy stays vertically centred against the scorecard. */
 .framework-teaser-copy .section-head { margin-bottom: 0; }
