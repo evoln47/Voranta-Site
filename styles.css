@@ -253,6 +253,9 @@
   .sc-radar-label { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; fill: var(--color-ink-soft); text-transform: uppercase; cursor: pointer; transition: fill 150ms ease, font-weight 150ms ease; }
   .sc-radar-label:hover, .sc-radar-label.is-active { fill: var(--color-accent-dark); font-weight: 600; }
 
+  /* Mobile radar dimension list: hidden on desktop (shown via mobile block below) */
+  .sc-dim-list { display: none; }
+
   .sc-pillar-callout { margin-top: auto; padding-top: 18px; border-top: 0.5px solid var(--color-border-subtle); }
   .sc-pillar-callout .pc-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
   .sc-pillar-callout .pc-name { font-size: 14px; font-weight: 500; color: var(--color-ink); }
@@ -340,9 +343,20 @@
     .pillar-axis:first-child { border-right: none; border-bottom: 0.5px solid var(--color-border-subtle); }
     .pillar-axis { padding: 28px 24px; }
     footer { padding: 36px 20px 24px; }
-    footer .meta { gap: 16px; flex-wrap: wrap; }
+    footer .meta { gap: 4px 12px; flex-wrap: wrap; min-width: 0; width: 100%; }
+    footer .meta a { padding: 10px 4px; font-size: 14px; }
+    .footer-inner { align-items: flex-start; }
     .gap-bridge-lead { margin-top: 20px; }
     .gap-pivot { font-size: 1.125rem; margin-top: 48px; }
+    /* Tap target upgrades */
+    .hamburger { padding: 12px; }
+    .btn { min-height: 44px; }
+    /* Founding CTA: full-width on mobile */
+    .founding-cta { width: 100%; }
+    /* Social icon link tap target (About page) */
+    #founder .social-icon-link { padding: 8px; }
+    /* Scroll-to-explore indicator */
+    .hero-scroll { padding: 12px 14px; }
   }
 
   /* ============================================================
@@ -643,7 +657,8 @@
 @media (max-width: 880px) {
   .assessment { padding: 48px 20px; }
   .dri-scorecard-grid { grid-template-columns: 1fr; }
-  .dri-q-text { font-size: 1.25rem; min-height: 5.2em; }
+  /* FIX 2: Reduce min-height so answers are visible without scrolling on 320px phones */
+  .dri-q-text { font-size: 1.25rem; min-height: 3em; }
   .dri-capture-inner { flex-direction: column; align-items: stretch; }
   .dri-capture-form { flex-direction: column; }
   .dri-capture-form input[type="email"] { min-width: 0; width: 100%; }
@@ -654,6 +669,28 @@
   .inline-cta .btn { width: 100%; justify-content: center; }
   .dri-nav { flex-direction: row; }
   .dri-nav .dri-next { flex: 1; justify-content: center; }
+  /* FIX 3: Back button — match btn-lg height AND share width equally with Continue */
+  .dri-back { padding: 14px 24px; flex: 1; justify-content: center; }
+  /* Assessment results: scroll-margin compensates for 72px sticky topbar */
+  .dri-app { scroll-margin-top: 80px; }
+  /* All named section anchors scroll clear of sticky topbar */
+  [id] { scroll-margin-top: 80px; }
+
+  /* FIX 1: Radar legibility — hide SVG on mobile; show ranked dimension list instead.
+     The .sc-radar-wrap class is shared with the 2x2 quadrant card, so scope SVG-only. */
+  #dri-radar-svg { display: none; }
+  #sample-scorecard .sc-radar-svg { display: none; }
+  /* sr-only dimension list (desktop fallback for SR) is replaced by visible list on mobile */
+  #dri-dimension-list { display: none; }
+  /* Dimension ranked list: visible on mobile only */
+  .sc-dim-list { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+  .sc-dim-list-row { display: flex; flex-direction: column; gap: 4px; background: none; border: none; padding: 0; cursor: pointer; text-align: left; width: 100%; }
+  .sc-dim-list-row:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: 4px; }
+  .sc-dim-list-meta { display: flex; align-items: baseline; justify-content: space-between; }
+  .sc-dim-list-name { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-soft); }
+  .sc-dim-list-score { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--color-ink-mute); }
+  .sc-dim-list-bar-track { height: 4px; background: var(--color-border-subtle); border-radius: 999px; overflow: hidden; width: 100%; }
+  .sc-dim-list-bar-fill { display: block; height: 100%; background: var(--color-accent); border-radius: 999px; transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1); width: 0; }
 
   /* Full-bleed hero mobile overrides (index.html only) */
   .hero--fullbleed {

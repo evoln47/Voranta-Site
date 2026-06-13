@@ -137,8 +137,10 @@
                 <g id="dri-axis-labels"></g>
               </svg>
             </div>
-            <!-- sr-only dimension list: screen-reader fallback for the five scores -->
+            <!-- sr-only dimension list: screen-reader fallback for the five scores (desktop) -->
             <ul class="sr-only" id="dri-dimension-list" aria-label="Dimension scores"></ul>
+            <!-- Mobile dimension list: rendered by renderDimList(); hidden on desktop via CSS -->
+            <div class="sc-dim-list" id="dri-dim-list" role="group" aria-label="Five-dimension scores. Tap a dimension to read the insight."></div>
             <!-- Callout: updated on click/Enter/Space only (no hover spam) -->
             <div class="sc-pillar-callout" aria-live="polite" aria-atomic="true">
               <div class="pc-head">
@@ -183,7 +185,7 @@
             </div>
             <form class="dri-capture-form" id="dri-capture-form" novalidate>
               <input type="text" name="website" class="dri-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-              <input type="email" id="dri-email" name="email" placeholder="you@company.com" required aria-label="Your work email">
+              <input type="email" id="dri-email" name="email" placeholder="you@company.com" required aria-label="Your work email" inputmode="email" autocomplete="email">
               <button type="submit" class="btn btn-ghost btn-lg" id="dri-capture-submit">Email me the breakdown</button>
             </form>
           </div>

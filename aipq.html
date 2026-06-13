@@ -255,6 +255,8 @@
             <g id="sc-axis-labels"></g>
           </svg>
         </div>
+        <!-- Mobile dimension list: rendered by inline script; hidden on desktop via CSS -->
+        <div class="sc-dim-list" id="sc-dim-list" role="group" aria-label="Six-pillar scores. Tap a pillar to read the insight."></div>
         <div class="sc-pillar-callout">
           <div class="pc-head">
             <span class="pc-name" id="sc-pc-name">Exception tolerance</span>
@@ -559,6 +561,53 @@
         for (var x = 0; x < all.length; x++) all[x].classList.remove("is-active");
         var a = archetypes["stranded"];
         quadrantCallout.innerHTML = "<strong>" + a.name + "</strong> · " + a.desc;
+      });
+    }
+
+    // Mobile dimension list (shown at <=880px instead of SVG radar)
+    var dimListEl = document.getElementById("sc-dim-list");
+    if (dimListEl) {
+      var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      pillars.forEach(function(p) {
+        var row = document.createElement("button");
+        row.type = "button";
+        row.className = "sc-dim-list-row";
+        row.setAttribute("aria-label", p.name + ": " + p.score + " of 100. Tap to read insight.");
+
+        var meta = document.createElement("div");
+        meta.className = "sc-dim-list-meta";
+
+        var nameEl = document.createElement("span");
+        nameEl.className = "sc-dim-list-name";
+        nameEl.textContent = p.name;
+
+        var scoreEl = document.createElement("span");
+        scoreEl.className = "sc-dim-list-score";
+        scoreEl.textContent = p.score + " / 100";
+
+        meta.appendChild(nameEl);
+        meta.appendChild(scoreEl);
+
+        var track = document.createElement("div");
+        track.className = "sc-dim-list-bar-track";
+        var fill = document.createElement("span");
+        fill.className = "sc-dim-list-bar-fill";
+        track.appendChild(fill);
+
+        row.appendChild(meta);
+        row.appendChild(track);
+
+        (function(pillarKey) {
+          row.addEventListener("click", function() { setActivePillar(pillarKey); });
+        })(p.key);
+
+        dimListEl.appendChild(row);
+
+        if (reduced) {
+          fill.style.width = p.score + "%";
+        } else {
+          requestAnimationFrame(function() { fill.style.width = p.score + "%"; });
+        }
       });
     }
 

@@ -468,3 +468,77 @@ function setCalloutText(calloutEl, archetypeKey) {
   calloutEl.appendChild(strong);
   calloutEl.appendChild(document.createTextNode(' · ' + desc));
 }
+
+/**
+ * Render the mobile ranked dimension list into a container element.
+ * Shown on mobile (<=880px) instead of the SVG radar. Reuses the existing
+ * callout elements so clicking a row updates the same aria-live region.
+ * Dimensions are rendered in funnel order (matching RADAR_DIMS), not sorted,
+ * to preserve the framework's canonical sequence.
+ *
+ * @param {HTMLElement} containerEl - .sc-dim-list element to render into
+ * @param {Object} dimensionScores - per-dimension 0-100 scores
+ * @param {Object} result - full result object for blurb lookup
+ * @param {HTMLElement} calloutNameEl
+ * @param {HTMLElement} calloutScoreEl
+ * @param {HTMLElement} calloutReadingEl
+ */
+export function renderDimList(containerEl, dimensionScores, result, calloutNameEl, calloutScoreEl, calloutReadingEl) {
+  if (!containerEl) return;
+  containerEl.innerHTML = '';
+
+  RADAR_DIMS.forEach((dim) => {
+    const raw = dimensionScores[dim.key];
+
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'sc-dim-list-row';
+    row.setAttribute('aria-label', `${dim.label}: ${raw} of 100. Tap to read insight.`);
+
+    const meta = document.createElement('div');
+    meta.className = 'sc-dim-list-meta';
+
+    const nameEl = document.createElement('span');
+    nameEl.className = 'sc-dim-list-name';
+    nameEl.textContent = dim.label;
+
+    const scoreEl = document.createElement('span');
+    scoreEl.className = 'sc-dim-list-score';
+    scoreEl.textContent = `${raw} / 100`;
+
+    meta.appendChild(nameEl);
+    meta.appendChild(scoreEl);
+
+    const track = document.createElement('div');
+    track.className = 'sc-dim-list-bar-track';
+    const fill = document.createElement('span');
+    fill.className = 'sc-dim-list-bar-fill';
+    // Width animated after append; start at 0 (CSS default), rAF sets target
+    track.appendChild(fill);
+
+    row.appendChild(meta);
+    row.appendChild(track);
+
+    row.addEventListener('click', () => {
+      // Reuse setActiveDimension to update the aria-live callout below the list
+      const frameworkDim = dimensions.find((d) => d.key === dim.key);
+      const blurb = frameworkDim ? (raw >= 75 ? frameworkDim.edge : frameworkDim.gap) : '';
+      if (calloutNameEl) calloutNameEl.textContent = dim.label;
+      if (calloutScoreEl) calloutScoreEl.textContent = `${raw} / 100`;
+      if (calloutReadingEl) calloutReadingEl.textContent = blurb;
+    });
+
+    containerEl.appendChild(row);
+
+    // Animate bar in (respects prefers-reduced-motion)
+    const reduced = typeof window !== 'undefined' && window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      fill.style.width = `${raw}%`;
+    } else {
+      requestAnimationFrame(() => {
+        fill.style.width = `${raw}%`;
+      });
+    }
+  });
+}

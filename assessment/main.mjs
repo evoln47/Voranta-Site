@@ -31,6 +31,7 @@ const quiz = createQuiz({
       quadrantGrid: document.getElementById('dri-matrix-grid'),
       quadrantCallout: document.getElementById('dri-quadrant-callout'),
       dimensionList: document.getElementById('dri-dimension-list'),
+      dimList: document.getElementById('dri-dim-list'),
     });
     show('results');
     app.scrollIntoView({ behavior: 'smooth', block: 'start' });

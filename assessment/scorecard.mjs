@@ -1,5 +1,5 @@
 import { dimensions } from './framework.mjs';
-import { renderRadar, setActiveDimension, setActiveDimensionVisual, renderQuadrant } from './scorecard-viz.mjs';
+import { renderRadar, setActiveDimension, setActiveDimensionVisual, renderQuadrant, renderDimList } from './scorecard-viz.mjs';
 
 const CALENDLY_BASE = 'https://calendly.com/evoln47/30min';
 
@@ -99,6 +99,18 @@ export function renderScorecard(result, els) {
       if (els.radarCalloutScore) els.radarCalloutScore.textContent = '';
       if (els.radarCalloutReading) els.radarCalloutReading.textContent = 'No single dimension drags the others down, which means there is no one fix to isolate. The opportunity is to sequence the whole build deliberately. The call scopes that sequence.';
     }
+  }
+
+  // Mobile dimension list (shown instead of SVG radar at <=880px)
+  if (els.dimList) {
+    renderDimList(
+      els.dimList,
+      result.dimensionScores,
+      result,
+      els.radarCalloutName,
+      els.radarCalloutScore,
+      els.radarCalloutReading
+    );
   }
 
   // Quadrant
