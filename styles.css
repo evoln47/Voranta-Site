@@ -1015,7 +1015,7 @@ main:focus { outline: none; }
     transform: translateY(-50%);
   }
   .hero--fullbleed .display {
-    text-wrap: normal;
+    text-wrap: wrap;
   }
   /* Mobile tint: 0.55 (same as desktop, at the §5.5 hard cap) — rule kept here
      so any future desktop-value change doesn't accidentally unguard mobile */
