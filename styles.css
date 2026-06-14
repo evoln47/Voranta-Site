@@ -156,7 +156,7 @@
 
   /* Sponsor section */
   .sponsor-section { background: var(--color-paper-deep); border-bottom: none; }
-  #sponsors .founding-hero { margin-bottom: 0; }
+  #sponsors .founding-hero { margin-bottom: 0; grid-template-columns: 3fr 2fr; gap: 64px; align-items: start; }
 
   /* CTA block */
   .cta-section { background: var(--color-ink); color: var(--color-paper-light); padding: 96px 24px; text-align: center; border-bottom: none; }
@@ -621,74 +621,88 @@
     color: var(--color-ink-soft);
     line-height: 1.5;
   }
-  /* Founding sponsor hero block - full-width dark card, primary offer */
+  /* Founding sponsor hero block - full-width dark card */
   .founding-hero {
     background: var(--color-ink);
     color: var(--color-paper-light);
     border-radius: 16px;
     padding: 56px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px;
-    align-items: stretch;
     margin-bottom: 56px;
   }
-  .founding-hero-left {
+  /* Evidence column (left on desktop) */
+  .founding-evidence {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 4px;
+  }
+  .founding-scarcity {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-paper-light);
+    margin: 0 0 20px 0;
+  }
+  .benefit-cluster {
+    padding: 0;
+  }
+  .benefit-cluster:not(:first-child) {
+    border-top: 0.5px solid rgba(244, 247, 244, 0.12);
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+  .cluster-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: rgba(244, 247, 244, 0.55);
+  }
+  .cluster-benefit {
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 400;
+    color: rgba(244, 247, 244, 0.88);
+    display: block;
+    margin: 6px 0 0 0;
+  }
+  /* Offer column (right on desktop) */
+  .founding-offer {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    justify-content: space-between;
+    justify-content: center;
+    align-self: stretch;
   }
-  .founding-badge {
-    background: rgba(8, 145, 178, 0.18);
-    color: var(--color-accent);
-    width: fit-content;
-  }
-  .founding-headline {
-    font-family: var(--font-sans);
-    font-size: 2.5rem;
+  .founding-offer-tag {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
     font-weight: 500;
-    color: var(--color-paper-light);
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(244, 247, 244, 0.55);
   }
   .founding-tagline {
     font-size: 1.0625rem;
     line-height: 1.55;
-    color: rgba(244, 247, 244, 0.75);
+    color: rgba(244, 247, 244, 0.85);
     margin: 0;
   }
   .founding-cta {
-    margin-top: 8px;
     width: fit-content;
   }
-  .founding-hero-right {
-    display: flex;
-    align-items: center;
-  }
-  .founding-benefits {
-    list-style: none;
-    padding: 0;
+  .founding-cta-scarcity {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: rgba(244, 247, 244, 0.55);
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    width: 100%;
-  }
-  .founding-benefits li {
-    font-size: 15px;
-    color: rgba(244, 247, 244, 0.85);
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
     line-height: 1.5;
-  }
-  .founding-benefits li::before {
-    content: "✓";
-    color: var(--color-accent);
-    font-weight: 600;
-    flex-shrink: 0;
   }
 
   @media (max-width: 880px) {
@@ -696,9 +710,9 @@
     .pillar-axes { grid-template-columns: 1fr; }
     .pillar-axis { padding: 28px 24px; }
     .pillar-axis:first-child { border-right: none; border-bottom: 0.5px solid var(--color-border-subtle); }
-    .founding-hero { grid-template-columns: 1fr; gap: 32px; padding: 36px 28px; }
-    .founding-hero-left { gap: 16px; }
-    .founding-headline { font-size: 2rem; }
+    #sponsors .founding-hero { grid-template-columns: 1fr; gap: 28px; padding: 32px 24px; }
+    #sponsors .founding-offer { justify-content: flex-start; gap: 16px; }
+    .founding-cta { width: 100%; text-align: center; }
     .framework-teaser-row { flex-direction: column; align-items: flex-start; }
     /* P4: at 880px, CTA column (scorecard + button) stacks below copy; button full-width */
     .framework-teaser-row > div:last-child { width: 100%; align-items: stretch; }
@@ -899,16 +913,6 @@
   height: auto;
   display: block;
   align-self: center;
-}
-
-/* ============================================================
-   FOUNDING SPONSOR HERO RIGHT (P5)
-   Benefits list, vertically centred against the pitch column.
-   ============================================================ */
-#sponsors .founding-hero-right {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
 }
 
 /* ============================================================
