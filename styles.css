@@ -7,7 +7,9 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-family: var(--font-sans); font-size: 16px; line-height: 1.55; color: var(--color-ink); background: var(--color-paper); -webkit-font-smoothing: antialiased; }
-  body { min-height: 100vh; }
+  body { min-height: 100vh; display: flex; flex-direction: column; }
+  /* Sticky footer: main grows to fill, so the footer sits at the bottom even on short pages (e.g. the assessment intro) */
+  main { flex: 1 0 auto; }
   .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
   .container-narrow { max-width: 720px; margin: 0 auto; padding: 0 24px; }
 
@@ -167,7 +169,7 @@
   .cta-section .cta-actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
 
   /* Footer */
-  footer { padding: 48px 24px 32px; }
+  footer { padding: 48px 24px 32px; flex-shrink: 0; }
   .footer-inner { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 24px; }
   .footer-logo { display: inline-flex; align-items: center; height: 28px; text-decoration: none; transition: opacity 120ms ease; }
   .footer-logo:hover { opacity: 0.65; }
