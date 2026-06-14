@@ -158,14 +158,15 @@
   .sponsor-section { background: var(--color-paper); border-bottom: none; }
 
   /* CTA block */
-  .cta-section { background: var(--color-ink); color: var(--color-paper-light); padding: 96px 24px; text-align: center; border-bottom: none; }
-  .cta-section .section-inner { display: flex; flex-direction: column; gap: 24px; align-items: center; }
-  .cta-section h2 { color: var(--color-paper-light); }
-  .cta-section p { color: rgba(244,247,244,0.75); font-size: 1.0625rem; max-width: 640px; }
-  .cta-section .btn-ghost { color: var(--color-paper-light); border-color: rgba(244,247,244,0.3); background: transparent; }
+  .cta-section { background: var(--color-ink); color: var(--color-paper-light); padding: 128px 24px; text-align: center; border-bottom: none; }
+  .cta-section .section-inner { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .cta-section .eyebrow { color: rgba(244, 247, 244, 0.5); }
+  .cta-section h2 { color: var(--color-paper-light); font-size: 2.875rem; max-width: 680px; line-height: 1.1; letter-spacing: -0.025em; margin-top: 14px; }
+  .cta-section p { color: rgba(244,247,244,0.75); font-size: 1.0625rem; max-width: 520px; margin-top: 20px; }
+  .cta-section .cta-actions { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
+  .cta-section .cta-note { margin-top: 16px; font-size: 14px; color: rgba(244, 247, 244, 0.6); max-width: 520px; }
+  .cta-section .btn-ghost { color: rgba(244, 247, 244, 0.75); border-color: rgba(244,247,244,0.25); background: transparent; }
   .cta-section .btn-ghost:hover { background: var(--color-paper-light); color: var(--color-ink); border-color: var(--color-paper-light); }
-  .cta-section .cta-note { margin-top: 16px; font-size: 14px; opacity: 0.75; }
-  .cta-section .cta-actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
 
   /* Footer */
   footer { padding: 48px 24px 32px; flex-shrink: 0; }
@@ -444,7 +445,10 @@
     .hero .cta-row { flex-direction: column; align-items: stretch; }
     .hero .meta-line { margin-top: 36px; gap: 20px; }
     section { padding: 48px 20px; }
-    .cta-section { padding: 48px 20px; }
+    .cta-section { padding: 80px 20px; }
+    .cta-section h2 { font-size: 2rem; }
+    .cta-section .cta-actions { flex-direction: column; align-items: stretch; width: 100%; max-width: 400px; }
+    .cta-section .cta-actions .btn { width: 100%; justify-content: center; }
     .section-head { margin-bottom: 40px; }
     .framework-block-head { padding: 32px 20px 24px; }
     .framework-block-body { padding: 24px 20px 32px; }
