@@ -155,8 +155,7 @@
   .about-image::after { content: ""; position: absolute; inset: 0; border: 0.5px solid rgba(10,9,8,0.1); border-radius: 12px; pointer-events: none; }
 
   /* Sponsor section */
-  .sponsor-section { background: var(--color-paper-deep); border-bottom: none; }
-  #sponsors .founding-hero { margin-bottom: 0; grid-template-columns: 3fr 2fr; gap: 64px; align-items: start; }
+  .sponsor-section { background: var(--color-paper); border-bottom: none; }
 
   /* CTA block */
   .cta-section { background: var(--color-ink); color: var(--color-paper-light); padding: 96px 24px; text-align: center; border-bottom: none; }
@@ -428,6 +427,11 @@
     #product .diff-grid { grid-template-columns: 1fr; }
     #methodology .diff-grid { grid-template-columns: 1fr; }
     #how-it-works .diff-grid { grid-template-columns: 1fr; }
+    #sponsors .sponsors-benefits { grid-template-columns: 1fr; }
+    .sponsors-offer-top { grid-template-columns: 1fr; gap: 24px; }
+    .sponsors-offer-right { align-items: stretch; }
+    .sponsors-offer-right .btn { width: 100%; text-align: center; }
+    .founding-inquiry-submit { width: 100%; justify-content: center; }
     .product-card-illus { max-width: 160px; height: auto; margin: 0 auto 8px; }
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
@@ -621,89 +625,19 @@
     color: var(--color-ink-soft);
     line-height: 1.5;
   }
-  /* Founding sponsor hero block - full-width dark card */
-  .founding-hero {
-    background: var(--color-ink);
-    color: var(--color-paper-light);
-    border-radius: 16px;
-    padding: 56px;
-    display: grid;
-    margin-bottom: 56px;
-  }
-  /* Evidence column (left on desktop) */
-  .founding-evidence {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding-top: 4px;
-  }
-  .founding-scarcity {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-paper-light);
-    margin: 0 0 20px 0;
-  }
-  .benefit-cluster {
-    padding: 0;
-  }
-  .benefit-cluster:not(:first-child) {
-    border-top: 0.5px solid rgba(244, 247, 244, 0.12);
-    padding-top: 16px;
-    margin-top: 16px;
-  }
-  .cluster-label {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    color: rgba(244, 247, 244, 0.55);
-  }
-  .cluster-benefit {
-    font-size: 15px;
-    line-height: 1.55;
-    font-weight: 400;
-    color: rgba(244, 247, 244, 0.88);
-    display: block;
-    margin: 6px 0 0 0;
-  }
-  /* Offer column (right on desktop) */
-  .founding-offer {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-    align-self: stretch;
-  }
-  .founding-offer-tag {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(244, 247, 244, 0.55);
-  }
-  .founding-tagline {
-    font-size: 1.0625rem;
-    line-height: 1.55;
-    color: rgba(244, 247, 244, 0.85);
-    margin: 0;
-  }
-  .founding-cta {
-    width: fit-content;
-  }
-  .founding-cta-scarcity {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: rgba(244, 247, 244, 0.55);
-    margin: 0;
-    line-height: 1.5;
-  }
+  /* Founding sponsor section - light-card visual language */
+  #sponsors .sponsors-scarcity { font-family: var(--font-mono); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-mute); margin-bottom: 40px; }
+  #sponsors .sponsors-benefits { grid-template-columns: repeat(2, 1fr); margin-bottom: 40px; }
+  #sponsors .sponsors-benefits .diff-card { align-self: stretch; }
+  .sponsors-offer-card { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 12px; padding: 36px; display: flex; flex-direction: column; gap: 28px; }
+  .sponsors-offer-top { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .sponsors-offer-left { display: flex; flex-direction: column; gap: 12px; }
+  .sponsors-offer-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; color: var(--color-ink-mute); }
+  .sponsors-tagline { font-size: 1.0625rem; line-height: 1.6; color: var(--color-ink-soft); margin: 0; max-width: 440px; }
+  .sponsors-offer-right { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .sponsors-cta-scarcity { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-mute); margin: 0; line-height: 1.5; }
+  .sponsors-inquiry-area { border-top: 0.5px solid var(--color-border-subtle); padding-top: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .founding-cta { width: fit-content; }
   /* Inquiry disclosure toggle */
   .founding-inquiry-toggle {
     display: inline;
@@ -712,13 +646,13 @@
     padding: 0;
     font-family: var(--font-sans);
     font-size: 14px;
-    color: rgba(244, 247, 244, 0.55);
+    color: var(--color-ink-mute);
     text-decoration: underline;
     text-underline-offset: 3px;
     cursor: pointer;
     line-height: 1.5;
   }
-  .founding-inquiry-toggle:hover { color: rgba(244, 247, 244, 0.80); }
+  .founding-inquiry-toggle:hover { color: var(--color-ink-soft); }
   .founding-inquiry-toggle:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
@@ -729,8 +663,6 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    border-top: 0.5px solid rgba(244, 247, 244, 0.12);
-    padding-top: 16px;
   }
   .founding-inquiry-field {
     display: flex;
@@ -743,24 +675,24 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: rgba(244, 247, 244, 0.55);
+    color: var(--color-ink-mute);
   }
   .founding-inquiry-label .field-optional {
     font-size: 11px;
     text-transform: none;
     letter-spacing: 0;
     font-weight: 400;
-    color: rgba(244, 247, 244, 0.38);
+    color: var(--color-ink-faint);
     margin-left: 4px;
   }
   .founding-inquiry-input,
   .founding-inquiry-textarea {
     width: 100%;
     box-sizing: border-box;
-    background: rgba(244, 247, 244, 0.06);
-    border: 0.5px solid rgba(244, 247, 244, 0.20);
+    background: var(--color-paper);
+    border: 0.5px solid var(--color-border-strong);
     border-radius: 6px;
-    color: var(--color-paper-light);
+    color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 14px;
     line-height: 1.5;
@@ -771,12 +703,13 @@
   }
   .founding-inquiry-input::placeholder,
   .founding-inquiry-textarea::placeholder {
-    color: rgba(244, 247, 244, 0.30);
+    color: var(--color-ink-faint);
   }
   .founding-inquiry-input:focus,
   .founding-inquiry-textarea:focus {
-    border-color: rgba(244, 247, 244, 0.45);
-    box-shadow: 0 0 0 2px var(--color-accent);
+    border-color: var(--color-accent);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 0;
   }
   .founding-inquiry-input[aria-invalid="true"] {
     border-color: #E57373;
@@ -785,7 +718,7 @@
     min-height: unset;
     resize: vertical;
   }
-  /* Ghost submit button adapted for dark card */
+  /* Ghost submit button */
   .founding-inquiry-submit {
     display: inline-flex;
     align-items: center;
@@ -795,17 +728,18 @@
     font-size: 14px;
     font-weight: 500;
     border-radius: 6px;
-    border: 1px solid rgba(244, 247, 244, 0.30);
+    border: 1px solid var(--color-border-strong);
     background: transparent;
-    color: var(--color-paper-light);
+    color: var(--color-ink);
     cursor: pointer;
     transition: background 120ms ease, border-color 120ms ease;
     width: fit-content;
     min-height: 44px;
   }
   .founding-inquiry-submit:hover {
-    background: rgba(244, 247, 244, 0.10);
-    border-color: rgba(244, 247, 244, 0.50);
+    background: var(--color-ink);
+    color: var(--color-paper-light);
+    border-color: var(--color-ink);
   }
   .founding-inquiry-submit:focus-visible {
     outline: 2px solid var(--color-accent);
@@ -823,13 +757,13 @@
     padding: 10px 12px;
   }
   .founding-inquiry-status.is-ok {
-    background: rgba(8, 145, 178, 0.12);
-    color: rgba(244, 247, 244, 0.90);
+    background: var(--color-accent-tint);
+    color: var(--color-accent-dark);
     border: 0.5px solid rgba(8, 145, 178, 0.30);
   }
   .founding-inquiry-status.is-error {
-    background: rgba(229, 115, 115, 0.10);
-    color: rgba(244, 247, 244, 0.90);
+    background: rgba(229, 115, 115, 0.08);
+    color: var(--color-ink);
     border: 0.5px solid rgba(229, 115, 115, 0.30);
   }
   .founding-inquiry-status a {
@@ -850,11 +784,6 @@
     .pillar-axes { grid-template-columns: 1fr; }
     .pillar-axis { padding: 28px 24px; }
     .pillar-axis:first-child { border-right: none; border-bottom: 0.5px solid var(--color-border-subtle); }
-    #sponsors .founding-hero { grid-template-columns: 1fr; gap: 28px; padding: 32px 24px; }
-    #sponsors .founding-offer { justify-content: flex-start; gap: 16px; }
-    .founding-cta { width: 100%; text-align: center; }
-    .founding-inquiry-submit { width: 100%; justify-content: center; }
-    .founding-inquiry-toggle { font-size: 15px; }
     .framework-teaser-row { flex-direction: column; align-items: flex-start; }
     /* P4: at 880px, CTA column (scorecard + button) stacks below copy; button full-width */
     .framework-teaser-row > div:last-child { width: 100%; align-items: stretch; }
