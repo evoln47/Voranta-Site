@@ -427,11 +427,6 @@
     #product .diff-grid { grid-template-columns: 1fr; }
     #methodology .diff-grid { grid-template-columns: 1fr; }
     #how-it-works .diff-grid { grid-template-columns: 1fr; }
-    #sponsors .sponsors-benefits { grid-template-columns: 1fr; }
-    .sponsors-offer-top { grid-template-columns: 1fr; gap: 24px; }
-    .sponsors-offer-right { align-items: stretch; }
-    .sponsors-offer-right .btn { width: 100%; text-align: center; }
-    .founding-inquiry-submit { width: 100%; justify-content: center; }
     .product-card-illus { max-width: 160px; height: auto; margin: 0 auto 8px; }
     .pillars { gap: 0.5px; }
     h1 { font-size: 2.25rem; }
@@ -635,7 +630,6 @@
   .sponsors-offer-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; color: var(--color-ink-mute); }
   .sponsors-tagline { font-size: 1.0625rem; line-height: 1.6; color: var(--color-ink-soft); margin: 0; max-width: 440px; }
   .sponsors-offer-right { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
-  .sponsors-cta-scarcity { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-mute); margin: 0; line-height: 1.5; }
   .sponsors-inquiry-area { border-top: 0.5px solid var(--color-border-subtle); padding-top: 20px; display: flex; flex-direction: column; gap: 16px; }
   .founding-cta { width: fit-content; }
   /* Inquiry disclosure toggle */
@@ -780,6 +774,12 @@
   }
 
   @media (max-width: 880px) {
+    /* Sponsors mobile overrides live here, after the desktop sponsors rules, so they win by source order */
+    #sponsors .sponsors-benefits { grid-template-columns: 1fr; }
+    .sponsors-offer-top { grid-template-columns: 1fr; gap: 24px; }
+    .sponsors-offer-right { align-items: stretch; }
+    .sponsors-offer-right .btn { width: 100%; text-align: center; }
+    .founding-inquiry-submit { width: 100%; justify-content: center; }
     #methodology .diff-grid { grid-template-columns: 1fr; }
     .pillar-axes { grid-template-columns: 1fr; }
     .pillar-axis { padding: 28px 24px; }
