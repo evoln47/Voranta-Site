@@ -202,3 +202,6 @@
   text-transform: uppercase;
   color: var(--color-ink-mute);
 }
+
+.callout-research { background: var(--color-accent-tint); border-left: 2px solid var(--color-accent); padding: 24px 28px; font-size: 14px; line-height: 1.6; color: var(--color-accent-dark); border-radius: 0 8px 8px 0; }
+.callout-research strong { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 10px; font-weight: 600; }
