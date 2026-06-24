@@ -9,3 +9,4 @@ export * from './Card';
 export * from './FeatureCard';
 export * from './PricingCard';
 export * from './SectionHead';
+export * from './Stat';
