@@ -1,8 +1,8 @@
-@import "tailwindcss";
-
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&family=Geist:wght@300..700&family=Geist+Mono:wght@300..600&display=swap");
 
-@theme {
+@import "tailwindcss";
+
+@theme static {
   /* ----- Colors (locked) ----- */
   --color-ink:            #0A0908;   /* primary type, true near-black     */
   --color-ink-soft:       #3F3F3D;   /* secondary type                    */
