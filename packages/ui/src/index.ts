@@ -8,3 +8,4 @@ export * from './Eyebrow';
 export * from './Card';
 export * from './FeatureCard';
 export * from './PricingCard';
+export * from './SectionHead';

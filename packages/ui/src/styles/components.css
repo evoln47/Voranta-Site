@@ -171,3 +171,10 @@
   align-items: flex-start;
   gap: var(--spacing-2);
 }
+
+/* SectionHead rules — copied verbatim from styles.css lines 92–96 */
+.section-head { margin-bottom: 56px; }
+.section-head .eyebrow { margin-bottom: 14px; }
+.section-head h2 { }
+.section-head .rule { height: 2px; background: var(--color-accent); width: 48px; margin-top: 18px; }
+.section-head .subhead { margin-top: 20px; max-width: 720px; }
