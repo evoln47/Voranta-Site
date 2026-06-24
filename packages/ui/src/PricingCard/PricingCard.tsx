@@ -28,8 +28,8 @@ export function PricingCard({
         {period && <span className="price-period">{period}</span>}
       </div>
       <ul>
-        {features.map((f) => (
-          <li key={f}>{f}</li>
+        {features.map((f, i) => (
+          <li key={`${i}-${f}`}>{f}</li>
         ))}
       </ul>
       {footer}
