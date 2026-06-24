@@ -132,6 +132,10 @@ p { font-size: var(--text-base); line-height: var(--leading-relaxed); color: var
 }
 .pricing-card.is-featured h3,
 .pricing-card.is-featured .price-value { color: var(--color-paper-light); }
+.pricing-card.is-featured li,
+.pricing-card.is-featured .price-period {
+  color: rgba(244, 247, 244, 0.72);
+}
 .pricing-card .price-value {
   font-family: var(--font-sans);
   font-size: var(--text-4xl);
