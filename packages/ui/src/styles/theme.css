@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&family=Geist:wght@300..700&family=Geist+Mono:wght@300..600&display=swap");
+
+@import "tailwindcss";
+
+@theme static {
+  /* ----- Colors (locked) ----- */
+  --color-ink:            #0A0908;   /* primary type, true near-black     */
+  --color-ink-soft:       #3F3F3D;   /* secondary type                    */
+  --color-ink-mute:       #6B6E6B;   /* tertiary type, captions           */
+  --color-ink-faint:      #A8ACA8;   /* dividers, faint borders           */
+
+  --color-paper:          #ECF1ED;   /* primary surface, cool cream       */
+  --color-paper-light:    #F4F7F4;   /* raised surface, cards             */
+  --color-paper-deep:     #DDE6E0;   /* recessed surface, well            */
+
+  --color-accent:         #0891B2;   /* primary accent — cyan             */
+  --color-accent-dark:    #155E75;   /* hover / pressed                   */
+  --color-accent-tint:    #E0EFF1;   /* tinted callout bg, badge fill     */
+
+  /* Greyscale ramp for data viz — cool-neutral to harmonize with paper.
+     Use only these for charts; reserve accent for emphasis points.      */
+  --color-grey-50:        #E3E8E4;
+  --color-grey-100:       #CDD3CE;
+  --color-grey-200:       #A5ACA7;
+  --color-grey-400:       #6B716D;
+  --color-grey-600:       #444644;
+  --color-grey-800:       #262826;
+
+  /* Status colors — restrained, used sparingly */
+  --color-success:        #16A34A;
+  --color-success-tint:   #E7F5EC;
+  --color-warning:        #D97706;
+  --color-warning-tint:   #FBEEDC;
+  --color-danger:         #DC2626;
+  --color-danger-tint:    #FBE7E7;
+
+  /* Border tokens */
+  --color-border-faint:   rgba(10, 9, 8, 0.06);
+  --color-border-subtle:  rgba(10, 9, 8, 0.12);
+  --color-border-strong:  rgba(10, 9, 8, 0.22);
+
+  /* ----- Typography ----- */
+  --font-sans:     "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display:  "Fraunces", Georgia, "Times New Roman", serif;
+  --font-mono:     "Geist Mono", ui-monospace, "JetBrains Mono", monospace;
+
+  /* SaaS-modern type scale — body 15px, not editorial 17px */
+  --text-xs:    0.75rem;     /* 12px — micro labels, mono tags          */
+  --text-sm:    0.875rem;    /* 14px — UI text, captions                */
+  --text-base:  0.9375rem;   /* 15px — body                             */
+  --text-md:    1rem;        /* 16px — subhead, important UI            */
+  --text-lg:    1.125rem;    /* 18px — section subhead                  */
+  --text-xl:    1.375rem;    /* 22px — h4                               */
+  --text-2xl:   1.75rem;     /* 28px — h3                               */
+  --text-3xl:   2.25rem;     /* 36px — h2                               */
+  --text-4xl:   3rem;        /* 48px — h1                               */
+  --text-5xl:   3.75rem;     /* 60px — hero display                     */
+  --text-6xl:   4.75rem;     /* 76px — oversized stat                   */
+
+  /* Line heights — SaaS, tighter than editorial */
+  --leading-tight:    1.05;  /* display heads                           */
+  --leading-snug:     1.2;   /* large heads                             */
+  --leading-normal:   1.4;   /* UI, small body                          */
+  --leading-relaxed:  1.55;  /* body prose                              */
+  --leading-loose:    1.7;   /* long-form reading                       */
+
+  /* Letter spacing */
+  --tracking-tighter: -0.03em;   /* hero display                        */
+  --tracking-tight:   -0.02em;   /* heads                               */
+  --tracking-snug:    -0.012em;  /* subheads, body emphasis             */
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;    /* small labels                        */
+  --tracking-wider:   0.08em;    /* mono tags, all-caps eyebrows        */
+
+  /* ----- Spacing ----- */
+  --spacing-1:   4px;
+  --spacing-2:   8px;
+  --spacing-3:   12px;
+  --spacing-4:   16px;
+  --spacing-5:   20px;
+  --spacing-6:   24px;
+  --spacing-8:   32px;
+  --spacing-10:  40px;
+  --spacing-12:  48px;
+  --spacing-16:  64px;
+  --spacing-20:  80px;
+  --spacing-24:  96px;
+  --spacing-32:  128px;
+  --spacing-48:  192px;
+
+  /* ----- Container widths ----- */
+  --container-narrow:    720px;    /* long-form: pricing FAQ, legal     */
+  --container-standard:  1120px;   /* default marketing pages           */
+  --container-wide:      1280px;   /* dashboards, data, full features   */
+
+  /* ----- Radius — relaxed for SaaS warmth ----- */
+  --radius-none:  0;
+  --radius-sm:    6px;     /* inputs, small buttons                     */
+  --radius-md:    8px;     /* small UI, badges                          */
+  --radius-lg:    12px;    /* cards, feature blocks                     */
+  --radius-xl:    16px;    /* large modules, modals, hero containers    */
+  --radius-pill:  999px;   /* pill badges                               */
+
+  /* ----- Border weight ----- */
+  --border-hair:    0.5px;
+  --border-thin:    1px;
+  --border-rule:    2px;
+
+  /* ----- Layout ----- */
+  --gutter-page:    24px;
+  --gutter-page-lg: 48px;
+}

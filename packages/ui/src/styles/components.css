@@ -1,0 +1,207 @@
+/* ============================================================
+   Group E — Base element typography (verbatim from styles.css)
+   ============================================================ */
+
+/* html — verbatim from styles.css line 9 */
+html { font-family: var(--font-sans); font-size: 16px; line-height: 1.55; color: var(--color-ink); background: var(--color-paper); -webkit-font-smoothing: antialiased; }
+
+/* body is SKIPPED — styles.css body rule is flex layout only (min-height:100vh; display:flex; flex-direction:column)
+   and must not be imposed on library consumers. */
+
+/* Headings — verbatim from styles.css lines 21–25 */
+h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: 600; color: var(--color-ink); letter-spacing: -0.02em; line-height: 1.2; overflow-wrap: break-word; }
+h1 { font-size: 3rem; line-height: 1.05; letter-spacing: -0.03em; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.5rem; font-weight: 500; }
+h4 { font-size: 1.125rem; font-weight: 500; }
+
+/* p — no standalone p rule in styles.css; taken verbatim from globals.css @layer base line 172 */
+p { font-size: var(--text-base); line-height: var(--leading-relaxed); color: var(--color-ink); }
+
+/* Display / subhead — verbatim from styles.css lines 27–29 */
+.display { font-family: var(--font-sans); font-weight: 600; font-size: 3.75rem; line-height: 1.05; letter-spacing: -0.03em; color: var(--color-ink); }
+.display-serif { font-family: var(--font-display); font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 15, "WONK" 0; font-style: italic; color: var(--color-ink); }
+.subhead { font-size: 1.125rem; line-height: 1.55; color: var(--color-ink-soft); font-weight: 400; }
+
+/* ============================================================
+   Group A — Buttons (verbatim from styles.css lines 39–44)
+   ============================================================ */
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 20px; font-family: var(--font-sans); font-size: 14px; font-weight: 500; border-radius: 6px; border: 1px solid var(--color-accent); background: var(--color-accent); color: #FFFFFF; text-decoration: none; cursor: pointer; transition: background 120ms ease, border-color 120ms ease; }
+.btn:hover { background: var(--color-accent-dark); border-color: var(--color-accent-dark); }
+.btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.btn-ghost { background: transparent; color: var(--color-ink); border-color: var(--color-border-strong); }
+.btn-ghost:hover { background: var(--color-ink); color: var(--color-paper-light); border-color: var(--color-ink); }
+.btn-lg { padding: 14px 24px; font-size: 15px; }
+
+/* ============================================================
+   Group A — Wordmark (verbatim from styles.css lines 17–18)
+   ============================================================ */
+
+.wordmark { font-family: var(--font-display); font-variation-settings: "opsz" 144, "wght" 500, "SOFT" 15, "WONK" 0; letter-spacing: -0.025em; color: var(--color-ink); line-height: 1; display: inline-block; }
+.wordmark::after { content: "*"; color: var(--color-accent); font-size: 0.42em; vertical-align: 0.85em; margin-left: 0.05em; font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 15, "WONK" 0; }
+
+/* ============================================================
+   Group A — Badge & eyebrow (verbatim from styles.css lines 31–36)
+   ============================================================ */
+
+.eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-mute); display: inline-block; }
+
+.badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; padding: 5px 12px; border-radius: 999px; background: var(--color-accent-tint); color: var(--color-accent-dark); }
+.badge-ink { background: var(--color-ink); color: var(--color-paper-light); }
+
+/* ============================================================
+   Group B — Badge dot (verbatim from styles.css line 35)
+   ============================================================ */
+
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); display: inline-block; }
+
+/* ============================================================
+   Group B — Section head (verbatim from styles.css lines 92–96)
+   ============================================================ */
+
+.section-head { margin-bottom: 56px; }
+.section-head .eyebrow { margin-bottom: 14px; }
+.section-head h2 { }
+.section-head .rule { height: 2px; background: var(--color-accent); width: 48px; margin-top: 18px; }
+.section-head .subhead { margin-top: 20px; max-width: 720px; }
+
+/* ============================================================
+   Group B — Callout research (verbatim from styles.css lines 127–128)
+   ============================================================ */
+
+.callout-research { background: var(--color-accent-tint); border-left: 2px solid var(--color-accent); padding: 24px 28px; font-size: 14px; line-height: 1.6; color: var(--color-accent-dark); border-radius: 0 8px 8px 0; }
+.callout-research strong { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 10px; font-weight: 600; }
+
+/* ============================================================
+   Group C — Card (verbatim from globals.css lines 316–322)
+   ============================================================ */
+
+.card {
+  background: var(--color-paper-light);
+  border: var(--border-hair) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+}
+.card-lg { padding: var(--spacing-8); border-radius: var(--radius-xl); }
+
+/* ============================================================
+   Group C — Stat block (verbatim from globals.css lines 325–346)
+   ============================================================ */
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+.stat-value {
+  font-family: var(--font-sans);
+  font-size: var(--text-5xl);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--tracking-tighter);
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+.stat-value-accent { color: var(--color-accent); }
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-mute);
+}
+
+/* ============================================================
+   Group C — Pricing card (verbatim from globals.css lines 425–470)
+   ============================================================ */
+
+.pricing-card {
+  background: var(--color-paper-light);
+  border: var(--border-hair) solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+.pricing-card.is-featured {
+  background: var(--color-ink);
+  color: var(--color-paper-light);
+  border-color: var(--color-ink);
+}
+.pricing-card.is-featured h3,
+.pricing-card.is-featured .price-value { color: var(--color-paper-light); }
+.pricing-card.is-featured li,
+.pricing-card.is-featured .price-period {
+  color: rgba(244, 247, 244, 0.72);
+}
+.pricing-card .price-value {
+  font-family: var(--font-sans);
+  font-size: var(--text-4xl);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--tracking-tighter);
+  color: var(--color-ink);
+}
+.pricing-card .price-period {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-mute);
+}
+.pricing-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+.pricing-card li {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+/* ============================================================
+   Group D — Feature card
+   Sub-selectors .feature-card, .feature-card .icon, .feature-card h3, .feature-card p:
+   styles.css has NO standalone definitions for these four — only compound/hover rules.
+   All four come verbatim from globals.css lines 359–389.
+   ============================================================ */
+
+.feature-card {
+  background: var(--color-paper-light);
+  border: var(--border-hair) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+.feature-card .icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-tint);
+  color: var(--color-accent-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-2);
+}
+.feature-card h3 {
+  font-size: var(--text-md);
+  font-weight: 500;
+  margin: 0;
+}
+.feature-card p {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
