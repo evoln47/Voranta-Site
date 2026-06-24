@@ -7,10 +7,15 @@
   "module": "./dist/voranta-ui.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/voranta-ui.js" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/voranta-ui.js"
+    },
     "./styles.css": "./dist/voranta-ui.css"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -18,8 +23,18 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "peerDependencies": { "react": "^18", "react-dom": "^18" },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18"
+  },
   "devDependencies": {
+    "@storybook/addon-essentials": "^8.6.18",
+    "@storybook/addon-interactions": "^8.6.18",
+    "@storybook/addon-onboarding": "^8.6.18",
+    "@storybook/blocks": "^8.6.18",
+    "@storybook/react": "^8.6.18",
+    "@storybook/react-vite": "^8.6.18",
+    "@storybook/test": "^8.6.18",
     "@tailwindcss/vite": "^4.0.0",
     "@testing-library/jest-dom": "^6.4.0",
     "@testing-library/react": "^16.0.0",
@@ -29,6 +44,7 @@
     "jsdom": "^25.0.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
+    "storybook": "^8.6.18",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.5.0",
     "vite": "^5.4.0",
