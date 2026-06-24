@@ -29,9 +29,17 @@ Stack:
 - **React 18 + TypeScript** for components.
 - **Tailwind v4** for styling. The root `globals.css` is already Tailwind v4-native
   (`@import "tailwindcss"`, an `@theme` token block, `@layer base`/`@layer components`).
-  The library uses `packages/ui/src/globals.css` as its theme: a copy of the root
-  `globals.css` with the Google-Fonts CDN `@import` line removed (fonts handled separately),
-  so it is the single token source the library compiles against.
+  The library's theme CSS copies the `@theme` token block from the root `globals.css`.
+  **The Google-Fonts CDN `@import` is KEPT** (the "remove it" rule in CLAUDE.md is
+  Next.js-specific — `next/font` replaces it there; this is a Vite/Storybook library with no
+  `next/font`, so dropping it would render every component in fallback fonts and break the
+  fidelity gate). Fonts also load in Storybook via a `preview-head.html` `<link>`. The wordmark
+  depends on Fraunces's `SOFT`/`WONK` axes, which the existing CDN URL requests explicitly.
+- **Source of truth for component CSS:** the live site links `styles.css`, not `globals.css`,
+  so `styles.css` is what the fidelity gate measures. Component class rules are sourced from
+  `styles.css` (authored as plain CSS, purge-proof), while design tokens come from the
+  `@theme` block. Where a rule exists in both files and they have drifted, `styles.css` wins.
+  `.section-head`/`.rule` live only in `styles.css` and are ported in.
 - **Vite library build** → `dist/` (ESM + `.d.ts`). This is the artifact `/design-sync` bundles.
 - **Storybook** with one `.stories.tsx` per component, rendered for design-sync preview
   verification and as a living component playground.
@@ -45,8 +53,10 @@ packages/ui/
   vite.config.ts
   .storybook/            # storybook config
   src/
-    globals.css          # copy of root globals.css, CDN font @import removed
-    index.ts             # barrel export
+    styles/
+      theme.css          # @import "tailwindcss" + fonts @import + @theme tokens (from globals.css)
+      components.css      # plain CSS component rules sourced from live styles.css
+    index.ts             # barrel export (imports theme.css + components.css)
     Wordmark/{Wordmark.tsx, Wordmark.stories.tsx, index.ts}
     Button/{...}
     ...one dir per component
@@ -72,10 +82,11 @@ the variants already demonstrated in `style-guide.html`.
 
 ### Styling rules (carried from the locked design system)
 
-Each component styles via Tailwind utilities generated from the locked tokens
-(e.g. `bg-paper text-ink rounded-lg`) plus the semantic component classes already defined in
-`globals.css`'s `@layer components`. The design-system prohibitions all remain in force inside
-the components:
+Each component is a thin wrapper that emits the exact existing semantic class names
+(`.btn`, `.card`, `.wordmark`, etc.). Those rules ship in `components.css` (sourced from the
+live `styles.css`); design tokens they reference come from the `@theme` block in `theme.css`.
+Components do not author new Tailwind utility soup in markup — the live site doesn't, and
+fidelity means matching it. The design-system prohibitions all remain in force:
 
 - Three fonts, strict roles: Geist for all headings/body/UI, Fraunces only for trust moments
   (Wordmark, ResearchCallout), Geist Mono for eyebrows/badges/labels. No serif headings.
@@ -107,8 +118,16 @@ design the agent later builds.
 - Before declaring done, render the Storybook and visually confirm each component matches the
   live site's appearance. There is no dev server in this repo, so verify via headless-Chrome
   screenshot + crop (per the project's visual-verification practice), not by assertion.
-- Token parity: `packages/ui/src/globals.css` must remain a faithful copy of the root tokens. If
-  the root `globals.css` changes, this copy must be re-synced (future automation, out of scope).
+- Token parity: `packages/ui/src/styles/theme.css`'s `@theme` block must remain a faithful copy
+  of the root tokens. If the root `globals.css` changes, this copy must be re-synced (future
+  automation, out of scope).
+- **De-risk the Tailwind pipeline first:** `Button` is built as a full vertical slice (scaffold +
+  Tailwind + theme + one component + `vite build`) before the other nine exist. The
+  discriminating check: the built `dist/*.css` must contain the `.btn`, `.btn-ghost`, and
+  `.btn-lg` rule bodies AND the `@theme` tokens emitted as `--color-*` custom properties. Only
+  after that passes do the remaining components fan out. All variant→class mappings are authored
+  as complete static strings in a lookup object (e.g. `{ ghost: 'btn btn-ghost' }`), never
+  interpolated (`` `btn-${variant}` ``), so nothing depends on Tailwind's content scanner.
 
 ## design-sync handoff (follow-on, not part of this build)
 
