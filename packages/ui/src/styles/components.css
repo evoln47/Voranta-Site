@@ -32,3 +32,21 @@
   padding: 14px 24px;
   font-size: var(--text-md);
 }
+
+/* Wordmark rules — copied verbatim from globals.css */
+.wordmark {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144, "wght" 500, "SOFT" 15, "WONK" 0;
+  letter-spacing: -0.025em;
+  color: var(--color-ink);
+  line-height: 1;
+  display: inline-block;
+}
+.wordmark::after {
+  content: "*";
+  color: var(--color-accent);
+  font-size: 0.42em;
+  vertical-align: 0.85em;
+  margin-left: 0.05em;
+  font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 15, "WONK" 0;
+}
