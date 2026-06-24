@@ -14,6 +14,13 @@ export default defineConfig({
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],
+      output: {
+        assetFileNames: (assetInfo) => {
+          const name = assetInfo.names?.[0] ?? assetInfo.name ?? '';
+          if (name.endsWith('.css')) return 'voranta-ui.css';
+          return name;
+        },
+      },
     },
     cssCodeSplit: false,
   },
