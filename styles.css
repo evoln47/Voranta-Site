@@ -624,27 +624,33 @@
     color: var(--color-ink-soft);
     line-height: 1.5;
   }
-  /* Founding sponsor section - light-card visual language */
-  #sponsors .sponsors-benefits { grid-template-columns: repeat(2, 1fr); margin-bottom: 40px; }
-  #sponsors .sponsors-benefits .diff-card { align-self: stretch; }
-  .sponsors-offer-card { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 12px; padding: 36px; display: flex; flex-direction: column; gap: 28px; }
+  /* Founding sponsor section - spec-sheet benefit list */
+  #sponsors .section-head { margin-bottom: 40px; }
+  #sponsors .sponsor-benefit-list { list-style: none; margin: 0 0 40px; padding: 0; display: grid; grid-template-columns: 1fr; gap: 0; }
+  #sponsors .sponsor-benefit-row { display: grid; grid-template-columns: minmax(200px, 260px) 1fr; gap: 48px; align-items: start; padding: 28px 0; border-top: 0.5px solid var(--color-border-subtle); }
+  #sponsors .sponsor-benefit-row:last-child { border-bottom: 0.5px solid var(--color-border-subtle); }
+  #sponsors .sponsor-benefit-label { display: flex; flex-direction: column; gap: 8px; }
+  #sponsors .sponsor-benefit-num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: var(--color-accent); }
+  #sponsors .sponsor-benefit-name { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; line-height: 1.35; color: var(--color-ink); }
+  #sponsors .sponsor-benefit-desc { font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--color-ink-soft); margin: 0; max-width: 560px; }
+  .sponsors-offer-card { background: var(--color-paper-deep); border: 0.5px solid var(--color-border-strong); border-radius: 12px; padding: 36px; display: flex; flex-direction: column; gap: 28px; }
   .sponsors-offer-top { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
   .sponsors-offer-left { display: flex; flex-direction: column; gap: 12px; }
-  .sponsors-offer-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; color: var(--color-ink-mute); }
   .sponsors-tagline { font-size: 1.0625rem; line-height: 1.6; color: var(--color-ink-soft); margin: 0; max-width: 520px; }
   .sponsors-offer-right { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
   .sponsors-inquiry-area { border-top: 0.5px solid var(--color-border-subtle); padding-top: 20px; display: flex; flex-direction: column; gap: 16px; }
   .founding-cta { width: fit-content; }
   /* Inquiry disclosure toggle */
   .founding-inquiry-toggle {
-    display: inline;
+    display: inline-block;
     background: none;
     border: none;
-    padding: 0;
+    padding: 5px 0;
     font-family: var(--font-sans);
     font-size: 14px;
     color: var(--color-ink-mute);
     text-decoration: underline;
+    text-decoration-thickness: 1px;
     text-underline-offset: 3px;
     cursor: pointer;
     line-height: 1.5;
@@ -778,7 +784,9 @@
 
   @media (max-width: 880px) {
     /* Sponsors mobile overrides live here, after the desktop sponsors rules, so they win by source order */
-    #sponsors .sponsors-benefits { grid-template-columns: 1fr; }
+    #sponsors .sponsor-benefit-row { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
+    #sponsors .sponsor-benefit-label { margin-bottom: 4px; }
+    #sponsors .founding-inquiry-input, #sponsors .founding-inquiry-textarea { font-size: 16px; }
     .sponsors-offer-top { grid-template-columns: 1fr; gap: 24px; }
     .sponsors-offer-right { align-items: stretch; }
     .sponsors-offer-right .btn { width: 100%; text-align: center; }
