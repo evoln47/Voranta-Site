@@ -628,11 +628,11 @@
   #sponsors .sponsors-benefits { grid-template-columns: repeat(2, 1fr); margin-bottom: 40px; }
   #sponsors .sponsors-benefits .diff-card { align-self: stretch; }
   .sponsors-offer-card { background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 12px; padding: 36px; display: flex; flex-direction: column; gap: 28px; }
-  .sponsors-offer-top { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .sponsors-offer-top { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
   .sponsors-offer-left { display: flex; flex-direction: column; gap: 12px; }
   .sponsors-offer-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; color: var(--color-ink-mute); }
-  .sponsors-tagline { font-size: 1.0625rem; line-height: 1.6; color: var(--color-ink-soft); margin: 0; max-width: 440px; }
-  .sponsors-offer-right { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .sponsors-tagline { font-size: 1.0625rem; line-height: 1.6; color: var(--color-ink-soft); margin: 0; max-width: 520px; }
+  .sponsors-offer-right { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
   .sponsors-inquiry-area { border-top: 0.5px solid var(--color-border-subtle); padding-top: 20px; display: flex; flex-direction: column; gap: 16px; }
   .founding-cta { width: fit-content; }
   /* Inquiry disclosure toggle */
