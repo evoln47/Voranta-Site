@@ -6,3 +6,4 @@ export * from './Wordmark';
 export * from './Badge';
 export * from './Eyebrow';
 export * from './Card';
+export * from './FeatureCard';
