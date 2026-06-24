@@ -5,3 +5,4 @@ export * from './Button';
 export * from './Wordmark';
 export * from './Badge';
 export * from './Eyebrow';
+export * from './Card';
