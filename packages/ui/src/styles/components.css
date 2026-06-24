@@ -71,3 +71,13 @@
   color: var(--color-paper-light);
 }
 .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); display: inline-block; }
+
+/* Eyebrow rules — copied verbatim from globals.css */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-ink-mute);
+}

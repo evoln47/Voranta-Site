@@ -4,3 +4,4 @@ import './styles/components.css';
 export * from './Button';
 export * from './Wordmark';
 export * from './Badge';
+export * from './Eyebrow';
