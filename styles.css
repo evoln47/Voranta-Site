@@ -164,7 +164,6 @@
   .cta-section h2 { color: var(--color-paper-light); font-size: 2.875rem; max-width: none; line-height: 1.1; letter-spacing: -0.025em; margin-top: 14px; }
   .cta-section p { color: rgba(244,247,244,0.75); font-size: 1.0625rem; max-width: 520px; margin-top: 20px; }
   .cta-section .cta-actions { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
-  .cta-section .cta-note { margin-top: 16px; font-size: 14px; color: rgba(244, 247, 244, 0.6); max-width: 520px; }
   .cta-section .btn-ghost { color: rgba(244, 247, 244, 0.75); border-color: rgba(244,247,244,0.25); background: transparent; }
   .cta-section .btn-ghost:hover { background: var(--color-paper-light); color: var(--color-ink); border-color: var(--color-paper-light); }
 
