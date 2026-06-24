@@ -13,26 +13,27 @@ const SIZE_CLASS: Record<ButtonSize, string> = {
   lg: 'btn-lg',
 };
 
-export interface ButtonProps {
+interface ButtonOwnProps<T extends ElementType> {
+  as?: T;
   variant?: ButtonVariant;
   size?: ButtonSize;
-  as?: ElementType;
   children: ReactNode;
   className?: string;
 }
 
-export function Button({
+export type ButtonProps<T extends ElementType = 'button'> = ButtonOwnProps<T> &
+  Omit<ComponentPropsWithoutRef<T>, keyof ButtonOwnProps<T>>;
+
+export function Button<T extends ElementType = 'button'>({
   variant = 'solid',
   size = 'md',
   as,
   children,
   className = '',
   ...rest
-}: ButtonProps & Omit<ComponentPropsWithoutRef<'button'>, keyof ButtonProps>) {
-  const Tag = as ?? 'button';
-  const cls = [VARIANT_CLASS[variant], SIZE_CLASS[size], className]
-    .filter(Boolean)
-    .join(' ');
+}: ButtonProps<T>) {
+  const Tag = (as ?? 'button') as ElementType;
+  const cls = [VARIANT_CLASS[variant], SIZE_CLASS[size], className].filter(Boolean).join(' ');
   return (
     <Tag className={cls} {...rest}>
       {children}
