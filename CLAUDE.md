@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-Marketing site for voranta.co. A multi-page static HTML site with no build step: `index.html`, `about.html`, `aipq.html`, `assessment.html`, and `style-guide.html`. All pages share a single live stylesheet, `styles.css`. Auto-deploys to Vercel on every push to `main` (~30 seconds).
+Marketing site for voranta.co. A multi-page static HTML site with no build step: `index.html`, `about.html`, `assessment.html`, and `style-guide.html`. All pages share a single live stylesheet, `styles.css`. Auto-deploys to Vercel on every push to `main` (~30 seconds).
 
 ## Editing
 
