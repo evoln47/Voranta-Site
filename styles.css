@@ -240,8 +240,6 @@
   .sc-archetype-name { font-family: var(--font-sans); font-size: 1.375rem; font-weight: 500; color: var(--color-paper-light); letter-spacing: -0.02em; margin-bottom: 12px; }
   .sc-archetype-desc { font-size: 14px; line-height: 1.55; color: rgba(244,247,244,0.7); }
   .sc-divider { height: 0.5px; background: rgba(244,247,244,0.15); margin: 24px 0 20px; margin-top: auto; }
-  .sc-likelihood { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; color: rgba(244,247,244,0.65); padding: 6px 0; }
-  .sc-likelihood .value { color: var(--color-accent); font-family: var(--font-mono); font-weight: 500; }
 
   /* Radar */
   .sc-radar-wrap { display: flex; justify-content: center; flex: 1; align-items: center; }
@@ -279,140 +277,6 @@
   .sc-buyer-dot::after { content: ""; position: absolute; inset: -7px; border: 1px dashed var(--color-accent); border-radius: 50%; opacity: 0.4; }
   .sc-quadrant-callout strong { color: var(--color-ink); font-weight: 500; }
 
-  /* Full-width cyan summary */
-  .sc-summary { background: var(--color-accent-tint); border-left: 3px solid var(--color-accent); border-radius: 0 16px 16px 0; padding: 48px; margin-top: 48px; display: grid; grid-template-columns: 1.1fr 1fr; column-gap: 56px; row-gap: 20px; align-items: start; }
-  .sc-summary-header { grid-column: 1 / -1; }
-  .sc-summary-header .sc-summary-eyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 16px; display: block; }
-  .sc-summary-header h3 { font-size: 1.625rem; font-weight: 500; color: var(--color-ink); margin-bottom: 0; letter-spacing: -0.02em; line-height: 1.2; }
-  .sc-summary-left p { font-size: 15px; line-height: 1.65; color: var(--color-accent-dark); margin-bottom: 14px; }
-  .sc-summary-left p:last-child { margin-bottom: 0; }
-  .sc-summary-right { display: flex; flex-direction: column; gap: 18px; }
-  .sc-summary-row { display: grid; grid-template-columns: 48px 1fr; gap: 16px; }
-  .sc-summary-row-label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--color-accent); letter-spacing: 0.04em; padding-top: 3px; }
-  .sc-summary-row-body { font-size: 14px; line-height: 1.55; color: var(--color-accent-dark); }
-  .sc-summary-row-body strong { color: var(--color-ink); font-weight: 500; }
-
-  /* ============================================================
-     CRM BRIEF ARTIFACT (#sample-brief)
-     ============================================================ */
-  .crm-brief {
-    border: 0.5px solid var(--color-border-strong);
-    border-radius: 16px;
-    overflow: hidden;
-    background: var(--color-paper);
-  }
-
-  .crm-brief-header {
-    background: var(--color-ink);
-    padding: 28px 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .crm-brief-doc-label {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(244, 247, 244, 0.9);
-  }
-
-  .crm-brief-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
-    border-top: 0.5px solid rgba(244, 247, 244, 0.12);
-    padding-top: 20px;
-    list-style: none;
-    margin: 0;
-    padding-left: 0;
-    column-gap: 40px;
-    row-gap: 16px;
-  }
-
-  .crm-brief-meta-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 160px;
-  }
-
-  .crm-brief-meta-item--wide {
-    min-width: 280px;
-  }
-
-  .crm-brief-meta dt {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(244, 247, 244, 0.45);
-  }
-
-  .crm-brief-meta dd {
-    font-family: var(--font-sans);
-    font-size: 15px;
-    font-weight: 500;
-    color: rgba(244, 247, 244, 0.88);
-    margin: 0;
-  }
-
-  /* Single cyan element: the AIPQ score value */
-  .crm-brief-score {
-    color: var(--color-accent) !important;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .crm-brief-body {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-
-  .crm-brief-part {
-    padding: 28px 32px;
-    border-bottom: 0.5px solid var(--color-border-faint);
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 24px;
-    align-items: start;
-  }
-
-  .crm-brief-part:last-child {
-    border-bottom: none;
-  }
-
-  .crm-brief-part-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-ink-mute);
-    padding-top: 3px;
-  }
-
-  .crm-brief-part-body {
-    margin: 0;
-  }
-
-  .crm-brief-part-body p {
-    font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 1.65;
-    color: var(--color-ink-soft);
-    margin: 0;
-  }
-
-  .crm-brief-caption {
-    margin-top: 20px;
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--color-ink-mute);
-  }
-
   /* Mobile */
   @media (max-width: 880px) {
     .pillars, .diff-grid { grid-template-columns: 1fr; }
@@ -431,7 +295,6 @@
     h1 { font-size: 2.25rem; }
     h2 { font-size: 1.75rem; }
     h3 { font-size: 1.25rem; }
-    .sc-summary-header h3 { font-size: 1.375rem; }
     .display { font-size: 2.25rem; line-height: 1.1; }
     .hero { padding-top: 48px; padding-bottom: 48px; }
     .hero-inner { grid-template-columns: 1fr; gap: 0; }
@@ -464,13 +327,6 @@
     .topbar nav a { padding: 14px 0; font-size: 15px; border-bottom: 0.5px solid var(--color-border-faint); color: var(--color-ink-soft); }
     .topbar nav a.cta-link { margin-top: 8px; border-bottom: none; text-align: center; width: 100%; }
     .scorecard-grid { grid-template-columns: 1fr; }
-    .sc-summary { grid-template-columns: 1fr; gap: 32px; padding: 32px 28px; margin-top: 24px; }
-    .crm-brief-header { padding: 24px 20px; }
-    .crm-brief-meta { column-gap: 24px; row-gap: 14px; }
-    .crm-brief-meta-item { min-width: 120px; }
-    .crm-brief-meta-item--wide { min-width: 100%; }
-    .crm-brief-part { grid-template-columns: 1fr; gap: 10px; padding: 24px 20px; }
-    .crm-brief-part-label { padding-top: 0; }
     .sc-score-value { font-size: 4rem; }
     .pillar-axes { grid-template-columns: 1fr; }
     .pillar-axis:first-child { border-right: none; border-bottom: 0.5px solid var(--color-border-subtle); }
@@ -527,16 +383,6 @@
     gap: 24px;
   }
 
-  /* Scorecard additions */
-  .sc-likelihood-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(244,247,244,0.5);
-    display: block;
-    margin-bottom: 12px;
-  }
   /* Pillar axes - two-column axis-grouped layout */
   .pillar-axes {
     display: grid;
@@ -846,7 +692,7 @@
    filling any height without stranded blank space. */
 
 /* Primary CTA block: prominent placement directly below scorecard.
-   Left-accent pattern (matches .callout-research / .sc-summary) signals primary action. */
+   Left-accent pattern (matches .callout-research) signals primary action. */
 .dri-cta-block { margin-top: 32px; padding: 28px 32px; background: var(--color-accent-tint); border-left: 3px solid var(--color-accent); border-radius: 0 16px 16px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .dri-cta-frame { font-size: 1.0625rem; line-height: 1.5; color: var(--color-ink-soft); margin: 0; }
 
@@ -905,7 +751,6 @@
   /* FIX 1: Radar legibility — hide SVG on mobile; show ranked dimension list instead.
      The .sc-radar-wrap class is shared with the 2x2 quadrant card, so scope SVG-only. */
   #dri-radar-svg { display: none; }
-  #sample-scorecard .sc-radar-svg { display: none; }
   /* sr-only dimension list (desktop fallback for SR) is replaced by visible list on mobile */
   #dri-dimension-list { display: none; }
   /* Dimension ranked list: visible on mobile only */
