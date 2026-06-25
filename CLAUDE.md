@@ -29,7 +29,7 @@ The locked Voranta design system is defined authoritatively in `globals.css` (Ta
 **Prohibited by design system:**
 - No gradients
 - No drop shadows (focus rings are the one exception)
-- No `border-radius` > 16px (`--radius-xl`)
+- No `border-radius` > 16px (`--radius-xl`), with one carve-out: `--radius-pill` (999px) is allowed ONLY on pill badges, progress-bar tracks/fills, and dimension-score bars, never on cards, containers, or larger surfaces
 - No accent color other than cyan `#0891B2` — no purple, no `#3B82F6` blue, no AI-violet
 - No serif headings — Fraunces is not for H1–H4
 - No body font-size below 14px on reading surfaces
@@ -62,6 +62,7 @@ Photography, video, and illustration follow the approved system spec at `docs/su
 ## CSS conventions
 
 - Section-specific layout overrides use `#section-id .class` selectors (see `#product .diff-grid`, `#methodology .diff-grid`) — never modify the base rule
+- Any new typographic utility class added to `styles.css` gets a matching specimen in `style-guide.html` (name, font, size, use case) so reviewers can enforce it
 - New CSS appends to `styles.css` (the shared live stylesheet); mobile overrides go inside the existing `@media (max-width: 880px)` block. Design tokens that need a Next.js-parity definition are mirrored into `globals.css`, but the `styles.css` copy is what renders live
 - Exception: the `.hero--fullbleed` mobile overrides live in a SECOND `@media (max-width: 880px)` block placed AFTER the desktop `.hero--fullbleed` rules (near end of file). This is intentional and required: those desktop rules carry no media guard, so a mobile override of equal specificity must come later in source order to win. Do not merge this block back into the earlier mobile block
 - Text fills its container. Do NOT put a `max-width` on a text element (headings, `.subhead`, body or descriptive paragraphs, captions). Subheads and body copy must span the full width of their section container, not sit in a narrow inner box. Width is owned by the container (`.section-inner`, `.container-narrow`, a grid column, the `.inline-cta`/card wrapper), never by the text element itself. The only sanctioned exception is the full-bleed hero subhead (`.hero--fullbleed .subhead`, spec §5.5), which keeps a reading-length cap for text-over-image legibility
@@ -69,6 +70,7 @@ Photography, video, and illustration follow the approved system spec at `docs/su
 ## Section structure
 
 - `.section-head` pattern: `<span class="eyebrow">` → `<h2>` → `<div class="rule">` → optional `<p class="subhead" style="margin-top: 20px;">`
+- `.framing-note` is a subordinate Geist Sans caption (14px, muted) for a one-line disclaimer shown AFTER a CTA (e.g. the live-demo licensing note). It is sentence prose: never set it in Geist Mono, and never place it before an eyebrow
 
 ## Future Next.js context
 

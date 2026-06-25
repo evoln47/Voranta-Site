@@ -299,9 +299,6 @@
     .hero { padding-top: 48px; padding-bottom: 48px; }
     .hero-inner { grid-template-columns: 1fr; gap: 0; }
     .hero-visual { display: none; }
-    /* Diagram modifier: show the AIPQ radar on mobile; index hero photo stays hidden */
-    .hero-visual--diagram { display: flex; justify-content: center; margin-top: 32px; }
-    .hero-visual--diagram .aipq-hero-radar { max-width: 200px; padding-top: 0; }
     .hero .subhead { font-size: 1.0625rem; }
     .hero .cta-row { flex-direction: column; align-items: stretch; }
     .hero .meta-line { margin-top: 36px; gap: 20px; }
@@ -840,29 +837,6 @@
   align-self: center;
 }
 
-/* ============================================================
-   AIPQ HERO VISUAL (P3)
-   Empty-state radar in the AIPQ hero .hero-visual column.
-   ============================================================ */
-.aipq-hero-radar {
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  padding-top: 24px;
-}
-
-/* §Fix4 — diagram modifier: removes photo-frame treatment from the AIPQ hero radar.
-   Base .hero-visual rule stays intact (used by index.html hero photo). */
-.hero-visual--diagram {
-  border-radius: 0;
-  overflow: visible;
-}
-.hero-visual--diagram::after {
-  display: none;
-}
-
 /* Accessibility utilities */
 .sr-only {
   position: absolute;
@@ -908,7 +882,7 @@ main:focus { outline: none; }
 /* ============================================================
    FULL-BLEED HERO (§5.5 — index.html only)
    Scoped entirely to .hero--fullbleed; base .hero rules are
-   untouched so aipq.html hero is unaffected.
+   left intact.
    ============================================================ */
 
 /* Pull the hero under the sticky topbar (topbar: 37px logo + 20px top + 20px bottom = 77px).
@@ -1031,7 +1005,7 @@ main:focus { outline: none; }
 }
 
 /* Topbar opacity bump on the index page only — prevents topbar washing out over bright dome.
-   Scoped to .page-index so about/aipq/assessment topbars are unaffected. */
+   Scoped to .page-index so about/assessment topbars are unaffected. */
 .page-index .topbar {
   background: rgba(236, 241, 237, 0.92);
 }

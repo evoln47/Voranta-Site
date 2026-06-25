@@ -119,7 +119,7 @@
   --radius-md:    8px;     /* small UI, badges                          */
   --radius-lg:    12px;    /* cards, feature blocks                     */
   --radius-xl:    16px;    /* large modules, modals, hero containers    */
-  --radius-pill:  999px;   /* pill badges                               */
+  --radius-pill:  999px;   /* pill badges, progress/score bars ONLY; never cards/containers */
 
   /* ----- Border weight ----- */
   --border-hair:    0.5px;
