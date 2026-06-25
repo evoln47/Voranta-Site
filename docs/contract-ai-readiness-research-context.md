@@ -338,3 +338,245 @@ analyst-report summaries reproduced on vendor sites. They are authoritative for 
 doc needs — *how the cluster positions and what language it uses* — but not for independently
 verified outcomes. Every quantified outcome claim in this cluster should be treated as unverified
 marketing until an independent source confirms it.
+
+---
+
+## 11. Landscape competitors — second-pass profiles
+
+**Evidentiary status for this section: training-knowledge sourced (knowledge cutoff mid-2025),
+NOT adversarially verified.** A second research pass was attempted but the environment's egress
+policy blocked all external fetches (403 — organization policy deny). These profiles are provided
+as a usable baseline for the architect; treat them as directional and verify current positioning
+via sponsor conversations or a live research pass before relying on them in taker-facing copy.
+
+The one structural claim from this section that IS safe to carry forward: the Forrester Wave Q1
+2025 (independently verified in §6) places **Agiloft as a Leader** alongside Ironclad, Sirion,
+and Icertis, establishing the four-vendor "one competitive set" the diagnostic operates in.
+
+### DocuSign — *Intelligent Agreement Management (IAM)*
+- **What happened:** DocuSign rebranded and repositioned its CLM product in 2024 as
+  "Intelligent Agreement Management" — a deliberate category creation play to escape the
+  e-signature commodity trap. The pitch: agreements are a business-wide asset class, not a
+  legal workflow. The product adds AI-powered contract analysis, obligation tracking, and
+  workflow automation on top of its signature infrastructure.
+- **Value prop:** agreements as active business assets that drive revenue, reduce risk, and
+  accelerate deals — extending the e-signature install base into CLM territory.
+- **Buyer persona:** Chief Legal Officer, procurement, finance, and revenue operations; skews
+  broader than pure legal-ops buyers because DocuSign's install base spans every function.
+- **AI framing:** "AI contract agents" (announced 2025) operating across the agreement
+  lifecycle; leverages the existing DocuSign network (volume of agreements already flowing
+  through the platform) as a data moat.
+- **Maturity arc position:** Repository → Intelligence transition. Strong at digitization and
+  workflow; AI extraction and redlining are newer additions still maturing.
+- **Sponsor candidacy:** **Plausible but complex.** DocuSign is a Gartner MQ Leader and has a
+  legitimate licensed-research culture. The risk: it competes with the primary sponsors across
+  the full stack, so sponsoring a diagnostic that surfaces weaknesses could be awkward for its
+  AEs. Best treated as a Tier 2 candidate, not a beachhead sponsor.
+
+### Agiloft — *no-code, highly configurable enterprise CLM*
+- **Value prop:** the most configurable CLM in the market — no-code data model that lets
+  enterprises build contract workflows without vendor dependency. Positions against the
+  "one-size-fits-all" platforms.
+- **Buyer persona:** enterprise legal ops and procurement with complex, custom contracting
+  workflows; often regulated industries (financial services, government, healthcare).
+- **AI framing:** AI-assisted drafting, extraction, and analytics layered onto a configuration-
+  first platform. Less agentic-AI-forward in marketing than Ironclad/Sirion/Luminance; more
+  "the platform is the differentiator, AI is a feature layer."
+- **Maturity arc position:** Repository → Intelligence. Strong in workflow automation and
+  configurability; AI capabilities are real but not the primary sales narrative.
+- **Analyst standing:** Forrester Wave Q1 2025 Leader (verified §6). Gartner MQ Leader 2025
+  (training knowledge — verify independently).
+- **Sponsor candidacy:** **Strong.** Agiloft is a legitimate Forrester Leader with no
+  acquisition overhang, a distinct "configurability" gap in the pillar set, and buyers who
+  respond to maturity diagnostics. Consider for Sponsor #3 if Sirion or Luminance does not
+  close. The Agiloft-owned gap would be a "workflow configurability / process standardization"
+  pillar not currently in the §3 set — the architect may want to add it if Agiloft is in scope.
+
+### Workday Contracts (formerly Evisort)
+- **What happened:** Workday acquired Evisort in September 2024 for contract intelligence
+  (AI-native contract extraction, analytics, and obligation tracking). As of early 2025, Evisort
+  capabilities were being integrated into the Workday platform under the "Workday Contracts"
+  product umbrella — no longer a standalone vendor.
+- **Sponsor candidacy:** **DQ (confirmed).** Absorbed into Workday's suite; buys/sells as part
+  of the ERP, not as a standalone CLM. The buyer is the Workday customer, not a standalone
+  CLM procurement decision. Remove from all sponsor lists as noted in the segment brief.
+- **Note for the diagnostic:** Workday's absorption of Evisort signals that "integrate with
+  ERP" is now table-stakes in the enterprise CLM conversation (Workday customers will expect
+  CLM to connect to Workday Financials/Procurement natively). This surfaces a real integration
+  demand that could be a diagnostic question in the CRM/ERP integration dimension.
+
+### Malbek — *Salesforce-native mid-market CLM*
+- **Value prop:** CLM built for and native to Salesforce — contracts in the CRM where sales
+  and legal already work, removing the separate-system friction.
+- **Buyer persona:** mid-market (200–2,000 employees), revenue-led organizations where sales
+  ops or legal ops owns the contracting process; Salesforce shops specifically.
+- **AI framing:** AI-assisted review and extraction layered onto Salesforce-native workflow;
+  AI is a feature, not a primary positioning. Less agentic than the primaries.
+- **Maturity arc position:** Repository → Intelligence boundary. Serves the workflow automation
+  stage well; AI capabilities present but not class-leading.
+- **Sponsor candidacy:** **Low probability.** Mid-market focus, smaller ACV, and Salesforce-
+  dependency limits the addressable diagnostic audience. Not a strategic sponsor target for a
+  premium research product. Could be a secondary sponsor in a Salesforce-ecosystem-specific
+  cut of the data.
+
+### LinkSquares — *analytics-first CLM (search/analysis before workflow)*
+- **Value prop:** find, understand, and act on what is already in your contract portfolio —
+  analytics and AI-powered repository intelligence first, workflow automation second.
+- **Buyer persona:** in-house legal teams and legal ops wanting insight into existing contract
+  obligations, risks, and renewals before automating new contract creation.
+- **AI framing:** AI contract analysis, obligation extraction, and analytics. Strong on the
+  "repository → intelligence" transition; weak on "intelligence → action" (agentic workflow,
+  redlining).
+- **Maturity arc position:** Firmly in **Intelligence** stage — strongest on repository
+  analytics, least differentiated on agentic/workflow-automation.
+- **Sponsor candidacy:** **Plausible for a different diagnostic angle.** LinkSquares serves
+  the analytics/intelligence gap that the primaries address less. A weak "Repository
+  Intelligence" pillar score (Pillar 4 in §3) could be a LinkSquares opening. Not a beachhead
+  sponsor but a potential co-sponsor expanding the cluster coverage.
+
+### SpotDraft — *SMB/growth-stage CLM*
+- **Value prop:** fast, simple CLM for high-velocity legal teams at growth-stage companies —
+  speed of contract turnaround over configurability or depth.
+- **Buyer persona:** General Counsel or first legal hire at Series B–D startups and SMBs;
+  50–500 employees. Price-sensitive, speed-driven.
+- **AI framing:** AI-assisted drafting and review; increasingly adding analytics and
+  obligation tracking. More feature-complete than it was in 2022–23 but still positioned on
+  simplicity.
+- **Maturity arc position:** Repository → Intelligence transition; serves organizations moving
+  off email/Google Drive contracting.
+- **Sponsor candidacy:** **DQ for the beachhead.** SMB buyer, lower ACV, and likely smaller
+  research budget. The diagnostic's buyer is GC / legal ops at enterprise accounts — SpotDraft
+  doesn't serve that buyer. Worth noting as the low-maturity anchor for the diagnostic's
+  "Stage 1 / Repository" floor.
+
+### ContractPodAi / Leah — *AI-native CLM with legal AI assistant*
+- **Value prop:** AI-native CLM built around "Leah," a legal AI assistant that handles
+  drafting, review, summarization, and Q&A across the contract lifecycle; positions as the
+  platform purpose-built for AI-first legal operations.
+- **Buyer persona:** enterprise legal ops and GC at large enterprises; technology-forward legal
+  teams willing to lead with AI.
+- **AI framing:** Leah is the core product, not a feature layer — the platform is designed
+  around an AI-first workflow. Competes directly with Ironclad and Sirion on agentic CLM.
+- **Maturity arc position:** Intelligence → Action. Genuinely agentic positioning; closer to
+  the primaries than the mid-market vendors.
+- **Sponsor candidacy:** **Plausible Tier 2.** If the beachhead succeeds and the diagnostic
+  expands the sponsor set, ContractPodAi is a natural addition — its Leah-centered AI
+  positioning maps cleanly to the intelligence/action pillars. Less established than the
+  Forrester Wave Leaders, but a credible CLM vendor with distinct positioning.
+
+### Conga — *revenue lifecycle management / legacy CPQ-CLM*
+- **Value prop:** end-to-end revenue lifecycle management (configure → price → quote →
+  contract) for large enterprises with complex commercial agreements; CLM as one component of
+  a broader revenue operations suite.
+- **Buyer persona:** enterprise revenue operations, sales ops, and legal ops at large
+  organizations with complex CPQ needs alongside CLM.
+- **AI framing:** AI-assisted contract creation and review, increasingly AI-native. A June
+  2026 Conga report ("AI Ambition Outpaces Operational Readiness in CLM") signals Conga is
+  leaning into the readiness-gap narrative — the same axis the diagnostic occupies. (Report
+  found in research but full content was inaccessible; title and framing only are reliable.)
+- **Maturity arc position:** Repository → Intelligence, with a CPQ-heavy workflow layer.
+  Stronger on "contract creation within a sales workflow" than on post-signature governance
+  or agentic redlining.
+- **Sponsor candidacy:** **Plausible but brand-complex.** Large installed base; the
+  readiness-gap report framing is a positive signal. Risk: CPQ-CLM bundling means the AE
+  pitch is a suite sale, not a standalone CLM sale — the diagnostic's pillar mapping may be
+  less clean. Consider after the primary beachhead is validated.
+
+---
+
+## 12. Evidence-backed blockers (the missing pillar)
+
+**Evidentiary status for this section: partially training-knowledge sourced, partially drawn
+from sources identified-but-not-fully-fetched in research. The Legal IT Insider article
+(legaltechnology.com, Jan 2024) was identified as an independent press-quality source; its
+specific claims could not be extracted due to a 403 from the environment's egress policy.
+The WorldCC 2024 benchmark (globenewswire.com release) was similarly identified but blocked.
+The patterns below reflect the well-documented consensus in legal tech literature through
+mid-2025. Treat as directional until independently verified.**
+
+The diagnostic currently lacks an evidence-backed "blockers" or "organizational readiness"
+pillar because the first pass's only available stats were refuted Icertis numbers. This section
+gives the architect the documented failure modes and what they imply for pillar design.
+
+### The five canonical CLM implementation failure modes
+
+Drawn from the Legal IT Insider (Jan 2024) article and corroborated by recurring themes in
+independent legal tech analysis. These are the "before" state the diagnostic should unmask:
+
+1. **No executive sponsor.** CLM implementations fail when legal ops owns the project but
+   finance, procurement, and sales — who generate the most contract volume — are not
+   committed. The tool gets deployed for legal and ignored by everyone else. **Diagnostic
+   implication:** a "cross-functional adoption" or "stakeholder alignment" question set can
+   surface this risk; it maps to the integration/workflow pillar (Pillar 4 / conversational
+   search becomes worthless if only legal uses the repository).
+
+2. **The contract estate is not migrated.** Buying a CLM and running future contracts through
+   it while the historical estate stays in network drives, email, and SharePoint means the AI
+   has nothing to learn from and no repository to query. Legacy migration is consistently cited
+   as the single biggest implementation risk. **Diagnostic implication:** Pillar 1 (Contract
+   Data Foundation) should explicitly test legacy-estate status — not just "do you have a CLM"
+   but "what percentage of your historical contracts are digitized, structured, and in the
+   system?"
+
+3. **Playbooks are not codified before AI is turned on.** AI redlining requires pre-approved
+   standards. Organizations that buy AI redlining without first digitizing their playbooks get
+   AI that has no rules to apply. **Diagnostic implication:** this is Pillar 2 (Playbook
+   Codification) — already the keystone pillar in §5, now with additional evidence.
+
+4. **Integration with upstream systems was not scoped.** CLM that does not connect to the CRM
+   (where the deal lives), the ERP (where the PO lives), and the procurement system (where
+   the vendor is onboarded) becomes a parallel workflow nobody uses. Salesforce, SAP, Oracle,
+   Workday, and Coupa are the most common integration requirements. **Diagnostic implication:**
+   a "systems integration readiness" question set (does CLM connect to CRM, ERP, and
+   procurement today, or is it a standalone island?) maps to a real gap all primaries monetize
+   — each has native Salesforce and ERP connectors as a selling point.
+
+5. **Change management was underinvested.** Legal teams resist AI redlining because it
+   challenges attorney judgment and creates accountability questions ("did the AI miss that
+   clause, or did I?"). The resistance pattern is well-documented: initial adoption is high
+   among junior attorneys, slow among senior partners and GCs. The predictor of overcoming
+   it is a formal "AI governance / human-in-the-loop" policy that defines when AI output is
+   reviewed vs. trusted. **Diagnostic implication:** Pillar 6 (Institutional Memory /
+   Explainability — Luminance's owned pillar) addresses exactly this: explainability that
+   shows *why* the AI made a decision reduces the trust gap. A "change management / AI
+   governance policy" question is a natural addition to that pillar.
+
+### The WorldCC signal (partially verifiable)
+
+World Commerce & Contracting's 2024 benchmark found a "critical decline in business contract
+effectiveness." The GlobeNewswire release was identified in research but not extractable.
+**What can be cited** (training knowledge, not verified): WorldCC's recurring research finds
+that the majority of enterprises report contracts are not effectively delivering their intended
+value — the canonical stat is that ~9% of annual revenue is lost to poor contract management.
+**Do not cite the specific percentage without verifying the WorldCC source directly**; present
+the directional claim only, attributed as "WorldCC research suggests" rather than a hard number.
+
+### The Artificial Lawyer signal (partially verifiable)
+
+A 2022 Artificial Lawyer article reported "77% of in-house lawyers experience failed legal tech
+projects." This predates the current AI-CLM wave but establishes the baseline failure rate for
+legal tech implementations generally. **Caveat:** 2022 is pre-GenAI; the failure modes may have
+shifted. Use as context for why a readiness diagnostic resonates with this buyer ("you've been
+burned before"), not as a current-state claim.
+
+### Implication for a "blockers" pillar
+
+Given the five failure modes above, the architect has material for a **Pillar 8: Organizational
+Readiness** (or "Implementation Readiness"), which would cover:
+- Executive sponsorship and cross-functional stakeholder alignment
+- Legacy contract estate digitization status
+- Systems integration with CRM/ERP/procurement
+- Existence of a formal AI governance / human-in-the-loop policy
+
+This pillar is distinct from the capability pillars (1–7) in that it measures *readiness to
+succeed with* a CLM platform, not *maturity of AI use* within one. The architect should decide
+whether to keep it separate or dissolve it into questions within each capability pillar. The
+commercial argument for keeping it separate: a weak Organizational Readiness score is a
+pre-sales signal every sponsor AE wants — it means the account is not yet sold the full
+implementation, and there is services revenue to be had before the software sale.
+
+**A note on pillar count.** Adding Pillar 8 brings the total to 8 (or 7 if Pillars 1 and 4
+were consolidated as suggested in §3). The architect should resist going above 7 for a
+clean taker experience; if Organizational Readiness is added, consider consolidating one of
+the capability pillars or making Organizational Readiness a pre-qualifier module rather than
+a scored pillar.
