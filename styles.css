@@ -876,7 +876,7 @@
 #dri-radar-svg .sc-radar-point:focus-visible { outline: none; fill: var(--color-accent); r: 13; stroke: var(--color-accent-dark); stroke-width: 4; }
 
 /* Inline assessment CTA (homepage) */
-.inline-cta-section { background: var(--color-paper); padding: 64px 24px; border-top: 0.5px solid var(--color-border-subtle); }
+.inline-cta-section { background: var(--color-paper); padding: 64px 24px; }
 .inline-cta { max-width: 880px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; }
 .inline-cta p { font-size: 1.0625rem; line-height: 1.5; color: var(--color-ink-soft); margin: 0; }
 
