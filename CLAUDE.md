@@ -64,6 +64,7 @@ Photography, video, and illustration follow the approved system spec at `docs/su
 - Section-specific layout overrides use `#section-id .class` selectors (see `#product .diff-grid`, `#methodology .diff-grid`) — never modify the base rule
 - New CSS appends to `styles.css` (the shared live stylesheet); mobile overrides go inside the existing `@media (max-width: 880px)` block. Design tokens that need a Next.js-parity definition are mirrored into `globals.css`, but the `styles.css` copy is what renders live
 - Exception: the `.hero--fullbleed` mobile overrides live in a SECOND `@media (max-width: 880px)` block placed AFTER the desktop `.hero--fullbleed` rules (near end of file). This is intentional and required: those desktop rules carry no media guard, so a mobile override of equal specificity must come later in source order to win. Do not merge this block back into the earlier mobile block
+- Text fills its container. Do NOT put a `max-width` on a text element (headings, `.subhead`, body or descriptive paragraphs, captions). Subheads and body copy must span the full width of their section container, not sit in a narrow inner box. Width is owned by the container (`.section-inner`, `.container-narrow`, a grid column, the `.inline-cta`/card wrapper), never by the text element itself. The only sanctioned exception is the full-bleed hero subhead (`.hero--fullbleed .subhead`, spec §5.5), which keeps a reading-length cap for text-over-image legibility
 
 ## Section structure
 
