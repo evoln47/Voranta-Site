@@ -1,0 +1,11 @@
+{
+  "projectId": "db947775-1cbc-4997-a0dc-10150e3e59e0",
+  "shape": "storybook",
+  "pkg": "packages/ui",
+  "globalName": "VorantaUI",
+  "storybookConfigDir": "packages/ui/.storybook",
+  "storybookStatic": ".design-sync/sb-reference",
+  "cssEntry": "dist/voranta-ui.css",
+  "buildCmd": "npm --prefix packages/ui run build",
+  "readmeHeader": ".design-sync/conventions.md"
+}
