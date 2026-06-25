@@ -4,14 +4,18 @@
     --color-accent:#0891B2; --color-accent-dark:#155E75; --color-accent-tint:#E0EFF1;
     --color-border-faint:rgba(10,9,8,0.06); --color-border-subtle:rgba(10,9,8,0.12); --color-border-strong:rgba(10,9,8,0.22);
     --font-display:"Fraunces",Georgia,serif; --font-sans:"Geist",-apple-system,BlinkMacSystemFont,system-ui,sans-serif; --font-mono:"Geist Mono",ui-monospace,monospace;
+    /* Page side margin (gutter): scales from 24px on small screens up to 64px, sitting near
+       ~51px at the 1280px content width. The 1280px inner wrappers stay centered, so a wider
+       gutter only adds breathing room at the edges, it does not shrink content on wide screens. */
+    --page-gutter: clamp(24px, 4vw, 64px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-family: var(--font-sans); font-size: 16px; line-height: 1.55; color: var(--color-ink); background: var(--color-paper); -webkit-font-smoothing: antialiased; }
   body { min-height: 100vh; display: flex; flex-direction: column; }
   /* Sticky footer: main grows to fill, so the footer sits at the bottom even on short pages (e.g. the assessment intro) */
   main { flex: 1 0 auto; }
-  .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-  .container-narrow { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 var(--page-gutter); }
+  .container-narrow { max-width: 720px; margin: 0 auto; padding: 0 var(--page-gutter); }
 
   /* Wordmark - the locked Fraunces moment */
   .wordmark { font-family: var(--font-display); font-variation-settings: "opsz" 144, "wght" 500, "SOFT" 15, "WONK" 0; letter-spacing: -0.025em; color: var(--color-ink); line-height: 1; display: inline-block; }
@@ -46,7 +50,7 @@
   .btn:hover .btn-arrow::after, a.btn:hover::after { transform: translateX(2px); }
 
   /* Top bar */
-  .topbar { padding: 20px 24px; border-bottom: 0.5px solid var(--color-border-subtle); position: sticky; top: 0; background: rgba(236, 241, 237, 0.85); backdrop-filter: blur(8px); z-index: 50; }
+  .topbar { padding: 20px var(--page-gutter); border-bottom: 0.5px solid var(--color-border-subtle); position: sticky; top: 0; background: rgba(236, 241, 237, 0.85); backdrop-filter: blur(8px); z-index: 50; }
   .topbar-inner { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
   .topbar-logo { display: inline-flex; align-items: center; height: 37px; text-decoration: none; transition: opacity 120ms ease; }
   .topbar-logo:hover { opacity: 0.75; }
@@ -69,7 +73,7 @@
   .hamburger[aria-expanded="true"] .hamburger-lines span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
   /* Hero */
-  .hero { padding: 96px 24px 80px; border-bottom: 0.5px solid var(--color-border-subtle); overflow: hidden; }
+  .hero { padding: 96px var(--page-gutter) 80px; border-bottom: 0.5px solid var(--color-border-subtle); overflow: hidden; }
   .hero-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); gap: 64px; align-items: start; }
   .hero-text { min-width: 0; }
   .hero-visual { position: relative; border-radius: 12px; overflow: hidden; }
@@ -86,8 +90,8 @@
   .hero .eyebrow { display: block; margin-bottom: 20px; }
 
   /* Section pattern */
-  section { padding: 96px 24px; border-bottom: 0.5px solid var(--color-border-subtle); }
-  section.section-tight { padding: 64px 24px; }
+  section { padding: 96px var(--page-gutter); border-bottom: 0.5px solid var(--color-border-subtle); }
+  section.section-tight { padding: 64px var(--page-gutter); }
   .section-inner { max-width: 1280px; margin: 0 auto; }
   .section-head { margin-bottom: 56px; }
   .section-head .eyebrow { margin-bottom: 14px; }
@@ -158,7 +162,7 @@
   .sponsor-section { background: var(--color-paper); border-bottom: none; }
 
   /* CTA block */
-  .cta-section { background: var(--color-ink); color: var(--color-paper-light); padding: 128px 24px; text-align: center; border-bottom: none; }
+  .cta-section { background: var(--color-ink); color: var(--color-paper-light); padding: 128px var(--page-gutter); text-align: center; border-bottom: none; }
   .cta-section .section-inner { display: flex; flex-direction: column; align-items: center; gap: 0; }
   .cta-section .eyebrow { color: rgba(244, 247, 244, 0.5); }
   .cta-section h2 { color: var(--color-paper-light); font-size: 2.875rem; max-width: none; line-height: 1.1; letter-spacing: -0.025em; margin-top: 14px; }
@@ -168,7 +172,7 @@
   .cta-section .btn-ghost:hover { background: var(--color-paper-light); color: var(--color-ink); border-color: var(--color-paper-light); }
 
   /* Footer */
-  footer { padding: 48px 24px 32px; flex-shrink: 0; }
+  footer { padding: 48px var(--page-gutter) 32px; flex-shrink: 0; }
   .footer-inner { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 24px; }
   .footer-logo { display: inline-flex; align-items: center; height: 28px; text-decoration: none; transition: opacity 120ms ease; }
   .footer-logo:hover { opacity: 0.65; }
@@ -644,7 +648,7 @@
   }
 
 /* ===== Assessment (Demand Research Index) ===== */
-.assessment { padding: 96px 24px; }
+.assessment { padding: 96px var(--page-gutter); }
 /* Results area uses 1160px so the radar card gets meaningful width.
    Quiz and intro screens are capped below to keep reading width comfortable. */
 .assessment .section-inner { max-width: 1160px; margin: 0 auto; }
@@ -719,7 +723,7 @@
 #dri-radar-svg .sc-radar-point:focus-visible { outline: none; fill: var(--color-accent); r: 13; stroke: var(--color-accent-dark); stroke-width: 4; }
 
 /* Inline assessment CTA (homepage) */
-.inline-cta-section { background: var(--color-paper); padding: 64px 24px; }
+.inline-cta-section { background: var(--color-paper); padding: 64px var(--page-gutter); }
 .inline-cta { max-width: 880px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; }
 .inline-cta p { font-size: 1.0625rem; line-height: 1.5; color: var(--color-ink-soft); margin: 0; }
 
@@ -932,8 +936,8 @@ main:focus { outline: none; }
   position: absolute;
   top: 54%;
   transform: translateY(calc(-50% + 0.6rem));
-  left: max(24px, calc((100vw - 1280px) / 2 + 64px));
-  right: max(24px, calc((100vw - 1280px) / 2 + 64px));
+  left: max(var(--page-gutter), calc((100vw - 1280px) / 2 + 64px));
+  right: max(var(--page-gutter), calc((100vw - 1280px) / 2 + 64px));
   z-index: 2;
 }
 

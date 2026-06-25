@@ -129,6 +129,10 @@
   /* ----- Layout ----- */
   --gutter-page:    24px;
   --gutter-page-lg: 48px;
+  /* Fluid page side-margin used by the live pages (styles.css). Scales from the
+     24px floor up to 64px, sitting near ~51px at the 1280px content width. Sits
+     between the two static steps above; prefer this for page gutters. */
+  --page-gutter:    clamp(24px, 4vw, 64px);
 }
 
 /* -------------------------------------------------------------------------
