@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
   "redirects": [
-    { "source": "/aipq", "destination": "/#demo", "permanent": true }
+    { "source": "/aipq", "destination": "/", "permanent": true }
   ]
 }

@@ -29,7 +29,6 @@
   .subhead { font-size: 1.125rem; line-height: 1.55; color: var(--color-ink-soft); font-weight: 400; }
 
   .eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-mute); display: inline-block; }
-  .framing-note { font-family: var(--font-mono); font-size: 12px; line-height: 1.5; letter-spacing: 0.01em; color: var(--color-ink-mute); margin: 0; }
 
   /* Badge */
   .badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; padding: 5px 12px; border-radius: 999px; background: var(--color-accent-tint); color: var(--color-accent-dark); }
@@ -1093,3 +1092,8 @@ main:focus { outline: none; }
   #main { scroll-margin-top: 72px; }
   #gap  { scroll-margin-top: 72px; }
 }
+
+/* Framing note: subordinate sans caption shown after a CTA (e.g. the live-demo disclaimer).
+   Sans (not mono) because it is sentence prose, 14px to clear the reading-surface floor. */
+.framing-note { font-family: var(--font-sans); font-size: 14px; line-height: 1.5; color: var(--color-ink-mute); margin: 0; }
+#demo .framework-teaser-cta .framing-note { margin-top: -12px; }
