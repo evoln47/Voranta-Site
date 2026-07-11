@@ -7,8 +7,12 @@ const app = document.getElementById('dri-app');
 const screens = {};
 app.querySelectorAll('[data-screen]').forEach((el) => { screens[el.dataset.screen] = el; });
 
+const closingCta = document.getElementById('dri-closing-cta');
+
 function show(name) {
   Object.entries(screens).forEach(([key, el]) => { el.hidden = key !== name; });
+  // The dark closing CTA band lives outside .dri-app; reveal it only on results.
+  if (closingCta) closingCta.hidden = name !== 'results';
 }
 
 let lastResult = null;
