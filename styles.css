@@ -824,7 +824,6 @@ main:focus { outline: none; }
   margin-bottom: 24px;
   text-wrap: nowrap;
 }
-.hero--fullbleed .hero-emphasis { color: var(--color-accent); }
 .hero--fullbleed .subhead {
   color: var(--color-paper);
   font-size: 1.5rem;
