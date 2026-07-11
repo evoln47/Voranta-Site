@@ -341,8 +341,6 @@
     /* Tap target upgrades */
     .hamburger { padding: 12px; }
     .btn { min-height: 44px; }
-    /* Founding CTA: full-width on mobile */
-    .founding-cta { width: 100%; }
     /* Social icon link tap target (About page) */
     #founder .social-icon-link { padding: 8px; }
     /* Scroll-to-explore indicator */
@@ -478,164 +476,11 @@
   #sponsors .sponsor-benefit-num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: var(--color-accent); }
   #sponsors .sponsor-benefit-name { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; line-height: 1.35; color: var(--color-ink); }
   #sponsors .sponsor-benefit-desc { font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--color-ink-soft); margin: 0; }
-  .sponsors-offer-card { background: var(--color-paper-deep); border: 0.5px solid var(--color-border-strong); border-radius: 12px; padding: 36px; display: flex; flex-direction: column; gap: 28px; }
-  .sponsors-offer-top { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
-  .sponsors-offer-left { display: flex; flex-direction: column; gap: 12px; }
-  .sponsors-tagline { font-size: 1.0625rem; line-height: 1.6; color: var(--color-ink-soft); margin: 0; }
-  .sponsors-offer-right { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
-  .sponsors-inquiry-area { border-top: 0.5px solid var(--color-border-subtle); padding-top: 20px; display: flex; flex-direction: column; gap: 16px; }
-  .founding-cta { width: fit-content; }
-  /* Inquiry disclosure toggle */
-  .founding-inquiry-toggle {
-    display: inline-block;
-    background: none;
-    border: none;
-    padding: 5px 0;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    color: var(--color-ink-mute);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    cursor: pointer;
-    line-height: 1.5;
-  }
-  .founding-inquiry-toggle:hover { color: var(--color-ink-soft); }
-  .founding-inquiry-toggle:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-  /* Inquiry form region */
-  .founding-inquiry {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .founding-inquiry-field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .founding-inquiry-label {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-ink-mute);
-  }
-  .founding-inquiry-label .field-optional {
-    font-size: 11px;
-    text-transform: none;
-    letter-spacing: 0;
-    font-weight: 400;
-    color: var(--color-ink-faint);
-    margin-left: 4px;
-  }
-  .founding-inquiry-input,
-  .founding-inquiry-textarea {
-    width: 100%;
-    box-sizing: border-box;
-    background: var(--color-paper);
-    border: 0.5px solid var(--color-border-strong);
-    border-radius: 6px;
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    line-height: 1.5;
-    padding: 10px 12px;
-    min-height: 44px;
-    outline: none;
-    transition: border-color 120ms ease;
-  }
-  .founding-inquiry-input::placeholder,
-  .founding-inquiry-textarea::placeholder {
-    color: var(--color-ink-faint);
-  }
-  .founding-inquiry-input:focus,
-  .founding-inquiry-textarea:focus {
-    border-color: var(--color-accent);
-    outline: 2px solid var(--color-accent);
-    outline-offset: 0;
-  }
-  .founding-inquiry-input[aria-invalid="true"] {
-    border-color: #E57373;
-  }
-  .founding-inquiry-textarea {
-    min-height: unset;
-    resize: vertical;
-  }
-  /* Ghost submit button */
-  .founding-inquiry-submit {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 500;
-    border-radius: 6px;
-    border: 1px solid var(--color-border-strong);
-    background: transparent;
-    color: var(--color-ink);
-    cursor: pointer;
-    transition: background 120ms ease, border-color 120ms ease;
-    width: fit-content;
-    min-height: 44px;
-  }
-  .founding-inquiry-submit:hover {
-    background: var(--color-ink);
-    color: var(--color-paper-light);
-    border-color: var(--color-ink);
-  }
-  .founding-inquiry-submit:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
-  }
-  .founding-inquiry-submit:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
-  /* Status message */
-  .founding-inquiry-status {
-    font-size: 14px;
-    line-height: 1.5;
-    border-radius: 6px;
-    padding: 10px 12px;
-  }
-  .founding-inquiry-status.is-ok {
-    background: var(--color-accent-tint);
-    color: var(--color-accent-dark);
-    border: 0.5px solid rgba(8, 145, 178, 0.30);
-  }
-  .founding-inquiry-status.is-error {
-    background: rgba(229, 115, 115, 0.08);
-    color: var(--color-ink);
-    border: 0.5px solid rgba(229, 115, 115, 0.30);
-  }
-  .founding-inquiry-status a {
-    color: inherit;
-    text-decoration: underline;
-  }
-  /* Honeypot (off-screen, same technique as .dri-hp) */
-  .founding-hp {
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-  }
 
   @media (max-width: 880px) {
     /* Sponsors mobile overrides live here, after the desktop sponsors rules, so they win by source order */
     #sponsors .sponsor-benefit-row { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
     #sponsors .sponsor-benefit-label { margin-bottom: 4px; }
-    #sponsors .founding-inquiry-input, #sponsors .founding-inquiry-textarea { font-size: 16px; }
-    .sponsors-offer-top { grid-template-columns: 1fr; gap: 24px; }
-    .sponsors-offer-right { align-items: stretch; }
-    .sponsors-offer-right .btn { width: 100%; text-align: center; }
-    .founding-inquiry-submit { width: 100%; justify-content: center; }
     #methodology .diff-grid { grid-template-columns: 1fr; }
     .pillar-axes { grid-template-columns: 1fr; }
     .pillar-axis { padding: 28px 24px; }

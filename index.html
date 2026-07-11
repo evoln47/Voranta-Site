@@ -391,29 +391,6 @@
         <p class="sponsor-benefit-desc">Logo placement and case study rights at the public framework launch, establishing your position in the category record from the first day it exists.</p>
       </li>
     </ol>
-    <div class="sponsors-offer-card">
-      <div class="sponsors-offer-top">
-        <div class="sponsors-offer-left">
-          <p class="sponsors-tagline">The category exclusivity, the founding economics, and the benchmark credit all expire when the founding cohort fills. Once that seat closes, the terms change and the window does not reopen.</p>
-        </div>
-        <div class="sponsors-offer-right">
-          <a href="https://calendly.com/evoln47/30min" target="_blank" rel="noopener" class="btn btn-lg founding-cta">Claim your category</a>
-        </div>
-      </div>
-      <div class="sponsors-inquiry-area">
-        <button type="button" class="founding-inquiry-toggle" aria-expanded="false" aria-controls="founding-inquiry-form">Still scoping which category fits? Send a note instead.</button>
-        <div id="founding-inquiry-form" hidden>
-          <form class="founding-inquiry" novalidate>
-            <div class="founding-inquiry-field"><label class="founding-inquiry-label" for="fi-email">Work email</label><input class="founding-inquiry-input" type="email" id="fi-email" name="email" placeholder="you@company.com" inputmode="email" autocomplete="email" required></div>
-            <div class="founding-inquiry-field"><label class="founding-inquiry-label" for="fi-company">Company <span class="field-optional">optional</span></label><input class="founding-inquiry-input" type="text" id="fi-company" name="company" placeholder="Acme AI" autocomplete="organization"></div>
-            <div class="founding-inquiry-field"><label class="founding-inquiry-label" for="fi-message">Message <span class="field-optional">optional</span></label><textarea class="founding-inquiry-textarea" id="fi-message" name="message" rows="3" placeholder="Which category are you considering?"></textarea></div>
-            <input type="text" name="website" class="founding-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <button type="submit" class="founding-inquiry-submit">Send a note</button>
-            <div id="fi-status" class="founding-inquiry-status" role="alert" hidden tabindex="-1"></div>
-          </form>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -617,95 +594,6 @@
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
     nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
-  })();
-
-  /* Founding sponsor inquiry form */
-  (function () {
-    var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    var toggle = document.querySelector('.founding-inquiry-toggle');
-    var formRegion = document.getElementById('founding-inquiry-form');
-    if (!toggle || !formRegion) return;
-
-    toggle.addEventListener('click', function () {
-      var expanded = toggle.getAttribute('aria-expanded') === 'true';
-      var next = !expanded;
-      toggle.setAttribute('aria-expanded', String(next));
-      formRegion.hidden = !next;
-      if (next) {
-        var firstField = formRegion.querySelector('input, textarea');
-        if (firstField) firstField.focus();
-      }
-    });
-
-    var form = formRegion.querySelector('form');
-    var statusEl = document.getElementById('fi-status');
-    var emailInput = form.elements['email'];
-    var submitBtn = form.querySelector('button[type="submit"]');
-    if (!form || !statusEl || !emailInput || !submitBtn) return;
-
-    function showMsg(text, ok, isHTML) {
-      if (isHTML) {
-        statusEl.innerHTML = text;
-      } else {
-        statusEl.textContent = text;
-      }
-      statusEl.hidden = false;
-      statusEl.classList.toggle('is-ok', ok);
-      statusEl.classList.toggle('is-error', !ok);
-      statusEl.focus();
-    }
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      var honeypot = form.elements['website'].value;
-      if (honeypot) {
-        showMsg('Got it. Evan reviews every inquiry personally and will follow up.', true, false);
-        form.hidden = true;
-        return;
-      }
-
-      var email = emailInput.value.trim();
-      if (!EMAIL_RE.test(email)) {
-        emailInput.setAttribute('aria-invalid', 'true');
-        emailInput.setAttribute('aria-describedby', 'fi-status');
-        showMsg('Please enter a valid email address.', false, false);
-        return;
-      }
-      emailInput.removeAttribute('aria-invalid');
-      emailInput.removeAttribute('aria-describedby');
-
-      var company = (form.elements['company'] ? form.elements['company'].value.trim() : '');
-      var message = (form.elements['message'] ? form.elements['message'].value.trim() : '');
-
-      submitBtn.disabled = true;
-      var originalLabel = submitBtn.textContent;
-      submitBtn.textContent = 'Sending...';
-
-      var controller = new AbortController();
-      var timeout = setTimeout(function () { controller.abort(); }, 15000);
-
-      fetch('/api/inquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, company: company, message: message, website: honeypot }),
-        signal: controller.signal
-      }).then(function (res) {
-        clearTimeout(timeout);
-        if (!res.ok) throw new Error('bad status ' + res.status);
-        showMsg('Got it. Evan reviews every inquiry personally and will follow up.', true, false);
-        form.hidden = true;
-      }).catch(function (err) {
-        clearTimeout(timeout);
-        if (err && err.name === 'AbortError') {
-          showMsg('That took too long. Check your connection and try again, or email <a href="mailto:evan@voranta.co">evan@voranta.co</a> directly.', false, true);
-        } else {
-          showMsg('Something went wrong on our end. Try again, or email <a href="mailto:evan@voranta.co">evan@voranta.co</a> directly.', false, true);
-        }
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalLabel;
-      });
-    });
   })();
 </script>
 </body>
