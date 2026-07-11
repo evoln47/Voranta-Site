@@ -87,11 +87,48 @@
 
       <!-- INTRO -->
       <div class="dri-screen" data-screen="intro">
-        <span class="eyebrow">Voranta Research Conversion Index</span>
-        <h1 class="display">How ready is your funnel to earn both the read and the lead?</h1>
-        <p class="subhead">Five questions, about a minute. You get your score, your archetype, and the one gap to close. No email required to see your result.</p>
-        <button class="btn btn-lg" id="dri-start" type="button">Start the assessment</button>
-        <p class="framing-note" style="margin-top: 20px;">Voranta's own framework, on demand research. A live example of the instrument Voranta licenses to sponsors for their category.</p>
+        <div class="dri-intro-copy">
+          <span class="eyebrow">Voranta Research Conversion Index</span>
+          <h1 class="display">How ready is your funnel to earn both the read and the lead?</h1>
+          <p class="subhead">Five questions, about a minute. You get your score, your archetype, and the one gap to close. No email required to see your result.</p>
+          <button class="btn btn-lg" id="dri-start" type="button">Start the assessment</button>
+          <p class="framing-note" style="margin-top: 20px;">Voranta's own framework, on demand research. A live example of the instrument Voranta licenses to sponsors for their category.</p>
+        </div>
+
+        <!-- Decorative RCI signature: five-dimension radar. Greyscale ramp, cyan
+             reserved for the single focus/gap vertex (Signal to Sales, lowest).
+             Extends the existing radar vocabulary (AIPQ / product-card illus). -->
+        <div class="dri-intro-illus" aria-hidden="true">
+          <svg class="dri-intro-radar" viewBox="0 0 520 430" role="img" aria-label="Research Conversion Index five-dimension radar diagram" focusable="false">
+            <!-- Concentric pentagon rings (grey ramp, faint inward) -->
+            <polygon points="240,156.25 272.10,179.57 259.84,217.30 220.16,217.30 207.90,179.57" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.3"/>
+            <polygon points="240,122.5 304.20,169.14 279.68,244.61 200.32,244.61 175.80,169.14" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.4"/>
+            <polygon points="240,88.75 336.29,158.71 299.51,271.91 180.49,271.91 143.71,158.71" fill="none" stroke="#A8ACA8" stroke-width="0.5" opacity="0.5"/>
+            <polygon points="240,55 368.39,148.28 319.35,299.22 160.65,299.22 111.61,148.28" fill="none" stroke="#A8ACA8" stroke-width="0.75" opacity="0.7"/>
+            <!-- Five axes from centre -->
+            <line x1="240" y1="190" x2="240" y2="55" stroke="#A8ACA8" stroke-width="0.75" opacity="0.55"/>
+            <line x1="240" y1="190" x2="368.39" y2="148.28" stroke="#A8ACA8" stroke-width="0.75" opacity="0.55"/>
+            <line x1="240" y1="190" x2="319.35" y2="299.22" stroke="#A8ACA8" stroke-width="0.75" opacity="0.55"/>
+            <line x1="240" y1="190" x2="160.65" y2="299.22" stroke="#A8ACA8" stroke-width="0.75" opacity="0.55"/>
+            <line x1="240" y1="190" x2="111.61" y2="148.28" stroke="#A8ACA8" stroke-width="0.75" opacity="0.55"/>
+            <!-- Data shape (grey ink-soft outline, faint ink wash; cyan reserved for focus dot) -->
+            <polygon points="240,79.3 297.78,171.23 293.96,264.27 196.36,250.07 191.21,174.15" fill="rgba(10,9,8,0.05)" stroke="#3F3F3D" stroke-width="1.5"/>
+            <!-- Vertex dots: four grey, one cyan (the focus/gap dimension) -->
+            <circle cx="240" cy="79.3" r="3.5" fill="#3F3F3D"/>
+            <circle cx="297.78" cy="171.23" r="3.5" fill="#3F3F3D"/>
+            <circle cx="293.96" cy="264.27" r="3.5" fill="#3F3F3D"/>
+            <circle cx="196.36" cy="250.07" r="3.5" fill="#3F3F3D"/>
+            <circle cx="191.21" cy="174.15" r="5" fill="#0891B2"/>
+            <!-- Centre marker -->
+            <circle cx="240" cy="190" r="1.5" fill="#A8ACA8"/>
+            <!-- Axis labels (Geist Mono, ink-mute) -->
+            <text x="240" y="40" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" letter-spacing="0.08em" fill="#6B6E6B">POINT OF VIEW</text>
+            <text x="385.51" y="145.72" text-anchor="start" font-family="Geist Mono, monospace" font-size="9" letter-spacing="0.08em" fill="#6B6E6B">RESEARCH SENSING</text>
+            <text x="329.93" y="316.78" text-anchor="start" font-family="Geist Mono, monospace" font-size="9" letter-spacing="0.08em" fill="#6B6E6B">CONVERSION SURFACE</text>
+            <text x="150.07" y="316.78" text-anchor="end" font-family="Geist Mono, monospace" font-size="9" letter-spacing="0.08em" fill="#6B6E6B">TRUST AT CAPTURE</text>
+            <text x="94.49" y="145.72" text-anchor="end" font-family="Geist Mono, monospace" font-size="9" letter-spacing="0.08em" fill="#6B6E6B">SIGNAL TO SALES</text>
+          </svg>
+        </div>
       </div>
 
       <!-- QUIZ -->

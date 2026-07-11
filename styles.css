@@ -499,9 +499,15 @@
 .assessment .section-inner { max-width: 1160px; margin: 0 auto; }
 .dri-screen[hidden] { display: none; }
 
-.dri-screen[data-screen="intro"] { max-width: 720px; margin-inline: 0; }
+/* Intro: two columns. Copy on the left (width owned by the grid track), the RCI
+   radar illustration fills the space on the right. */
+.dri-screen[data-screen="intro"] { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; margin-inline: 0; }
+.dri-intro-copy { min-width: 0; }
 .dri-screen[data-screen="intro"] .display { margin: 16px 0 18px; }
 .dri-screen[data-screen="intro"] .btn { margin-top: 28px; }
+/* Radar illustration column */
+.dri-intro-illus { min-width: 0; }
+.dri-intro-radar { display: block; width: 100%; max-width: 540px; height: auto; margin: 0 auto; }
 /* Cap the quiz surface so questions/options/progress stay at a readable width
    even though the outer container is now 1160px. */
 .dri-screen[data-screen="quiz"] { max-width: 760px; margin-inline: auto; }
@@ -574,6 +580,10 @@
 
 @media (max-width: 880px) {
   .assessment { padding: 48px 20px; }
+  /* Intro collapses to a single column; the radar (like the results radar) is
+     hidden on mobile, where its axis labels would be too small to read. */
+  .dri-screen[data-screen="intro"] { display: block; }
+  .dri-intro-illus { display: none; }
   .dri-scorecard-grid { grid-template-columns: 1fr; }
   /* FIX 2: Reduce min-height so answers are visible without scrolling on 320px phones */
   .dri-q-text { font-size: 1.25rem; min-height: 3em; }
