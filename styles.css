@@ -467,20 +467,21 @@
     color: var(--color-ink-soft);
     line-height: 1.5;
   }
-  /* Founding sponsor section - spec-sheet benefit list */
-  #sponsors .section-head { margin-bottom: 40px; }
-  #sponsors .sponsor-benefit-list { list-style: none; margin: 0 0 40px; padding: 0; display: grid; grid-template-columns: 1fr; gap: 0; }
-  #sponsors .sponsor-benefit-row { display: grid; grid-template-columns: minmax(200px, 260px) 1fr; gap: 48px; align-items: start; padding: 28px 0; border-top: 0.5px solid var(--color-border-subtle); }
-  #sponsors .sponsor-benefit-row:last-child { border-bottom: 0.5px solid var(--color-border-subtle); }
-  #sponsors .sponsor-benefit-label { display: flex; flex-direction: column; gap: 8px; }
-  #sponsors .sponsor-benefit-num { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: var(--color-accent); }
-  #sponsors .sponsor-benefit-name { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; line-height: 1.35; color: var(--color-ink); }
-  #sponsors .sponsor-benefit-desc { font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--color-ink-soft); margin: 0; }
+  /* Founding sponsor section - single card, compact icon grid */
+  #sponsors .section-head { margin-bottom: 36px; }
+  #sponsors .sponsor-card { margin: 0; padding: 44px; border: 0.5px solid var(--color-border-subtle); border-radius: 16px; background: var(--color-paper-light); }
+  #sponsors .sponsor-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 44px; }
+  #sponsors .sponsor-item { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; }
+  #sponsors .sponsor-item-icon { display: flex; color: var(--color-accent); }
+  #sponsors .sponsor-item-icon svg { width: 26px; height: 26px; display: block; }
+  #sponsors .sponsor-item-body { display: flex; flex-direction: column; gap: 6px; }
+  #sponsors .sponsor-item-name { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; line-height: 1.3; color: var(--color-ink); margin: 0; }
+  #sponsors .sponsor-item-desc { font-family: var(--font-sans); font-size: 14px; line-height: 1.55; color: var(--color-ink-soft); margin: 0; }
 
   @media (max-width: 880px) {
     /* Sponsors mobile overrides live here, after the desktop sponsors rules, so they win by source order */
-    #sponsors .sponsor-benefit-row { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
-    #sponsors .sponsor-benefit-label { margin-bottom: 4px; }
+    #sponsors .sponsor-card { padding: 28px 24px; }
+    #sponsors .sponsor-grid { grid-template-columns: 1fr; gap: 24px; }
     #methodology .diff-grid { grid-template-columns: 1fr; }
     .pillar-axes { grid-template-columns: 1fr; }
     .pillar-axis { padding: 28px 24px; }
