@@ -547,16 +547,29 @@
    score sits at top and the archetype block anchors at the bottom of the card,
    filling any height without stranded blank space. */
 
-/* Primary CTA block: prominent placement directly below scorecard.
-   Left-accent pattern (matches .callout-research) signals primary action. */
-.dri-cta-block { margin-top: 32px; padding: 28px 32px; background: var(--color-accent-tint); border-left: 3px solid var(--color-accent); border-radius: 0 16px 16px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+/* Sponsor mechanism explainer: sits below the scorecard, above both CTAs.
+   Shows how a licensed instrument turns each result into a CRM-ready lead. */
+.dri-sponsor { margin-top: 44px; padding-top: 40px; border-top: 0.5px solid var(--color-border-subtle); }
+.dri-sponsor-head { max-width: 760px; }
+.dri-sponsor-head h3 { margin: 10px 0 12px; }
+.dri-sponsor-head p { font-size: 1.0625rem; line-height: 1.55; color: var(--color-ink-soft); margin: 0; }
+/* Flow diagram: three stage cards joined by chevron arrows */
+.dri-pipe { display: flex; align-items: stretch; gap: 12px; margin-top: 32px; }
+.pipe-node { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 26px 20px; background: var(--color-paper-light); border: 0.5px solid var(--color-border-subtle); border-radius: 16px; }
+.pipe-glyph { width: 48px; height: 48px; display: block; flex: none; }
+.pipe-label { font-family: var(--font-sans); font-size: 14px; line-height: 1.4; color: var(--color-ink-soft); }
+.pipe-arrow { display: flex; align-items: center; flex: none; }
+.pipe-arrow svg { display: block; }
+
+/* Primary CTA block: left-accent pattern (matches .callout-research). */
+.dri-cta-block { margin-top: 24px; padding: 28px 32px; background: var(--color-accent-tint); border-left: 3px solid var(--color-accent); border-radius: 0 16px 16px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .dri-cta-frame { font-size: 1.0625rem; line-height: 1.5; color: var(--color-ink-soft); margin: 0; }
 
 /* Quadrant: distinct focus-visible ring that is not confused with is-buyer/is-active tint */
 .sc-quadrant:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
 
-/* Capture: secondary block, plainer than the CTA above */
-.dri-capture { margin-top: 40px; padding: 28px; border: 0.5px solid var(--color-border-subtle); border-radius: 16px; background: var(--color-paper-light); }
+/* Capture: sits between the sponsor explainer and the book-a-call CTA */
+.dri-capture { margin-top: 28px; padding: 28px; border: 0.5px solid var(--color-border-subtle); border-radius: 16px; background: var(--color-paper-light); }
 .dri-capture-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .dri-capture-copy { display: flex; flex-direction: column; gap: 8px; }
 .dri-capture-copy h3 { margin: 0; }
@@ -589,6 +602,9 @@
   .dri-screen[data-screen="intro"] { display: block; }
   .dri-intro-illus { display: none; }
   .dri-scorecard-grid { grid-template-columns: 1fr; }
+  /* Pipeline stacks vertically; chevrons rotate to point downward */
+  .dri-pipe { flex-direction: column; }
+  .pipe-arrow { align-self: center; transform: rotate(90deg); }
   /* FIX 2: Reduce min-height so answers are visible without scrolling on 320px phones */
   .dri-q-text { font-size: 1.25rem; min-height: 3em; }
   .dri-capture-inner { flex-direction: column; align-items: stretch; }
