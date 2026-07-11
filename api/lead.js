@@ -1,5 +1,5 @@
 // Vercel serverless function (Node runtime, CommonJS, no dependencies).
-// On a Demand Research Index submission this sends two emails via the Resend
+// On a Research Conversion Index submission this sends two emails via the Resend
 // REST API: the visitor's own diagnosis to the address they entered, and a
 // pre-diagnosed lead notification to Evan.
 //
@@ -122,7 +122,7 @@ module.exports = async (req, res) => {
     from: FROM,
     to: [TO],
     reply_to: email,
-    subject: `New DRI lead: ${email} (${result.score}/100, ${result.archetype.label})`,
+    subject: `New RCI lead: ${email} (${result.score}/100, ${result.archetype.label})`,
     text: buildLeadText(email, result),
   };
 

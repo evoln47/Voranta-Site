@@ -1,13 +1,13 @@
-// The Demand Research Index (DRI) as data. Edit this file to change content.
+// The Research Conversion Index (RCI) as data. Edit this file to change content.
 //
 // MODEL: 5 questions, 5 dimensions, ONE question per dimension. Each question has
 // SIX options valued 0,20,40,60,80,100 in ascending maturity. The chosen option
 // value IS the dimension's /100 score (no aggregation: one item per dimension).
-// The DRI total is a WEIGHTED mean of the five dimension values.
+// The RCI total is a WEIGHTED mean of the five dimension values.
 
 export const meta = {
-  name: 'Demand Research Index',
-  short: 'DRI',
+  name: 'Research Conversion Index',
+  short: 'RCI',
 };
 
 // Each dimension carries two band-adaptive blurbs (provisional copy; final

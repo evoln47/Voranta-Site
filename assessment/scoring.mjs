@@ -3,7 +3,7 @@ import { questions, dimensions, archetypes } from './framework.mjs';
 // MODEL: ONE question per dimension. The chosen option value (0,20,40,60,80,100)
 // IS that dimension's /100 score directly. No per-dimension aggregation.
 //
-// The DRI total is a WEIGHTED mean of the five dimension values. Weights reflect
+// The RCI total is a WEIGHTED mean of the five dimension values. Weights reflect
 // leverage in the demand-research thesis: the upstream strategy pair carries the
 // most weight (Point of View is the single largest lever), then the conversion and
 // sensing dimensions, then the two more operational downstream dimensions.
@@ -29,7 +29,7 @@ const DOWNSTREAM_HIGH_FRAC = 2 / 3 - 1e-9;
 const HIGH_BAND_100 = 75;
 
 // RESULT SHAPE (consumed by the frontend scorecard + the email renderer):
-//   score            DRI on a 0-100 scale. round(weighted sum of the five
+//   score            RCI on a 0-100 scale. round(weighted sum of the five
 //                    dimension values), where each dimension value is already
 //                    0..100. Rounded ONCE from the full-precision weighted sum, so
 //                    the headline does not always equal a naive average of the
@@ -57,7 +57,7 @@ export function scoreAnswers(answers) {
   // dimensionRaw kept identical for any consumer that reads it.
   const dimensionRaw = { ...dimensionScores };
 
-  // DRI /100: weighted sum of the five dimension values (each already 0..100),
+  // RCI /100: weighted sum of the five dimension values (each already 0..100),
   // rounded ONCE from full precision.
   let weighted = 0;
   for (const dim of dimensions) weighted += WEIGHTS[dim.key] * dimensionScores[dim.key];

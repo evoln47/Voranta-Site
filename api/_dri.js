@@ -1,4 +1,4 @@
-// Demand Research Index data, server-side scoring, and email rendering.
+// Research Conversion Index data, server-side scoring, and email rendering.
 //
 // Underscore-prefixed so Vercel does not treat this as a route or function; it
 // is imported by api/lead.js and bundled in at build time. Keeping the bulk
@@ -70,7 +70,7 @@ const ARCHETYPES = {
 // Returns null if the submission is not a complete, valid set of answers.
 //
 // RESULT SHAPE (mirrors assessment/scoring.mjs scoreAnswers):
-//   score            DRI 0-100, round(weighted sum of the five dimension values),
+//   score            RCI 0-100, round(weighted sum of the five dimension values),
 //                    rounded ONCE from the full-precision weighted sum (the five
 //                    displayed dimension /100s do not always average to this; that
 //                    is intended).
@@ -95,7 +95,7 @@ function scoreAnswers(answers) {
   // dimensionRaw kept identical for any consumer that reads it.
   const dimensionRaw = { ...dimensionScores };
 
-  // DRI /100: weighted sum of the five dimension values (each already 0..100),
+  // RCI /100: weighted sum of the five dimension values (each already 0..100),
   // rounded ONCE. Same operation order as assessment/scoring.mjs so float parity
   // holds at .5 edges.
   let weighted = 0;
@@ -225,7 +225,7 @@ const CTA_FRAMING = {
 // to ship. That one-line wiring change is in api/lead.js, outside the edit scope
 // for this task.
 function buildVisitorSubject(result) {
-  return `Your Demand Research Index: ${result.score}/100. You are ${result.archetype.label}.`;
+  return `Your Research Conversion Index: ${result.score}/100. You are ${result.archetype.label}.`;
 }
 
 // Section head labels for the focus block.
@@ -240,7 +240,7 @@ function buildLeadText(email, result) {
   const ds = result.dimensionScores;
   const f = result.focus;
   return [
-    'New Demand Research Index lead',
+    'New Research Conversion Index lead',
     '',
     `Email: ${email}`,
     `Score: ${result.score}/100`,
@@ -319,7 +319,7 @@ function buildVisitorText(result) {
     ctaFraming,
     ctaLine,
     '',
-    'You took the Demand Research Index at voranta.co. Reply to this email and it reaches us directly.',
+    'You took the Research Conversion Index at voranta.co. Reply to this email and it reaches us directly.',
   ].join('\n');
 }
 
@@ -413,7 +413,7 @@ function buildVisitorHtml(result) {
         <!-- Dark score hero: eyebrow + score + archetype -->
         <tr><td style="background:#0A0908;padding:28px 24px;border-radius:8px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-            <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0891B2;font-weight:600;padding-bottom:12px;">Demand Research Index</td></tr>
+            <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0891B2;font-weight:600;padding-bottom:12px;">Research Conversion Index</td></tr>
             <tr><td>
               <span style="font-size:56px;font-weight:600;line-height:1;color:#ECF1ED;">${escapeHtml(result.score)}</span><span style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:20px;color:#CDD3CE;"> / 100</span>
             </td></tr>
@@ -466,7 +466,7 @@ function buildVisitorHtml(result) {
         <!-- Section 8: structured footer -->
         <tr><td style="border-top:1px solid #CDD3CE;padding-top:20px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-            <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:13px;line-height:1.55;color:#6B6E6B;padding-bottom:4px;">You took the Demand Research Index at voranta.co.</td></tr>
+            <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:13px;line-height:1.55;color:#6B6E6B;padding-bottom:4px;">You took the Research Conversion Index at voranta.co.</td></tr>
             <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:13px;line-height:1.55;color:#6B6E6B;padding-bottom:12px;">Questions? Reply here or email evan@voranta.co.</td></tr>
             <tr><td style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;font-size:11px;color:#A8ACA8;">Voranta</td></tr>
           </table>

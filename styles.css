@@ -647,7 +647,7 @@
     .teaser-scorecard-illus { max-width: 260px; }
   }
 
-/* ===== Assessment (Demand Research Index) ===== */
+/* ===== Assessment (Research Conversion Index) ===== */
 .assessment { padding: 96px var(--page-gutter); }
 /* Results area uses 1160px so the radar card gets meaningful width.
    Quiz and intro screens are capped below to keep reading width comfortable. */
@@ -685,7 +685,7 @@
 
 /* Results layout: unified 3-card scorecard row matching AIPQ quality bar */
 /* .scorecard-grid column template (1fr 1.4fr 1.1fr) is the shared base.
-   The DRI version uses the same columns with a slightly tighter center card. */
+   The RCI version uses the same columns with a slightly tighter center card. */
 .dri-scorecard-grid { grid-template-columns: 1fr 1.5fr 1fr; }
 .dri-score-card .sc-score-value { margin-top: 12px; }
 /* The divider uses margin-top: auto (inheriting the base .sc-divider rule) so the

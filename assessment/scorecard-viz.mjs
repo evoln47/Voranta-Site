@@ -1,5 +1,5 @@
 /**
- * DRI scorecard visualizations: radar chart + 2x2 archetype quadrant.
+ * RCI scorecard visualizations: radar chart + 2x2 archetype quadrant.
  * Ported and adapted from the AIPQ inline script. No top-level DOM access
  * (all functions are called explicitly so Node.js tests can import scorecard.mjs
  * without crashing).

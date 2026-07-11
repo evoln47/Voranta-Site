@@ -425,11 +425,11 @@ test('boundary: downstreamHigh at exactly 2/3 (Operator) vs just below (Renter)'
 });
 
 // ---------------------------------------------------------------------------
-// Round-once test. The DRI total is round(weighted sum of the five dimension
+// Round-once test. The RCI total is round(weighted sum of the five dimension
 // values), rounded ONCE. A profile whose weighted sum lands on a .5 boundary locks
 // that the engine rounds the full-precision total, not pre-rounded parts.
 // ---------------------------------------------------------------------------
-test('round-once: DRI total is rounded once from the full-precision weighted sum', () => {
+test('round-once: RCI total is rounded once from the full-precision weighted sum', () => {
   // pov=60, sensing=20, conv=40, trust=20, signal=20:
   //   0.30*60 + 0.20*20 + 0.20*40 + 0.16*20 + 0.14*20
   // = 18 + 4 + 8 + 3.2 + 2.8 = 36.0 -> 36. Pick a .5 case instead:
