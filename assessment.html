@@ -208,8 +208,24 @@
 
         </div>
 
+        <!-- Email capture: directly below the result, above the sponsor section -->
+        <div class="dri-capture">
+          <div class="dri-capture-inner">
+            <div class="dri-capture-copy">
+              <span class="eyebrow">Take it with you</span>
+              <h3>Get the full breakdown by email.</h3>
+            </div>
+            <form class="dri-capture-form" id="dri-capture-form" novalidate>
+              <input type="text" name="website" class="dri-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <input type="email" id="dri-email" name="email" placeholder="you@company.com" required aria-label="Your work email" inputmode="email" autocomplete="email">
+              <button type="submit" class="btn btn-ghost btn-lg" id="dri-capture-submit">Email me the breakdown</button>
+            </form>
+          </div>
+          <p class="dri-capture-msg" id="dri-capture-msg" role="alert" tabindex="-1" hidden></p>
+        </div>
+
         <!-- SPONSOR MECHANISM: how a licensed instrument turns each result into a
-             CRM-ready qualified lead. Sits above both CTAs. -->
+             CRM-ready qualified lead. Sits between the email card and the book-a-call CTA. -->
         <div class="dri-sponsor">
           <div class="dri-sponsor-head">
             <span class="eyebrow">What sponsors receive</span>
@@ -263,22 +279,6 @@
               <span class="pipe-label">Synced to your CRM as a qualified lead</span>
             </div>
           </div>
-        </div>
-
-        <!-- Email capture -->
-        <div class="dri-capture">
-          <div class="dri-capture-inner">
-            <div class="dri-capture-copy">
-              <span class="eyebrow">Take it with you</span>
-              <h3>Get the full breakdown by email.</h3>
-            </div>
-            <form class="dri-capture-form" id="dri-capture-form" novalidate>
-              <input type="text" name="website" class="dri-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-              <input type="email" id="dri-email" name="email" placeholder="you@company.com" required aria-label="Your work email" inputmode="email" autocomplete="email">
-              <button type="submit" class="btn btn-ghost btn-lg" id="dri-capture-submit">Email me the breakdown</button>
-            </form>
-          </div>
-          <p class="dri-capture-msg" id="dri-capture-msg" role="alert" tabindex="-1" hidden></p>
         </div>
 
         <!-- PRIMARY CTA block: book the call is the north-star action -->

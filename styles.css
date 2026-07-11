@@ -550,7 +550,7 @@
 /* Sponsor mechanism explainer: sits below the scorecard, above both CTAs.
    Shows how a licensed instrument turns each result into a CRM-ready lead. */
 .dri-sponsor { margin-top: 44px; padding-top: 40px; border-top: 0.5px solid var(--color-border-subtle); }
-.dri-sponsor-head { max-width: 760px; }
+.dri-sponsor-head { max-width: none; }
 .dri-sponsor-head h3 { margin: 10px 0 12px; }
 .dri-sponsor-head p { font-size: 1.0625rem; line-height: 1.55; color: var(--color-ink-soft); margin: 0; }
 /* Flow diagram: three stage cards joined by chevron arrows */
@@ -568,8 +568,8 @@
 /* Quadrant: distinct focus-visible ring that is not confused with is-buyer/is-active tint */
 .sc-quadrant:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
 
-/* Capture: sits between the sponsor explainer and the book-a-call CTA */
-.dri-capture { margin-top: 28px; padding: 28px; border: 0.5px solid var(--color-border-subtle); border-radius: 16px; background: var(--color-paper-light); }
+/* Capture: sits directly below the result, above the sponsor explainer */
+.dri-capture { margin-top: 32px; padding: 28px; border: 0.5px solid var(--color-border-subtle); border-radius: 16px; background: var(--color-paper-light); }
 .dri-capture-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .dri-capture-copy { display: flex; flex-direction: column; gap: 8px; }
 .dri-capture-copy h3 { margin: 0; }
