@@ -769,9 +769,6 @@
     --topbar-h: 72px; /* mobile topbar: 32px logo + 20px top + 20px bottom */
     min-height: 100svh;
   }
-  .hero--fullbleed .hero-bg {
-    object-position: center 35%;
-  }
   .hero--fullbleed .hero-copy {
     top: 54%;
     transform: translateY(-50%);
@@ -910,11 +907,7 @@ main:focus { outline: none; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 42%;
-  /* Mild zoom anchored high: keeps the foreground reading room visible while cropping the
-     lower band just enough that the seated figure's head sits just out of frame. */
-  transform: scale(1.08);
-  transform-origin: center 18%;
+  object-position: center;
   display: block;
   /* No border-radius, no ::after hairline — §5.5 explicitly exempts full-bleed container */
   border-radius: 0;
