@@ -502,6 +502,10 @@
 /* Intro: two columns. Copy on the left (width owned by the grid track), the RCI
    radar illustration fills the space on the right. */
 .dri-screen[data-screen="intro"] { display: grid; grid-template-columns: 1fr 1.08fr; gap: 40px; align-items: center; margin-inline: 0; }
+/* The grid display above ties on specificity with .dri-screen[hidden] and would
+   otherwise win on source order, keeping the intro visible once hidden. This
+   override (extra [hidden] attribute) restores the hide behaviour. */
+.dri-screen[data-screen="intro"][hidden] { display: none; }
 .dri-intro-copy { min-width: 0; }
 .dri-screen[data-screen="intro"] .display { margin: 16px 0 18px; }
 .dri-screen[data-screen="intro"] .btn { margin-top: 28px; }
