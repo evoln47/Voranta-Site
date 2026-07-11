@@ -824,6 +824,18 @@ main:focus { outline: none; }
   margin-bottom: 24px;
   text-wrap: nowrap;
 }
+/* Emphasis on "research infrastructure": heavier weight (700 is the max Geist
+   weight loaded) plus a small cyan asterisk echoing the wordmark's mark.
+   Text itself stays cream (not cyan) since cyan measures ~2.6:1 on this
+   image's tint, below the WCAG AA large-text floor; the asterisk is
+   decorative (aria-hidden), so it can safely carry the accent instead. */
+.hero--fullbleed .hero-emphasis { font-weight: 700; }
+.hero--fullbleed .hero-emphasis-mark {
+  color: var(--color-accent);
+  font-size: 0.55em;
+  vertical-align: 0.62em;
+  margin-left: 0.03em;
+}
 .hero--fullbleed .subhead {
   color: var(--color-paper);
   font-size: 1.5rem;
