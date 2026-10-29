@@ -1007,3 +1007,7 @@ main:focus { outline: none; }
   .gap-journey-zone-left, .gap-journey-zone-right { width: 100%; padding-right: 0; }
   .gap-journey-flag { font-size: 10px; }
 }
+
+/* Stat connection lines (2026-10-29): one line per card, worded as a pair, so
+   the 61% journey stat and the 95% shortlist stat read as one challenge. */
+.gap-connect { font-size: 0.875rem; line-height: 1.5; font-weight: 500; color: var(--color-accent-dark); margin-top: 22px; }
