@@ -140,10 +140,24 @@
     </div>
 
     <div class="gap-stats-row">
-      <div class="gap-stat" id="gap-stat-dots">
+      <div class="gap-stat" id="gap-stat-journey">
         <p class="gap-stat-headline">First seller contact now happens at 61% of the buying journey.</p>
-        <div class="gap-dots-wrap" role="img" aria-label="Dot grid: 61 out of 100, showing that first seller contact happens at 61% of the B2B buying journey, per the 6sense Buyer Experience Report 2025.">
-          <div class="gap-dots" id="gap-dots"></div>
+        <div class="gap-journey-wrap" role="img" aria-label="Journey bar: the first 61 percent of the buying journey runs before any seller contact, while buyers research vendors and rank their shortlist. First seller contact arrives at the 61 percent mark, per the 6sense Buyer Experience Report 2025.">
+          <div class="gap-journey" aria-hidden="true">
+            <div class="gap-journey-number-row">
+              <span class="gap-journey-number"><span id="gap-journey-count">61</span><span class="gap-journey-pct">%</span></span>
+              <span class="gap-journey-number-label">of the journey passes before a seller is contacted</span>
+            </div>
+            <div class="gap-journey-flag-row"><span class="gap-journey-flag" id="gap-journey-flag">First seller contact</span></div>
+            <div class="gap-journey-track">
+              <div class="gap-journey-fill" id="gap-journey-fill"></div>
+              <div class="gap-journey-marker"></div>
+            </div>
+            <div class="gap-journey-zones">
+              <span class="gap-journey-zone gap-journey-zone-left">Buyers research vendors and rank the shortlist in this stretch.</span>
+              <span class="gap-journey-zone gap-journey-zone-right">The seller conversation gets what is left.</span>
+            </div>
+          </div>
         </div>
         <p class="gap-stat-caption">Source: <a href="https://6sense.com/science-of-b2b/buyer-experience-report-2025/" target="_blank" rel="noopener">6sense Buyer Experience Report, 2025</a></p>
       </div>
@@ -503,17 +517,10 @@
 
   /* Gap section stat animations */
   (function () {
-    var dotsContainer = document.getElementById('gap-dots');
-    /* Fixed, evenly-spread positions for the 3 cyan (converted) dots on the 10x10
-       grid, forming a balanced triangle across the shape (row*10 + col) */
-    var accentDots = Array.from({ length: 61 }, function (_, i) { return i; });
-    if (dotsContainer) {
-      for (var i = 0; i < 100; i++) {
-        var dot = document.createElement('div');
-        dot.className = 'gap-dot';
-        dotsContainer.appendChild(dot);
-      }
-    }
+    var journeyCountEl = document.getElementById('gap-journey-count');
+    var journeyFillEl = document.getElementById('gap-journey-fill');
+    var journeyFlagEl = document.getElementById('gap-journey-flag');
+    if (journeyCountEl) journeyCountEl.textContent = '0';
 
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -542,7 +549,7 @@
         countEl.textContent = '95';
         if (arcEl) arcEl.style.strokeDashoffset = arcFinalOffset;
         lines.forEach(function (l) { l.style.opacity = '1'; });
-        animateDots(true);
+        animateJourney(true);
         return;
       }
       var duration = 900;
@@ -567,31 +574,32 @@
       requestAnimationFrame(frame);
     }
 
-    function animateDots(instant) {
-      if (!dotsContainer) return;
-      var dots = dotsContainer.querySelectorAll('.gap-dot');
+    function animateJourney(instant) {
+      if (!journeyCountEl || !journeyFillEl) return;
       if (instant) {
-        dots.forEach(function (d, i) {
-          d.style.opacity = '1';
-          if (accentDots.indexOf(i) !== -1) d.style.background = 'var(--color-accent)';
-        });
+        journeyCountEl.textContent = '61';
+        journeyFillEl.style.width = '61%';
+        if (journeyFlagEl) journeyFlagEl.style.opacity = '1';
         return;
       }
-      dots.forEach(function (d, i) {
-        d.style.transitionDelay = (i * 5) + 'ms';
-        d.style.opacity = '1';
-      });
-      setTimeout(function () {
-        accentDots.forEach(function (idx, i) {
-          var d = dots[idx];
-          if (!d) return;
-          setTimeout(function () {
-            d.style.transitionDelay = '0ms';
-            d.style.background = 'var(--color-accent)';
-            d.style.animation = 'gap-dot-ping 500ms cubic-bezier(0.22, 1, 0.36, 1)';
-          }, i * 15);
-        });
-      }, 700);
+      var duration = 1100;
+      var startTs = null;
+      function ease(t) { return Math.sin(t * Math.PI / 2); }
+      function frame(ts) {
+        if (!startTs) startTs = ts;
+        var progress = Math.min((ts - startTs) / duration, 1);
+        var eased = ease(progress);
+        journeyCountEl.textContent = Math.round(eased * 61);
+        journeyFillEl.style.width = (eased * 61) + '%';
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          journeyCountEl.textContent = '61';
+          journeyFillEl.style.width = '61%';
+          if (journeyFlagEl) journeyFlagEl.style.opacity = '1';
+        }
+      }
+      requestAnimationFrame(frame);
     }
 
     if (!window.IntersectionObserver) {
@@ -607,8 +615,8 @@
       if (sequenceStarted) return;
       sequenceStarted = true;
       if (reduced) { animateBar(true); return; }
-      animateDots(false);
-      setTimeout(function () { animateBar(false); }, 1400);
+      animateJourney(false);
+      setTimeout(function () { animateBar(false); }, 1300);
     }
 
     var statObs = new IntersectionObserver(function (entries, obs) {
