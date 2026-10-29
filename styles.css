@@ -947,9 +947,9 @@ main:focus { outline: none; }
 #demo .framework-teaser-cta .framing-note { margin-top: -12px; }
 
 /* Hero P0 (2026-10-28): solid panel behind hero copy, sample scorecard visual */
-.hero--fullbleed .hero-copy { background: rgba(10, 9, 8, 0.82); padding: 40px 44px; max-width: 800px; box-sizing: border-box; }
+.hero--fullbleed .hero-copy { background: rgba(10, 9, 8, 0.82); padding: 40px 44px; max-width: 720px; box-sizing: border-box; }
 .hero--fullbleed .hero-copy .display { font-size: clamp(30px, 3.2vw, 42px); line-height: 1.12; text-wrap: wrap; white-space: normal; }
-.hero--fullbleed .hero-scorecard { position: absolute; top: 54%; transform: translateY(-50%); right: max(var(--page-gutter), calc((100vw - 1280px) / 2 + 64px)); width: 300px; z-index: 2; }
+.hero--fullbleed .hero-scorecard { position: absolute; top: 54%; transform: translateY(-50%); right: max(var(--page-gutter), calc((100vw - 1280px) / 2 + 64px)); width: 380px; z-index: 2; }
 .hero--fullbleed .hero-scorecard svg { width: 100%; height: auto; display: block; }
 .hero--fullbleed .cta-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .hero--fullbleed .hero-call-link { color: #F4F7F4; font-size: 15px; font-weight: 500; line-height: 1; text-decoration: underline; text-underline-offset: 5px; }
@@ -983,3 +983,9 @@ main:focus { outline: none; }
 /* Hero video window (2026-10-29): replaces the sample scorecard illustration
    in the .hero-scorecard slot; same footprint, live demo loop instead. */
 .hero--fullbleed .hero-video { width: 100%; height: auto; display: block; border-radius: 8px; border: 0.5px solid rgba(10, 9, 8, 0.14); background: var(--color-paper-light); }
+
+/* Phone hero video (2026-10-29): the hero video slot joins the flow under the
+   copy panel on small screens instead of staying hidden. */
+@media (max-width: 640px) {
+  .hero--fullbleed .hero-scorecard { display: block; position: relative; top: auto; right: auto; transform: none; width: auto; margin: 28px 24px 0; }
+}
