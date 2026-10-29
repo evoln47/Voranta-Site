@@ -979,3 +979,7 @@ main:focus { outline: none; }
   .hero--fullbleed { min-height: 0; padding: 100px 0 64px; }
   .hero--fullbleed .hero-copy { position: relative; top: auto; left: auto; right: auto; transform: none; margin: 0 24px; max-width: none; }
 }
+
+/* Hero video window (2026-10-29): replaces the sample scorecard illustration
+   in the .hero-scorecard slot; same footprint, live demo loop instead. */
+.hero--fullbleed .hero-video { width: 100%; height: auto; display: block; border-radius: 8px; border: 0.5px solid rgba(10, 9, 8, 0.14); background: var(--color-paper-light); }
