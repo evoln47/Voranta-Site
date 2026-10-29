@@ -944,3 +944,10 @@ main:focus { outline: none; }
    Sans (not mono) because it is sentence prose, 14px to clear the reading-surface floor. */
 .framing-note { font-family: var(--font-sans); font-size: 14px; line-height: 1.5; color: var(--color-ink-mute); margin: 0; }
 #demo .framework-teaser-cta .framing-note { margin-top: -12px; }
+
+/* Hero P0 (2026-10-28): solid panel behind hero copy, sample scorecard visual */
+.hero--fullbleed .hero-copy { background: rgba(10, 9, 8, 0.82); padding: 40px 44px; }
+.hero--fullbleed .hero-scorecard { position: absolute; top: 54%; transform: translateY(-50%); right: max(var(--page-gutter), calc((100vw - 1280px) / 2 + 64px)); width: 300px; z-index: 2; }
+.hero--fullbleed .hero-scorecard svg { width: 100%; height: auto; display: block; }
+@media (max-width: 1279px) { .hero--fullbleed .hero-scorecard { display: none; } }
+@media (max-width: 640px) { .hero--fullbleed .hero-copy { padding: 28px 24px; } }
