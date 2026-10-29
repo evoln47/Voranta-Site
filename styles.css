@@ -947,7 +947,7 @@ main:focus { outline: none; }
 
 /* Hero P0 (2026-10-28): solid panel behind hero copy, sample scorecard visual */
 .hero--fullbleed .hero-copy { background: rgba(10, 9, 8, 0.82); padding: 40px 44px; max-width: 800px; box-sizing: border-box; }
-.hero--fullbleed .hero-copy .display { font-size: clamp(30px, 3.2vw, 42px); line-height: 1.12; }
+.hero--fullbleed .hero-copy .display { font-size: clamp(30px, 3.2vw, 42px); line-height: 1.12; text-wrap: wrap; white-space: normal; }
 .hero--fullbleed .hero-scorecard { position: absolute; top: 54%; transform: translateY(-50%); right: max(var(--page-gutter), calc((100vw - 1280px) / 2 + 64px)); width: 300px; z-index: 2; }
 .hero--fullbleed .hero-scorecard svg { width: 100%; height: auto; display: block; }
 @media (max-width: 1279px) { .hero--fullbleed .hero-scorecard { display: none; } }
