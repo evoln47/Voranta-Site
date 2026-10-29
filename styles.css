@@ -1011,3 +1011,27 @@ main:focus { outline: none; }
 /* Stat connection lines (2026-10-29): one line per card, worded as a pair, so
    the 61% journey stat and the 95% shortlist stat read as one challenge. */
 .gap-connect { font-size: 0.875rem; line-height: 1.5; font-weight: 500; color: var(--color-accent-dark); margin-top: 22px; }
+
+/* Product hero (2026-10-29): the structure used across Linear, Attio, Ramp,
+   and Framer. Copy block first, then one large product visual directly below
+   it at the full content width, in a plain rounded frame, playing in place. */
+.hero--product { background: var(--color-paper); padding: 84px var(--page-gutter) 104px; }
+.hero-product-inner { max-width: 1280px; margin: 0 auto; }
+.hero--product .hero-copy { max-width: 1060px; }
+.hero--product .eyebrow { color: var(--color-accent-dark); }
+.hero--product .display { font-size: clamp(2.5rem, 4.6vw, 4rem); line-height: 1.02; letter-spacing: -0.035em; max-width: 1020px; }
+.hero--product .subhead { font-size: 1.25rem; line-height: 1.55; max-width: 780px; margin-bottom: 0; }
+.hero--product .cta-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.hero-product-stage { margin: 60px 0 0; border: 0.5px solid var(--color-border-subtle); border-radius: 18px; overflow: hidden; background: var(--color-paper-light); }
+.hero--product .hero-video { display: block; width: 100%; height: auto; background: var(--color-paper-light); }
+@media (max-width: 880px) {
+  .hero--product { padding: 64px var(--page-gutter) 72px; }
+  .hero--product .display { font-size: clamp(2.15rem, 9vw, 3rem); }
+  .hero--product .subhead { font-size: 1.125rem; }
+  .hero-product-stage { margin-top: 44px; border-radius: 14px; }
+}
+@media (max-width: 640px) {
+  .hero--product { padding: 56px var(--page-gutter) 64px; }
+  .hero--product .cta-actions { flex-direction: column; align-items: stretch; }
+  .hero-product-stage { margin-top: 36px; border-radius: 12px; }
+}
