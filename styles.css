@@ -188,7 +188,7 @@
   .gap-stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: stretch; }
   .gap-stat { text-align: left; display: flex; flex-direction: column; }
   #gap-stat-bar { background: var(--color-paper-light); border-radius: 16px; border: 0.5px solid var(--color-border-subtle); padding: 36px 32px; }
-  #gap-stat-dots { background: var(--color-paper-light); border-radius: 16px; border: 0.5px solid var(--color-border-subtle); padding: 36px 32px; }
+  #gap-stat-journey { background: var(--color-paper-light); border-radius: 16px; border: 0.5px solid var(--color-border-subtle); padding: 36px 32px; }
   .gap-stat-headline { font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500; color: var(--color-ink); letter-spacing: -0.03em; margin: 0 0 28px; line-height: 1.2; }
   .gap-stat-caption { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-ink-mute); margin-top: auto; padding-top: 20px; text-align: right; white-space: nowrap; }
   .gap-stat-pull { font-family: var(--font-display); font-style: italic; font-variation-settings: "opsz" 72, "wght" 400, "SOFT" 100, "WONK" 0; }
@@ -209,13 +209,8 @@
   .gap-numstat-line { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.65; color: rgba(244,247,244,0.55); display: inline; white-space: nowrap; }
   .js .gap-numstat-line { opacity: 0; transition: opacity 350ms ease-out; }
 
-  /* Dot grid visual */
-  .gap-dots-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
-  .gap-dots { display: grid; grid-template-columns: repeat(10, 1fr); gap: 10px; aspect-ratio: 1 / 1; max-width: 300px; width: 100%; }
-  .gap-dot { aspect-ratio: 1 / 1; border-radius: 50%; background: var(--color-paper-deep); opacity: 0; transition: opacity 200ms ease-out, background 500ms cubic-bezier(0.22, 1, 0.36, 1); }
-  @keyframes gap-dot-ping { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
   @media (prefers-reduced-motion: reduce) {
-    .gap-numstat-line, .gap-dot { transition: none !important; animation: none !important; }
+    .gap-numstat-line, .gap-journey-flag { transition: none !important; animation: none !important; }
     .btn, a { transition: none !important; }
     .hero-scroll-arrow { animation: none !important; }
   }
@@ -286,7 +281,6 @@
     .pillars, .diff-grid { grid-template-columns: 1fr; }
     .gap-stats-row { grid-template-columns: 1fr; gap: 28px; align-items: start; }
     .gap-stat-headline { font-size: 1.125rem; }
-    .gap-dots { gap: 8px; max-width: 240px; }
     .gap-donut-wrap { width: 180px; height: 180px; }
     .gap-numstat-number { font-size: 2.5rem; }
     .gap-stat-caption { font-size: 9.5px; letter-spacing: 0.02em; }
@@ -358,7 +352,7 @@
   }
   .btn:hover { transform: translateY(-2px); }
 
-  .diff-card, .product-card, .sc-card, .card, .feature-card, #gap-stat-bar, #gap-stat-dots {
+  .diff-card, .product-card, .sc-card, .card, .feature-card, #gap-stat-bar, #gap-stat-journey {
     transition: transform 220ms ease-out, border-color 220ms ease-out, background 220ms ease-out;
   }
   .diff-card:hover, .product-card:hover, .sc-card:not(.is-dark):hover,
@@ -988,4 +982,28 @@ main:focus { outline: none; }
    copy panel on small screens instead of staying hidden. */
 @media (max-width: 640px) {
   .hero--fullbleed .hero-scorecard { display: block; position: relative; top: auto; right: auto; transform: none; width: auto; margin: 28px 24px 0; }
+}
+
+/* Journey bar for the 61% stat (2026-10-29): replaces the dot grid. The dark
+   fill is the pre-contact stretch of the journey; the pale remainder is what
+   is left once sellers enter. The fill and count animate together. */
+.gap-journey-wrap { flex: 1; display: flex; align-items: center; }
+.gap-journey { width: 100%; }
+.gap-journey-number-row { display: flex; align-items: center; gap: 16px; margin-bottom: 26px; }
+.gap-journey-number { font-family: var(--font-sans); font-size: 3.5rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: var(--color-ink); display: flex; align-items: baseline; }
+.gap-journey-pct { }
+.gap-journey-number-label { font-size: 0.9375rem; line-height: 1.45; color: var(--color-ink-soft); max-width: 24ch; }
+.gap-journey-flag-row { position: relative; height: 18px; margin-bottom: 8px; }
+.gap-journey-flag { position: absolute; left: 61%; transform: translateX(-100%); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-accent-dark); white-space: nowrap; opacity: 0; transition: opacity 400ms ease-out; }
+.gap-journey-track { position: relative; height: 30px; border-radius: 6px; background: var(--color-paper-deep); }
+.gap-journey-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--color-ink); border-radius: 6px 0 0 6px; }
+.gap-journey-marker { position: absolute; left: 61%; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--color-accent); }
+.gap-journey-zones { display: flex; margin-top: 14px; }
+.gap-journey-zone { font-size: 0.8125rem; line-height: 1.5; color: var(--color-ink-soft); }
+.gap-journey-zone-left { width: 61%; padding-right: 18px; font-weight: 500; color: var(--color-ink); }
+.gap-journey-zone-right { width: 39%; }
+@media (max-width: 880px) {
+  .gap-journey-zones { flex-direction: column; gap: 6px; }
+  .gap-journey-zone-left, .gap-journey-zone-right { width: 100%; padding-right: 0; }
+  .gap-journey-flag { font-size: 10px; }
 }
