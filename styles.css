@@ -190,7 +190,7 @@
   #gap-stat-bar { background: var(--color-paper-light); border-radius: 16px; border: 0.5px solid var(--color-border-subtle); padding: 36px 32px; }
   #gap-stat-dots { background: var(--color-paper-light); border-radius: 16px; border: 0.5px solid var(--color-border-subtle); padding: 36px 32px; }
   .gap-stat-headline { font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500; color: var(--color-ink); letter-spacing: -0.03em; margin: 0 0 28px; line-height: 1.2; }
-  .gap-stat-caption { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-mute); margin-top: auto; padding-top: 20px; text-align: right; }
+  .gap-stat-caption { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-ink-mute); margin-top: auto; padding-top: 20px; text-align: right; white-space: nowrap; }
   .gap-stat-pull { font-family: var(--font-display); font-style: italic; font-variation-settings: "opsz" 72, "wght" 400, "SOFT" 100, "WONK" 0; }
 
   /* Numstat visual */
@@ -289,6 +289,7 @@
     .gap-dots { gap: 8px; max-width: 240px; }
     .gap-donut-wrap { width: 180px; height: 180px; }
     .gap-numstat-number { font-size: 2.5rem; }
+    .gap-stat-caption { font-size: 9.5px; letter-spacing: 0.02em; }
     .gap-numstat-line { white-space: normal; }
     .gap-numstat-lines { margin-top: 14px; padding-top: 14px; }
     #product .diff-grid { grid-template-columns: 1fr; }
@@ -965,4 +966,5 @@ main:focus { outline: none; }
   .hero--fullbleed .cta-actions { flex-direction: column; align-items: stretch; gap: 14px; }
   .hero--fullbleed .cta-actions .btn { text-align: center; }
   .hero--fullbleed .hero-call-link { text-align: center; padding: 8px 0; }
+  .gap-stat-caption { font-size: 9px; letter-spacing: 0.01em; }
 }
