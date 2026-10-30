@@ -17,9 +17,10 @@ const { scoreAnswers, buildLeadText, buildVisitorText, buildVisitorHtml, buildVi
 
 const FROM = process.env.LEAD_FROM || 'Voranta <noreply@voranta.co>';
 const TO = process.env.LEAD_TO || 'evan@voranta.co';
-// Generic sender identity (not a named human) to limit impersonation if abused.
-// Replies still reach Evan via reply_to. Override with VISITOR_FROM if desired.
-const VISITOR_FROM = process.env.VISITOR_FROM || 'Voranta <noreply@voranta.co>';
+// Named personal sender (changed 2026-10-29): a person at evan@voranta.co
+// classifies as primary-inbox mail far more often than a noreply address,
+// and replies reach Evan directly. Override with VISITOR_FROM if desired.
+const VISITOR_FROM = process.env.VISITOR_FROM || 'Evan Volness <evan@voranta.co>';
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 // Best-effort, in-memory, per-IP rate limit. Serverless instances are reused
@@ -115,7 +116,8 @@ module.exports = async (req, res) => {
     subject: buildVisitorSubject(result),
     html: buildVisitorHtml(result),
     text: buildVisitorText(result),
-    headers: { 'List-Unsubscribe': `<mailto:${TO}?subject=unsubscribe>` },
+    // No List-Unsubscribe header (removed 2026-10-29): every recipient asked
+    // for this email minutes earlier, and the header is a bulk-mail signal.
   };
 
   const leadMessage = {
