@@ -994,7 +994,7 @@ main:focus { outline: none; }
 .gap-journey-pct { }
 .gap-journey-number-label { font-size: 0.9375rem; line-height: 1.45; color: var(--color-ink-soft); max-width: 24ch; }
 .gap-journey-flag-row { position: relative; height: 18px; margin-bottom: 8px; }
-.gap-journey-flag { position: absolute; left: 61%; transform: translateX(-100%); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-accent-dark); white-space: nowrap; opacity: 0; transition: opacity 400ms ease-out; }
+.gap-journey-flag { position: absolute; left: 61%; transform: translateX(-50%); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-accent-dark); white-space: nowrap; opacity: 0; transition: opacity 400ms ease-out; }
 .gap-journey-track { position: relative; height: 30px; border-radius: 6px; background: var(--color-paper-deep); }
 .gap-journey-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--color-ink); border-radius: 6px 0 0 6px; }
 .gap-journey-marker { position: absolute; left: 61%; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--color-accent); }
