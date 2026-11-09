@@ -1,6 +1,1 @@
-{
-  "cleanUrls": true,
-  "redirects": [
-    { "source": "/aipq", "destination": "/", "permanent": true }
-  ]
-}
+{"trailingSlash":false}
