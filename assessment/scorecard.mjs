@@ -9,7 +9,7 @@ export function renderScorecard(result, els) {
 
   // Final framing labels (conversion-copywriter finalized wording).
   // focus.tier 'deficit' = a gap to close; 'edge' = the next lever to extend.
-  // focus is null only when all four dimensions are exactly equal (evenTier set).
+  // focus is null only when all five dimensions are exactly equal (evenTier set).
   const f = result.focus;
 
   // B28: CTA text - primary Calendly button text based on result state

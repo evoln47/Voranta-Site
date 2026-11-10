@@ -1,8 +1,13 @@
 // The Research Conversion Index (RCI) as data. Edit this file to change content.
 //
-// MODEL: 5 questions, 5 dimensions, ONE question per dimension. Each question has
-// SIX options valued 0,20,40,60,80,100 in ascending maturity. The chosen option
-// value IS the dimension's /100 score (no aggregation: one item per dimension).
+// MODEL: 10 questions, 5 dimensions, TWO questions per dimension. Each question
+// has SIX options valued 0,20,40,60,80,100 in ascending maturity. A dimension's
+// /100 score is the MEAN of its two questions' chosen values, so dimension
+// scores land in steps of 10. Within each dimension the first question covers
+// the practice (what exists today) and the second covers the system around it
+// (ownership, cadence, measurement, or what happens next). Order: the five
+// practice questions in funnel order, then the five system questions in the
+// same order, so a dimension's two questions are never adjacent.
 // The RCI total is a WEIGHTED mean of the five dimension values.
 
 export const meta = {
@@ -43,10 +48,11 @@ export const dimensions = [
     edge: 'Reps already have meaningful context before the first call. The next step is sharpening the brief and the routing so every rep opens every conversation on the account-specific gap, not just when the system fires cleanly.' },
 ];
 
-// ONE question per dimension. options[i].points IS the dimension /100 value for
-// choiceIndex i. Six rungs: 0, 20, 40, 60, 80, 100 ascending maturity, no neutral
-// midpoint, no vanity top rung. Provisional wording; conversion-copywriter polishes
-// the prose, but the construct and the per-rung value are LOCKED.
+// TWO questions per dimension. options[i].points is the item value for
+// choiceIndex i; the dimension /100 is the mean of its two items' values.
+// Six rungs: 0, 20, 40, 60, 80, 100 ascending maturity, no neutral midpoint,
+// no vanity top rung. Wording was revised in the 10-question overhaul
+// (2026-11-09); the constructs and the per-rung values are LOCKED.
 export const questions = [
   { id: 'pov', dimension: 'pointOfView', text: 'When buyers in your category research the problem you solve, whose way of framing it are they most likely using?', options: [
     { label: "A competitor's or an analyst's framing. Ours is not in the conversation", points: 0 },
@@ -54,39 +60,79 @@ export const questions = [
     { label: 'Some of our content appears, but nothing the market would name as ours', points: 40 },
     { label: 'We have a recognizable point of view, but a competitor could adopt it', points: 60 },
     { label: 'We have a named framework buyers can apply, associated with our brand', points: 80 },
-    { label: 'A named framework grounded in proprietary data that the market researches against and competitors cannot quickly reproduce', points: 100 },
+    { label: 'A named framework, grounded in proprietary data, that the market researches against', points: 100 },
   ] },
-  { id: 'sensing', dimension: 'buyerResearchSensing', text: 'How do you learn what your buyers are actually researching, and how does that learning change your marketing?', options: [
+  { id: 'sensing', dimension: 'buyerResearchSensing', text: 'How do you learn what your buyers are actually researching?', options: [
     { label: 'We do not systematically track it. We go on instinct', points: 0 },
-    { label: 'Occasional signals, nothing structured', points: 20 },
-    { label: 'We pull intent or search data periodically, but it rarely changes what we publish', points: 40 },
-    { label: 'We review buyer research signals on a regular cadence and adjust campaigns', points: 60 },
-    { label: 'Buyer research signals systematically shape our content and positioning', points: 80 },
-    { label: 'A continuous loop: buyer behavior is measured, feeds back, and revises our framework on an ongoing basis', points: 100 },
+    { label: 'Anecdotes from sales and support, passed along when someone remembers', points: 20 },
+    { label: 'We pull search or intent data periodically, usually when a campaign is being planned', points: 40 },
+    { label: 'A named owner reviews buyer research signals on a set cadence', points: 60 },
+    { label: 'Signals from search, sales calls, and community channels are combined into one view', points: 80 },
+    { label: 'Buyer research behavior is measured continuously, including questions buyers ask that nobody in the category answers yet', points: 100 },
   ] },
-  { id: 'conv', dimension: 'conversionSurface', text: 'When someone engages your best content, what happens next, and can you measure it?', options: [
-    { label: 'A high-commitment ask such as book a demo, before any value, and we cannot measure conversion', points: 0 },
-    { label: 'A generic subscribe or contact us, unconnected to what they read, with no real measurement', points: 20 },
-    { label: 'One standard next step sitewide, with conversion estimated roughly', points: 40 },
-    { label: 'A relevant next step on key content, with conversion we can estimate', points: 60 },
-    { label: 'A low-friction, relevant next step that identifies the contact, with conversion we track', points: 80 },
-    { label: 'The next step adapts to what they engaged with, and we report a defensible conversion-to-pipeline rate', points: 100 },
+  { id: 'conv', dimension: 'conversionSurface', text: 'When someone engages your best content, what happens next?', options: [
+    { label: 'Nothing. The content ends and the reader leaves', points: 0 },
+    { label: 'A generic ask, such as book a demo or contact us, the same whatever they read', points: 20 },
+    { label: 'One standard next step sitewide, such as a newsletter signup or a gated download', points: 40 },
+    { label: 'A next step matched to the topic they engaged with', points: 60 },
+    { label: 'A low-friction next step matched to the topic, which identifies the reader when they take it', points: 80 },
+    { label: 'A diagnostic that scores the reader against what they engaged with and routes them on the result', points: 100 },
   ] },
   { id: 'trust', dimension: 'trustAtCapture', text: 'At the moment a buyer gives you their information, what do they actually receive in return?', options: [
     { label: 'Only a promise of follow-up. No value at the exchange', points: 0 },
     { label: 'Access to a generic asset anyone could find', points: 20 },
     { label: 'A useful resource, the same one everyone gets', points: 40 },
-    { label: 'A useful resource, but it arrives later, not at the moment of exchange', points: 60 },
+    { label: 'A resource matched to the content they came from', points: 60 },
     { label: 'Something genuinely useful delivered immediately at capture', points: 80 },
     { label: 'Something tailored to their specific situation, delivered on the spot, that they could not get elsewhere', points: 100 },
   ] },
-  { id: 'signal', dimension: 'signalToSales', text: "Before a rep's first conversation with a new lead, what account-specific intelligence do they have, and how current is it?", options: [
+  { id: 'signal', dimension: 'signalToSales', text: "Before a rep's first conversation with a new lead, what do they know about that account?", options: [
     { label: 'A name and an email. The rep discovers everything live', points: 0 },
     { label: 'Firmographics and the downloaded asset, nothing about where the account stands', points: 20 },
-    { label: 'Leads land in one queue. Reps pick by gut with no brief', points: 40 },
-    { label: 'A brief exists, but it is stale or arrives after outreach started', points: 60 },
-    { label: 'A current account-specific brief reaches the right rep, but only when the system fires cleanly', points: 80 },
-    { label: 'Every lead is prioritized on consistent criteria and routed with a current account-specific brief before first contact', points: 100 },
+    { label: "A brief covering the account's engagement with our content", points: 40 },
+    { label: 'A brief that names the gap the account is likely facing, built from their engagement', points: 60 },
+    { label: 'A current account-specific brief naming the gap and the evidence behind it', points: 80 },
+    { label: "A current account-specific brief naming the gap, the evidence, and the buyer's own words where they gave them", points: 100 },
+  ] },
+  { id: 'pov2', dimension: 'pointOfView', text: 'Where does your point of view come from, and what keeps it current?', options: [
+    { label: 'Leadership opinion. Nothing tests it and nobody owns it', points: 0 },
+    { label: 'Customer anecdotes and a watch on what competitors publish', points: 20 },
+    { label: 'Our own sales and product data, reviewed when someone asks', points: 40 },
+    { label: 'Original research, run when a launch or a campaign needs it', points: 60 },
+    { label: 'A standing research program that tests our claims, with a named owner keeping them current', points: 80 },
+    { label: 'Proprietary data feeds it continuously, and a named owner has revised it as the evidence moved', points: 100 },
+  ] },
+  { id: 'sensing2', dimension: 'buyerResearchSensing', text: 'Once you know what buyers are researching, what does that knowledge change?', options: [
+    { label: 'Nothing. Publishing plans are set without it', points: 0 },
+    { label: 'A topic joins the content calendar now and then', points: 20 },
+    { label: 'It shapes individual campaigns. Positioning stays the same', points: 40 },
+    { label: 'It shapes what we publish and how we position, reviewed on a regular cycle', points: 60 },
+    { label: 'It revises the framework itself: the claims, the categories, the questions we ask', points: 80 },
+    { label: 'The loop runs continuously. Recent framework changes trace back to specific buyer signals', points: 100 },
+  ] },
+  { id: 'conv2', dimension: 'conversionSurface', text: 'How well can you measure what your best content produces?', options: [
+    { label: 'We cannot connect content engagement to pipeline at all', points: 0 },
+    { label: 'We count views and downloads and report those as the result', points: 20 },
+    { label: 'We estimate conversion from engagement to contact, roughly and after the fact', points: 40 },
+    { label: 'We track conversion from key content to identified contacts', points: 60 },
+    { label: 'We track conversion from engagement to pipeline and review it on a set cadence', points: 80 },
+    { label: 'We report a defensible conversion-to-pipeline rate by asset, and it steers budget decisions', points: 100 },
+  ] },
+  { id: 'trust2', dimension: 'trustAtCapture', text: 'After a buyer gives you their information, what reaches them before a salesperson does?', options: [
+    { label: 'A sales call within the day, whatever they asked for', points: 0 },
+    { label: 'A generic nurture sequence, the same for every lead', points: 20 },
+    { label: 'Follow-ups matched to the topic they engaged with', points: 40 },
+    { label: 'Their own results, ahead of any sales outreach', points: 60 },
+    { label: 'Their results plus a read on what they mean, before sales reaches out', points: 80 },
+    { label: "A personal brief built from their answers reaches them first, and the rep's first conversation opens from it", points: 100 },
+  ] },
+  { id: 'signal2', dimension: 'signalToSales', text: 'How are new leads prioritized and routed to reps?', options: [
+    { label: 'They land in one queue. Reps choose for themselves, with no priority order', points: 0 },
+    { label: 'They are assigned by rotation or territory, with no priority order', points: 20 },
+    { label: 'A score based on firmographics alone sets the order', points: 40 },
+    { label: 'Engagement and fit set the order', points: 60 },
+    { label: 'Prioritized on consistent criteria and routed to the right rep before first contact', points: 80 },
+    { label: 'Prioritized on consistent criteria, routed with a current brief before first contact, and reviewed when a handoff misses', points: 100 },
   ] },
 ];
 

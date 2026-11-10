@@ -1,7 +1,8 @@
 import { questions, dimensions, archetypes } from './framework.mjs';
 
-// MODEL: ONE question per dimension. The chosen option value (0,20,40,60,80,100)
-// IS that dimension's /100 score directly. No per-dimension aggregation.
+// MODEL: TWO questions per dimension. A dimension's /100 score is the MEAN of
+// its two chosen option values (each 0,20,40,60,80,100), so dimension scores
+// land in steps of 10.
 //
 // The RCI total is a WEIGHTED mean of the five dimension values. Weights reflect
 // leverage in the demand-research thesis: the upstream strategy pair carries the
@@ -34,11 +35,11 @@ const HIGH_BAND_100 = 75;
 //                    0..100. Rounded ONCE from the full-precision weighted sum, so
 //                    the headline does not always equal a naive average of the
 //                    displayed dimension /100s. That is intended, not a bug.
-//   dimensionScores  { <dimKey>: <0-100> } the chosen option value per dimension.
-//                    This is what display and email read.
+//   dimensionScores  { <dimKey>: <0-100> } the mean of the dimension's two item
+//                    values. This is what display and email read.
 //   dimensionRaw     { <dimKey>: <0-100> } identical to dimensionScores. Kept so
 //                    consumers/tests expecting a `dimensionRaw` field still work;
-//                    with one item per dimension there is no separate raw scale.
+//                    the per-item values live in `answers`.
 //   archetype        { key, label, blurb }.
 //   focus            { dimension, label, tier:'deficit'|'edge', blurb } or null
 //                    (null only when all five dimension /100s are exactly equal).
@@ -50,9 +51,18 @@ export function scoreAnswers(answers) {
     return { questionId: a.questionId, choiceIndex: a.choiceIndex, points: q.options[a.choiceIndex].points, dimension: q.dimension };
   });
 
-  // One question per dimension: the chosen option value is the dimension /100.
+  // Two questions per dimension: the dimension /100 is the mean of its two
+  // item values. Item values are multiples of 20, so the mean is exact in
+  // floating point and lands in steps of 10.
   const dimensionScores = {};
-  for (const d of detailed) dimensionScores[d.dimension] = d.points;
+  const itemCounts = {};
+  for (const d of detailed) {
+    dimensionScores[d.dimension] = (dimensionScores[d.dimension] || 0) + d.points;
+    itemCounts[d.dimension] = (itemCounts[d.dimension] || 0) + 1;
+  }
+  for (const key of Object.keys(dimensionScores)) {
+    dimensionScores[key] = dimensionScores[key] / itemCounts[key];
+  }
 
   // dimensionRaw kept identical for any consumer that reads it.
   const dimensionRaw = { ...dimensionScores };
