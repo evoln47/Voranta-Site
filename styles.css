@@ -493,6 +493,10 @@
 /* Results area uses 1160px so the radar card gets meaningful width.
    Quiz and intro screens are capped below to keep reading width comfortable. */
 .assessment .section-inner { max-width: 1160px; margin: 0 auto; }
+/* Results landing: when the results view scrolls into view, this margin
+   keeps the top of the app clear of the sticky topbar (77px tall on
+   desktop). The max-width: 880px block further down sets the mobile value. */
+.dri-app { scroll-margin-top: 88px; }
 .dri-screen[hidden] { display: none; }
 
 /* Intro: two columns. Copy on the left (width owned by the grid track), the RCI
