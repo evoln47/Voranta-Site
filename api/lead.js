@@ -1,7 +1,11 @@
 // Vercel serverless function (Node runtime, CommonJS, no dependencies).
 // On a Research Conversion Index submission this sends two emails via the Resend
 // REST API: the visitor's own diagnosis to the address they entered, and a
-// pre-diagnosed lead notification to Evan.
+// pre-diagnosed lead notification to Evan. It also stores the captured
+// completion in the Voranta product database through the product's ingest
+// endpoint (POST /api/site-completions on assess.voranta.co), best effort:
+// the product re-derives the result from the answers on its side, and an
+// ingest failure is logged only.
 //
 // Security: the endpoint is unauthenticated, so it must not let a caller put
 // arbitrary text into a voranta.co-branded email or spoof a result. The score,
@@ -48,6 +52,25 @@ async function readJson(req) {
   let raw = '';
   for await (const chunk of req) raw += chunk;
   return raw ? JSON.parse(raw) : {};
+}
+
+// One POST to the Voranta product's site-completion ingest endpoint, with
+// the shared secret as a Bearer header. The product derives the score,
+// archetype, and gap from the answers itself, so this sends the email
+// address and the answers only. Throws on a non-2xx, same as sendEmail.
+async function sendIngest(url, secret, email, answers) {
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${secret}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, answers }),
+  });
+  if (!r.ok) {
+    const detail = await r.text().catch(() => '');
+    const err = new Error(`Ingest ${r.status}: ${detail}`);
+    err.status = r.status;
+    throw err;
+  }
+  return true;
 }
 
 // One POST to Resend. Throws on a non-2xx so callers can branch on the outcome.
@@ -130,13 +153,26 @@ module.exports = async (req, res) => {
 
   // Send both independently. The visitor email is what the UI promised them, so
   // its outcome drives the response; a failed lead notification is only logged.
-  const [visitorResult, leadResult] = await Promise.allSettled([
+  // The ingest to the product database rides in the same batch under the same
+  // rule: logged on failure, never part of the response. When the ingest env
+  // vars are unset the call is skipped, so this function stays safe to run
+  // before the product endpoint is configured.
+  const sends = [
     sendEmail(apiKey, visitorMessage),
     sendEmail(apiKey, leadMessage),
-  ]);
+  ];
+  const ingestUrl = process.env.VORANTA_INGEST_URL;
+  const ingestSecret = process.env.VORANTA_INGEST_SECRET;
+  if (ingestUrl && ingestSecret) {
+    sends.push(sendIngest(ingestUrl, ingestSecret, email, body.answers));
+  }
+  const [visitorResult, leadResult, ingestResult] = await Promise.allSettled(sends);
 
   if (leadResult.status === 'rejected') {
     console.error('Lead notification send failed', leadResult.reason && leadResult.reason.message);
+  }
+  if (ingestResult && ingestResult.status === 'rejected') {
+    console.error('Site completion ingest failed', ingestResult.reason && ingestResult.reason.message);
   }
   if (visitorResult.status === 'rejected') {
     console.error('Visitor breakdown send failed', visitorResult.reason && visitorResult.reason.message);
