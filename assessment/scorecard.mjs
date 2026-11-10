@@ -7,6 +7,14 @@ export function renderScorecard(result, els) {
   els.archetypeName.textContent = result.archetype.label;
   els.archetypeBlurb.textContent = result.archetype.blurb;
 
+  // Provenance for the results view: stamp the completion date into the
+  // credibility line under the dimension bars, so a forwarded result
+  // shows the date it was produced.
+  const resultDate = document.getElementById('dri-result-date');
+  if (resultDate) {
+    resultDate.textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
   // Final framing labels (conversion-copywriter finalized wording).
   // focus.tier 'deficit' = a gap to close; 'edge' = the next lever to extend.
   // focus is null only when all five dimensions are exactly equal (evenTier set).

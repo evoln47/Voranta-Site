@@ -56,7 +56,7 @@ export const dimensions = [
 export const questions = [
   { id: 'pov', dimension: 'pointOfView', text: 'When buyers in your category research the problem you solve, whose way of framing it are they most likely using?', options: [
     { label: "A competitor's or an analyst's framing. Ours is not in the conversation", points: 0 },
-    { label: 'Mostly generic best practices. No one owns the framing, including us', points: 20 },
+    { label: 'AI answer engines and generic best practices. No one owns the framing, including us', points: 20 },
     { label: 'Some of our content appears, but nothing the market would name as ours', points: 40 },
     { label: 'We have a recognizable point of view, but a competitor could adopt it', points: 60 },
     { label: 'We have a named framework buyers can apply, associated with our brand', points: 80 },
@@ -76,7 +76,7 @@ export const questions = [
     { label: 'One standard next step sitewide, such as a newsletter signup or a gated download', points: 40 },
     { label: 'A next step matched to the topic they engaged with', points: 60 },
     { label: 'A low-friction next step matched to the topic, which identifies the reader when they take it', points: 80 },
-    { label: 'A diagnostic that scores the reader against what they engaged with and routes them on the result', points: 100 },
+    { label: 'A short assessment that scores the reader against what they engaged with and routes them on the result', points: 100 },
   ] },
   { id: 'trust', dimension: 'trustAtCapture', text: 'At the moment a buyer gives you their information, what do they actually receive in return?', options: [
     { label: 'Only a promise of follow-up. No value at the exchange', points: 0 },
@@ -107,8 +107,8 @@ export const questions = [
     { label: 'A topic joins the content calendar now and then', points: 20 },
     { label: 'It shapes individual campaigns. Positioning stays the same', points: 40 },
     { label: 'It shapes what we publish and how we position, reviewed on a regular cycle', points: 60 },
-    { label: 'It revises the framework itself: the claims, the categories, the questions we ask', points: 80 },
-    { label: 'The loop runs continuously. Recent framework changes trace back to specific buyer signals', points: 100 },
+    { label: 'It revises our core claims, the categories we use, and the questions we ask buyers', points: 80 },
+    { label: 'The loop runs continuously. Recent changes to our claims trace back to specific buyer signals', points: 100 },
   ] },
   { id: 'conv2', dimension: 'conversionSurface', text: 'How well can you measure what your best content produces?', options: [
     { label: 'We cannot connect content engagement to pipeline at all', points: 0 },
@@ -148,7 +148,7 @@ export const questions = [
 //     dimension (conversion / trust / signal) works, so these blurbs may not
 //     claim a specific downstream dimension is strong.
 export const archetypes = {
-  renter: { key: 'renter', label: 'The Renter', blurb: "Buyers read your content, then research the problem using someone else's framework. That framework sets the vocabulary, shapes the shortlist, and earns the referral. Until you own the framework buyers research against and read what they are researching, your content spend builds authority for whoever does." },
+  renter: { key: 'renter', label: 'The Renter', blurb: "Buyers read your content, then research the problem using a framework another company named. That framework sets the vocabulary and shapes the shortlist. Owning the framework buyers research against, and reading what they are researching, redirects the authority your content already earns." },
   publisher: { key: 'publisher', label: 'The Publisher', blurb: 'You have built real strategy: a point of view the market engages with and a read on what your buyers are researching. The gap is downstream. The path from earned attention to identifiable, sales-ready pipeline is not closing the distance the strategy has already opened.' },
   operator: { key: 'operator', label: 'The Operator', blurb: 'You have built a broadly strong downstream engine. The structural gap is upstream. You compete on a framework someone else defined, and you are not systematically reading what buyers research, which means a well-resourced rival can claim the category position you are currently borrowing.' },
   authority: { key: 'authority', label: 'The Authority', blurb: 'You own the framework buyers research against, you read what they are researching and feed it back, and the rest of your engine is broadly strong. That combination is hard to build and harder to sustain. The question is how quickly you can deepen the position before a well-resourced rival makes it worth challenging.' },
