@@ -5,7 +5,7 @@ import { questions, dimensions, archetypes } from './framework.mjs';
 // land in steps of 10.
 //
 // The RCI total is a WEIGHTED mean of the five dimension values. Weights reflect
-// leverage in the demand-research thesis: the upstream strategy pair carries the
+// leverage in the demand-research thesis: the upstream strategy pair holds the
 // most weight (Point of View is the single largest lever), then the conversion and
 // sensing dimensions, then the two more operational downstream dimensions.
 const WEIGHTS = {

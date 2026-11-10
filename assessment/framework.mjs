@@ -15,7 +15,7 @@ export const meta = {
   short: 'RCI',
 };
 
-// Each dimension carries two band-adaptive blurbs (provisional copy; final
+// Each dimension has two band-adaptive blurbs (provisional copy; final
 // wording comes from conversion-copywriter, construct and point values fixed):
 //   gap  - shown when this dimension is the focus AND in the low/mid band: a
 //          deficit to close.
