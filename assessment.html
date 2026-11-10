@@ -91,7 +91,7 @@
           <span class="eyebrow">Voranta Research Conversion Index</span>
           <h1 class="display">How ready is your funnel to earn both the read and the lead?</h1>
           <p class="subhead">Five questions, about a minute. You get your score, your archetype, and the one gap to close. No email required to see your result.</p>
-          <button class="btn btn-lg" id="dri-start" type="button">Start the assessment</button>
+          <button class="btn btn-lg dri-start" id="dri-start" type="button">Start the assessment</button>
           <p class="framing-note" style="margin-top: 20px;">Experience the instrument the way your buyers will. This demo applies it to your research funnel. Your licensed version applies it to your buyers' agent governance readiness.</p>
         </div>
 
@@ -133,11 +133,13 @@
 
       <!-- QUIZ -->
       <div class="dri-screen" data-screen="quiz" hidden>
-        <div class="dri-progress">
-          <div class="dri-progress-bar"><span id="dri-progress-fill"></span></div>
-          <span class="dri-progress-label" id="dri-progress-label" aria-live="polite">Question 1 of 5</span>
+        <div class="dri-panel">
+          <div class="dri-progress">
+            <div class="dri-progress-bar"><span id="dri-progress-fill"></span></div>
+            <span class="dri-progress-label" id="dri-progress-label" aria-live="polite">Question 1 of 5</span>
+          </div>
+          <div id="dri-question" class="dri-question"></div>
         </div>
-        <div id="dri-question" class="dri-question"></div>
       </div>
 
       <!-- RESULTS -->
@@ -169,12 +171,15 @@
                 <polygon class="sc-radar-ring" points="" id="dri-ring-1"></polygon>
                 <polygon class="sc-radar-ring" points="" id="dri-ring-2"></polygon>
                 <polygon class="sc-radar-ring sc-radar-ring-outer" points="" id="dri-ring-3"></polygon>
+                <polygon class="sc-radar-threshold" points="" id="dri-ring-threshold"></polygon>
                 <g id="dri-axes"></g>
                 <polygon class="sc-radar-fill" id="dri-score-fill" points=""></polygon>
                 <g id="dri-score-points"></g>
+                <g id="dri-score-labels"></g>
                 <g id="dri-axis-labels"></g>
               </svg>
             </div>
+            <p class="dri-radar-legend"><span class="dri-radar-legend-swatch" aria-hidden="true"></span>High band 75</p>
             <!-- sr-only dimension list: screen-reader fallback for the five scores (desktop) -->
             <ul class="sr-only" id="dri-dimension-list" aria-label="Dimension scores"></ul>
             <!-- Mobile dimension list: rendered by renderDimList(); hidden on desktop via CSS -->
@@ -206,6 +211,13 @@
             <div class="sc-quadrant-callout" id="dri-quadrant-callout" aria-live="polite" aria-atomic="true"></div>
           </div>
 
+        </div>
+
+        <!-- Dimension bars: one row per dimension under the scorecard cards -->
+        <div class="dri-bars">
+          <h3 class="dri-bars-title">Scores by dimension</h3>
+          <p class="dri-bars-legend">The dashed line marks the high band at 75.</p>
+          <div id="dri-bars-list"></div>
         </div>
 
         <p class="framing-note" style="margin-top: 20px;">This scorecard format is what every completion produces. A sponsor's version carries the sponsor's brand, asks the governance questions, and sends a brief like this one to the sponsor's sales team for every buyer who completes it.</p>

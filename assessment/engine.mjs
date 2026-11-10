@@ -1,10 +1,25 @@
-import { questions } from './framework.mjs';
+import { questions, dimensions } from './framework.mjs';
+
+const DIMENSION_LABELS = Object.fromEntries(dimensions.map((d) => [d.key, d.label]));
+
+// Pause between a first answer and the automatic advance. The selected
+// state needs a moment to register before the next question appears.
+const AUTO_ADVANCE_MS = 500;
 
 export function createQuiz({ mountEl, progressFill, progressLabel, onComplete }) {
   const answers = [];
   let index = 0;
+  let pendingAdvance = null;
+
+  function clearPendingAdvance() {
+    if (pendingAdvance !== null) {
+      clearTimeout(pendingAdvance);
+      pendingAdvance = null;
+    }
+  }
 
   function render() {
+    clearPendingAdvance();
     const q = questions[index];
     const qId = `dri-q-${index}`;
     progressLabel.textContent = `Question ${index + 1} of ${questions.length}`;
@@ -15,13 +30,14 @@ export function createQuiz({ mountEl, progressFill, progressLabel, onComplete })
     const selectedIndex = answers[index] !== undefined ? answers[index].choiceIndex : null;
 
     mountEl.innerHTML = `
+      <span class="dri-q-tag">${DIMENSION_LABELS[q.dimension] || ''}</span>
       <p class="dri-q-text" id="${qId}">${q.text}</p>
       <div class="dri-options" role="group" aria-labelledby="${qId}">
-        ${q.options.map((o, i) => `<button type="button" class="dri-option${selectedIndex === i ? ' is-selected' : ''}" data-choice="${i}" aria-pressed="${selectedIndex === i ? 'true' : 'false'}">${o.label}</button>`).join('')}
+        ${q.options.map((o, i) => `<button type="button" class="dri-option${selectedIndex === i ? ' is-selected' : ''}" data-choice="${i}" aria-pressed="${selectedIndex === i ? 'true' : 'false'}"><span class="dri-radio-dot" aria-hidden="true"></span><span>${o.label}</span></button>`).join('')}
       </div>
       <div class="dri-nav">
-        ${index > 0 ? `<button type="button" class="btn btn-ghost dri-back">Back</button>` : `<span></span>`}
-        <button type="button" class="btn dri-next"${selectedIndex === null ? ' disabled aria-disabled="true"' : ''}>${index < questions.length - 1 ? 'Continue' : 'See my results'}</button>
+        ${index > 0 ? `<button type="button" class="btn btn-ghost btn-lg dri-back">Back</button>` : `<span></span>`}
+        <button type="button" class="btn btn-lg dri-next"${selectedIndex === null ? ' disabled aria-disabled="true"' : ''}>${index < questions.length - 1 ? 'Continue' : 'See my results'}</button>
       </div>`;
 
     mountEl.querySelectorAll('.dri-option').forEach((btn) => {
@@ -47,6 +63,11 @@ export function createQuiz({ mountEl, progressFill, progressLabel, onComplete })
   }
 
   function choose(choiceIndex) {
+    // A question reached again through Back already holds an answer.
+    // Picking there updates the answer and waits for Continue, which
+    // matches how the product flow treats a screen that was already
+    // answered. A first answer advances on its own after a short pause.
+    const returning = answers[index] !== undefined;
     // Overwrite by index, idempotent, never double-counts.
     answers[index] = { questionId: questions[index].id, choiceIndex };
 
@@ -62,9 +83,18 @@ export function createQuiz({ mountEl, progressFill, progressLabel, onComplete })
       nextBtn.disabled = false;
       nextBtn.removeAttribute('aria-disabled');
     }
+
+    clearPendingAdvance();
+    if (!returning) {
+      pendingAdvance = setTimeout(() => {
+        pendingAdvance = null;
+        advance();
+      }, AUTO_ADVANCE_MS);
+    }
   }
 
   function advance() {
+    clearPendingAdvance();
     if (answers[index] === undefined) return; // guard: no answer selected
     if (index < questions.length - 1) {
       index += 1;

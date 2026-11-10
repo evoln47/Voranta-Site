@@ -36,6 +36,7 @@ const quiz = createQuiz({
       quadrantCallout: document.getElementById('dri-quadrant-callout'),
       dimensionList: document.getElementById('dri-dimension-list'),
       dimList: document.getElementById('dri-dim-list'),
+      barsList: document.getElementById('dri-bars-list'),
     });
     show('results');
     app.scrollIntoView({ behavior: 'smooth', block: 'start' });

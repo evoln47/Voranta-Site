@@ -117,6 +117,44 @@ export function renderScorecard(result, els) {
   if (els.quadrantGrid && els.quadrantCallout) {
     renderQuadrant(els.quadrantGrid, els.quadrantCallout, result);
   }
+
+  // Dimension bars under the scorecard cards, one row per dimension in
+  // funnel order. The tick marks the high band at 75. A dimension below
+  // the band fills grey and the focus dimension's name runs bold, the
+  // same treatment the product results page gives its gap areas.
+  if (els.barsList) {
+    els.barsList.innerHTML = '';
+    dimensions.forEach((dim) => {
+      const raw = result.dimensionScores[dim.key];
+      const row = document.createElement('div');
+      row.className = 'dri-bar-row';
+
+      const head = document.createElement('div');
+      head.className = 'dri-bar-head';
+      const nameEl = document.createElement('span');
+      nameEl.className = 'dri-bar-name' + (f && f.dimension === dim.key ? ' is-focus' : '');
+      nameEl.textContent = dim.label;
+      const scoreEl = document.createElement('span');
+      scoreEl.textContent = String(raw);
+      head.appendChild(nameEl);
+      head.appendChild(scoreEl);
+
+      const bar = document.createElement('div');
+      bar.className = 'dri-bar';
+      const fill = document.createElement('div');
+      fill.className = 'dri-bar-fill' + (raw < 75 ? ' is-gap' : '');
+      fill.style.width = `${raw}%`;
+      const tick = document.createElement('span');
+      tick.className = 'dri-bar-tick';
+      tick.style.left = '75%';
+      bar.appendChild(fill);
+      bar.appendChild(tick);
+
+      row.appendChild(head);
+      row.appendChild(bar);
+      els.barsList.appendChild(row);
+    });
+  }
 }
 
 function animateScore(el, target) {

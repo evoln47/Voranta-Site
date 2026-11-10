@@ -61,6 +61,11 @@ export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, 
     if (ring) ring.setAttribute('points', ringPoints(frac));
   });
 
+  // High-band ring at 75, the cut between a deficit focus and an edge
+  // focus. The dimension bars under the scorecard mark the same line.
+  const thresholdRing = svgEl.querySelector('#dri-ring-threshold');
+  if (thresholdRing) thresholdRing.setAttribute('points', ringPoints(0.75));
+
   // Axis lines
   const axesG = svgEl.querySelector('#dri-axes');
   if (axesG) {
@@ -153,6 +158,25 @@ export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, 
       circles[next].focus();
       const nextDim = RADAR_DIMS[next];
       onVisualActivate(nextDim.key);
+    });
+  }
+
+  // Score labels: one per dimension, a fixed distance past its vertex
+  // along the same axis, so each label tracks its point at any score.
+  const scoresG = svgEl.querySelector('#dri-score-labels');
+  if (scoresG) {
+    scoresG.innerHTML = '';
+    RADAR_DIMS.forEach((dim, i) => {
+      const frac = dimensionScores[dim.key] / 100;
+      const lp = polar(angles[i], maxR * frac + 17);
+      const t = document.createElementNS(SVG_NS, 'text');
+      t.setAttribute('x', lp.x.toFixed(1));
+      t.setAttribute('y', lp.y.toFixed(1));
+      t.setAttribute('text-anchor', 'middle');
+      t.setAttribute('dy', '0.35em');
+      t.setAttribute('class', 'sc-radar-score');
+      t.textContent = String(dimensionScores[dim.key]);
+      scoresG.appendChild(t);
     });
   }
 
@@ -512,7 +536,9 @@ export function renderDimList(containerEl, dimensionScores, result, calloutNameE
     const track = document.createElement('div');
     track.className = 'sc-dim-list-bar-track';
     const fill = document.createElement('span');
-    fill.className = 'sc-dim-list-bar-fill';
+    // Below the high band the fill runs grey, matching the bars under
+    // the scorecard; at or above it the fill runs in the accent.
+    fill.className = 'sc-dim-list-bar-fill' + (raw < 75 ? ' is-gap' : '');
     // Width animated after append; start at 0 (CSS default), rAF sets target
     track.appendChild(fill);
 
