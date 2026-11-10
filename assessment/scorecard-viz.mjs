@@ -168,7 +168,12 @@ export function renderRadar(svgEl, dimensionScores, focusDim, onVisualActivate, 
     scoresG.innerHTML = '';
     RADAR_DIMS.forEach((dim, i) => {
       const frac = dimensionScores[dim.key] / 100;
-      const lp = polar(angles[i], maxR * frac + 17);
+      // A zero score puts the vertex on the centre point, where a label
+      // placed the usual 17 past it still overlaps the centre cluster.
+      // Hold zero-score labels at a minimum radius so they clear it;
+      // every other score keeps the fixed offset past its vertex.
+      const labelRadius = frac === 0 ? 34 : maxR * frac + 17;
+      const lp = polar(angles[i], labelRadius);
       const t = document.createElementNS(SVG_NS, 'text');
       t.setAttribute('x', lp.x.toFixed(1));
       t.setAttribute('y', lp.y.toFixed(1));

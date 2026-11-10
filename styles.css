@@ -1103,7 +1103,10 @@ main:focus { outline: none; }
 /* Progress: the label sits above an 8px bar, accent fill */
 .dri-progress { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 24px; }
 .dri-progress-label { order: -1; font-family: var(--font-sans); font-size: 14px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--color-ink-mute); white-space: normal; }
-.dri-progress-bar { height: 8px; background: #D8DDD8; }
+/* flex: none undoes the base rule's flex: 1, written for the old row
+   layout: in this column layout its flex-basis of 0% overrides the
+   height below and collapses the bar to 0px tall. */
+.dri-progress-bar { flex: none; height: 8px; background: #D8DDD8; }
 .dri-progress-bar span { background: var(--color-accent); transition: width 400ms cubic-bezier(0.22, 1, 0.36, 1); }
 
 /* Question: dimension tag above the prompt, product prompt weight */
@@ -1159,6 +1162,10 @@ main:focus { outline: none; }
 .sc-radar-score { font-family: var(--font-sans); font-size: 13px; font-weight: 700; fill: var(--color-ink); font-variant-numeric: tabular-nums; }
 .dri-radar-legend { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--color-ink-mute); margin: 2px 0 4px; }
 .dri-radar-legend-swatch { display: inline-block; width: 30px; border-top: 2px dashed var(--color-accent-dark); }
+
+/* A guaranteed gap between the callout heading and the dimension tag:
+   space-between alone lets the two touch when the card runs narrow. */
+.dri-app .sc-pillar-callout .pc-head { gap: 8px 16px; flex-wrap: wrap; }
 
 /* Story block under the radar, in the product story treatment */
 .dri-app .sc-pillar-callout .pc-name { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; color: var(--color-ink); }
